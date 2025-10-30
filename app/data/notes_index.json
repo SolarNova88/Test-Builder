@@ -71,11 +71,33 @@
     "DevOps": {
       "Docker": [
         {
+          "title": "01-fundamentals",
+          "path": "/notes/DevOps/Docker/01-fundamentals.md"
+        },
+        {
+          "title": "02-advanced",
+          "path": "/notes/DevOps/Docker/02-advanced.md"
+        },
+        {
           "title": "overview",
           "path": "/notes/DevOps/Docker/overview.md"
+        }
+      ],
+      "Kubernetes": [
+        {
+          "title": "01-fundamentals",
+          "path": "/notes/DevOps/Kubernetes/01-fundamentals.md"
+        },
+        {
+          "title": "02-advanced",
+          "path": "/notes/DevOps/Kubernetes/02-advanced.md"
+        },
+        {
+          "title": "03-advanced-scenarios",
+          "path": "/notes/DevOps/Kubernetes/03-advanced-scenarios.md"
         }
       ]
     }
   },
-  "generatedAt": "2025-10-30T22:13:51.640Z"
+  "generatedAt": "2025-10-30T22:23:46.428Z"
 }

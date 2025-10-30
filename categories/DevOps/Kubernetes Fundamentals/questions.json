@@ -1,0 +1,432 @@
+[
+  {
+    "id": "kubernetes-what-is",
+    "question": "What is Kubernetes?",
+    "choices": [
+      "A container runtime engine",
+      "A container orchestration platform that automates deployment, scaling, and management of containerized applications",
+      "A cloud storage service",
+      "A database management system"
+    ],
+    "answerIndex": 1,
+    "explanation": "Kubernetes is a container orchestration platform that automates the deployment, scaling, and management of containerized applications across clusters of machines.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "kubernetes-pod-definition",
+    "question": "What is a Pod in Kubernetes?",
+    "choices": [
+      "A single container running in isolation",
+      "The smallest deployable unit in Kubernetes that can contain one or more containers sharing network and storage",
+      "A virtual machine running in the cloud",
+      "A network endpoint for service discovery"
+    ],
+    "answerIndex": 1,
+    "explanation": "A Pod is the smallest deployable unit in Kubernetes. It can contain one or more containers that share the same network namespace and storage volumes.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "kubernetes-deployment-purpose",
+    "question": "What is the primary purpose of a Deployment in Kubernetes?",
+    "choices": [
+      "To provide networking between pods",
+      "To manage pods and ensure a desired number of replicas are running, handle updates, and manage rollbacks",
+      "To store configuration data",
+      "To expose services externally"
+    ],
+    "answerIndex": 1,
+    "explanation": "Deployments manage pods and ensure the desired number of replicas are running. They handle rolling updates and can rollback to previous versions if needed.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "kubernetes-service-types",
+    "question": "Which Service type in Kubernetes provides a stable IP address and DNS name for pods that can be accessed from within the cluster only?",
+    "choices": [
+      "NodePort",
+      "LoadBalancer",
+      "ClusterIP",
+      "Ingress"
+    ],
+    "answerIndex": 2,
+    "explanation": "ClusterIP is the default Service type that provides a stable IP address and DNS name accessible only within the cluster. It's used for internal service-to-service communication.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-rolling-update",
+    "question": "During a rolling update, if new pods fail their readiness probes, what happens?",
+    "choices": [
+      "The update completes anyway",
+      "The update pauses and waits for the new pods to become ready, preventing further rollout until pods pass health checks",
+      "The update automatically rolls back",
+      "All pods are deleted and recreated"
+    ],
+    "answerIndex": 1,
+    "explanation": "Kubernetes pauses the rolling update if new pods fail readiness probes. This prevents deploying broken versions. You can then fix the issue or manually rollback.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-configmap-secret",
+    "question": "What is the main difference between a ConfigMap and a Secret in Kubernetes?",
+    "choices": [
+      "ConfigMaps store sensitive data, Secrets store non-sensitive data",
+      "ConfigMaps store non-sensitive configuration data, while Secrets store sensitive data like passwords and API keys",
+      "There is no difference, they are interchangeable",
+      "ConfigMaps are for production only, Secrets are for development"
+    ],
+    "answerIndex": 1,
+    "explanation": "ConfigMaps store non-sensitive configuration data (like environment variables, config files). Secrets store sensitive data (like passwords, API keys) and are base64-encoded for basic obfuscation.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-hpa-metric",
+    "question": "A HorizontalPodAutoscaler (HPA) is configured to scale a Deployment based on CPU utilization at 70%. If average CPU usage is 85%, what happens?",
+    "choices": [
+      "Pods are scaled down",
+      "Pods are scaled up to reduce the average CPU usage per pod",
+      "Nothing happens, it only scales based on memory",
+      "The HPA is disabled"
+    ],
+    "answerIndex": 1,
+    "explanation": "When CPU usage (85%) exceeds the target (70%), the HPA scales up by adding more pods. This distributes the load across more pods, reducing average CPU usage per pod.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-statefulset-vs-deployment",
+    "question": "When would you use a StatefulSet instead of a Deployment?",
+    "choices": [
+      "When you need faster pod creation",
+      "When you need stateless applications that can be easily replaced",
+      "When you need stable pod identity, ordered pod creation/deletion, and persistent storage per pod (like databases)",
+      "When you need to run pods on every node"
+    ],
+    "answerIndex": 2,
+    "explanation": "StatefulSets are used for stateful applications that need stable pod identity (predictable names like db-0, db-1), ordered creation/deletion, and persistent storage per pod. This is essential for databases, message queues, and other stateful services.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-daemonset-purpose",
+    "question": "What is the purpose of a DaemonSet in Kubernetes?",
+    "choices": [
+      "To ensure a pod runs on every node in the cluster",
+      "To run a one-time task and then terminate",
+      "To manage scheduled jobs",
+      "To provide load balancing"
+    ],
+    "answerIndex": 0,
+    "explanation": "A DaemonSet ensures that a pod runs on every node in the cluster. Common use cases include logging agents (Fluentd), monitoring agents (node-exporter), and network plugins.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-resource-requests-vs-limits",
+    "question": "What is the difference between resource requests and resource limits in Kubernetes?",
+    "choices": [
+      "Requests are the maximum allowed, limits are the minimum guaranteed",
+      "Requests specify the minimum resources guaranteed to the pod, while limits specify the maximum resources the pod can use",
+      "They are the same thing",
+      "Requests are for CPU only, limits are for memory only"
+    ],
+    "answerIndex": 1,
+    "explanation": "Resource requests specify the minimum resources guaranteed to the pod (used for scheduling). Resource limits specify the maximum resources the pod can use (prevents resource hogging).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-liveness-readiness-difference",
+    "question": "What is the key difference between liveness probes and readiness probes?",
+    "choices": [
+      "Liveness probes check if the pod can accept traffic, readiness probes check if the application is alive",
+      "Liveness probes check if the application is alive (and restart the pod if dead), readiness probes check if the pod can accept traffic (and remove it from service endpoints if not ready)",
+      "They are identical and interchangeable",
+      "Liveness probes are for production only"
+    ],
+    "answerIndex": 1,
+    "explanation": "Liveness probes check if the application is alive. If it fails, Kubernetes restarts the pod. Readiness probes check if the pod is ready to accept traffic. If it fails, Kubernetes removes the pod from service endpoints but doesn't restart it.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-network-policy-default",
+    "question": "By default, when you create a NetworkPolicy that denies all ingress traffic, what happens to egress traffic?",
+    "choices": [
+      "Egress traffic is also denied",
+      "Egress traffic is allowed by default unless explicitly denied",
+      "All traffic is blocked in both directions",
+      "NetworkPolicy only applies to ingress"
+    ],
+    "answerIndex": 1,
+    "explanation": "NetworkPolicies are additive. If you only specify an ingress policy, egress traffic is still allowed by default. To deny egress, you must explicitly add an egress policy with an empty rules array.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-persistent-volume-reclaim",
+    "question": "If a PersistentVolume (PV) has a reclaim policy of 'Retain' and the PersistentVolumeClaim (PVC) is deleted, what happens to the data?",
+    "choices": [
+      "The data is automatically deleted",
+      "The PV and data are deleted immediately",
+      "The PV enters 'Released' state and the data is preserved, requiring manual cleanup",
+      "The PVC is recreated automatically"
+    ],
+    "answerIndex": 2,
+    "explanation": "With 'Retain' policy, when the PVC is deleted, the PV enters 'Released' state and the data is preserved. The PV cannot be reused until manually cleaned up and the PV resource is deleted or the reclaim policy is changed.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-cascading-failure-prevention",
+    "question": "In a microservices architecture where Service A depends on Service B, and Service B starts failing, which approach helps prevent cascading failures?",
+    "choices": [
+      "Removing all timeout configurations",
+      "Implementing circuit breakers, health checks, graceful degradation, and proper retry logic with exponential backoff",
+      "Increasing the number of replicas infinitely",
+      "Disabling all monitoring"
+    ],
+    "answerIndex": 1,
+    "explanation": "Circuit breakers stop retrying failed services. Health checks detect failures early. Graceful degradation allows partial functionality when dependencies fail. Proper retry logic with exponential backoff prevents overwhelming failing services.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-rolling-update-maxsurge",
+    "question": "A Deployment has 10 replicas and a rolling update strategy with maxSurge: 2 and maxUnavailable: 1. During a rolling update, what is the maximum number of pods that can exist simultaneously?",
+    "choices": [
+      "10 pods (current pods only)",
+      "11 pods (10 current + 1 new)",
+      "12 pods (10 current + 2 new)",
+      "13 pods (10 current + 3 new)"
+    ],
+    "answerIndex": 2,
+    "explanation": "maxSurge allows creating extra pods during update. With 10 replicas and maxSurge: 2, Kubernetes can create up to 2 additional pods (total 12). maxUnavailable: 1 means at least 9 pods must be available, allowing 1 to be unavailable during update.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-pod-antiaffinity",
+    "question": "You configure podAntiAffinity with preferredDuringSchedulingIgnoredDuringExecution to spread pods across nodes. What happens if there are only 2 nodes but you have 5 replicas?",
+    "choices": [
+      "The deployment fails",
+      "Pods are scheduled on the available nodes anyway, as preferredDuringScheduling is soft (best-effort) rather than hard (required)",
+      "Only 2 pods are created",
+      "Kubernetes automatically creates more nodes"
+    ],
+    "answerIndex": 1,
+    "explanation": "preferredDuringScheduling is a soft (best-effort) affinity rule. If it can't be satisfied (not enough nodes), Kubernetes will still schedule pods on available nodes rather than failing. If you used requiredDuringScheduling (hard rule), it would fail to schedule all pods.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-service-discovery-dns",
+    "question": "A pod in namespace 'production' wants to connect to a Service named 'web-service' in the same namespace. What DNS name should it use?",
+    "choices": [
+      "web-service",
+      "web-service.production",
+      "web-service.production.svc.cluster.local",
+      "web-service.cluster.local"
+    ],
+    "answerIndex": 0,
+    "explanation": "Within the same namespace, you can use the short DNS name 'web-service'. Kubernetes DNS automatically resolves it. The full FQDN 'web-service.production.svc.cluster.local' works but is not required within the same namespace.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-job-vs-cronjob",
+    "question": "What is the difference between a Job and a CronJob in Kubernetes?",
+    "choices": [
+      "Jobs run continuously, CronJobs run once",
+      "Jobs run a task once to completion, CronJobs schedule Jobs to run on a recurring schedule",
+      "There is no difference",
+      "Jobs are for production, CronJobs are for development"
+    ],
+    "answerIndex": 1,
+    "explanation": "A Job runs a task once until completion (like a database backup). A CronJob schedules Jobs to run on a recurring schedule (like daily backups at 2 AM).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-storage-class-dynamic",
+    "question": "What is the advantage of using a StorageClass with dynamic provisioning instead of manually creating PersistentVolumes?",
+    "choices": [
+      "There is no advantage",
+      "StorageClasses automatically provision PersistentVolumes when a PersistentVolumeClaim is created, eliminating manual PV creation and enabling automatic storage allocation",
+      "StorageClasses are faster",
+      "StorageClasses only work with certain cloud providers"
+    ],
+    "answerIndex": 1,
+    "explanation": "Dynamic provisioning automatically creates PersistentVolumes when you create a PersistentVolumeClaim that references a StorageClass. This eliminates manual PV creation and allows automatic storage allocation based on demand.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-resource-quota-impact",
+    "question": "A namespace has a ResourceQuota limiting CPU requests to 10 cores. You try to create a Deployment requesting 5 CPU cores, but the namespace already has Deployments using 6 CPU cores. What happens?",
+    "choices": [
+      "The new Deployment is created anyway",
+      "The new Deployment cannot be created because it would exceed the quota (6 existing + 5 new = 11 > 10 limit)",
+      "Kubernetes automatically removes existing Deployments",
+      "The quota is automatically increased"
+    ],
+    "answerIndex": 1,
+    "explanation": "ResourceQuotas enforce hard limits. If creating the new Deployment would exceed the quota (6 + 5 = 11 > 10), the Deployment creation fails. You must either increase the quota or reduce resource requests.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-init-containers-purpose",
+    "question": "What is the primary purpose of init containers in a Pod?",
+    "choices": [
+      "To provide networking functionality",
+      "To run setup tasks that must complete before the main containers start (like database migrations or waiting for dependencies)",
+      "To provide load balancing",
+      "To replace main containers when they fail"
+    ],
+    "answerIndex": 1,
+    "explanation": "Init containers run to completion before main containers start. Common use cases include database migrations, waiting for dependencies to be ready, or setting up configuration files.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-readiness-startup-probe",
+    "question": "Why would you use both a startup probe and a readiness probe?",
+    "choices": [
+      "They are required to be used together",
+      "A startup probe handles slow-starting applications by allowing more time for the app to start before readiness checks begin, preventing premature restart cycles",
+      "There is no reason to use both",
+      "Startup probes are deprecated"
+    ],
+    "answerIndex": 1,
+    "explanation": "Startup probes allow slow-starting applications more time to initialize before readiness/liveness checks begin. Without startup probes, readiness probes might fail during startup, causing unnecessary restarts. Once the startup probe succeeds, readiness probes take over.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-ingress-vs-loadbalancer",
+    "question": "When would you use an Ingress instead of a LoadBalancer Service type?",
+    "choices": [
+      "Never, LoadBalancer is always better",
+      "When you need HTTP/HTTPS routing, SSL termination, path-based routing, and want to manage multiple services through a single external IP instead of creating a LoadBalancer per service",
+      "When you need TCP load balancing",
+      "When you need internal-only services"
+    ],
+    "answerIndex": 1,
+    "explanation": "Ingress provides HTTP/HTTPS routing, SSL termination, and path-based routing (e.g., example.com/api → api-service). It allows multiple services to share a single external IP. LoadBalancer creates a separate load balancer per service, which is more expensive.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-hpa-scaling-behavior",
+    "question": "An HPA is configured with minReplicas: 2, maxReplicas: 10, and CPU target: 70%. Currently there are 4 pods with average CPU of 85%. What happens?",
+    "choices": [
+      "Nothing, 4 pods is between min and max",
+      "The HPA scales up to reduce average CPU usage per pod, potentially adding more pods (up to maxReplicas: 10) until average CPU is closer to 70%",
+      "Pods are scaled down",
+      "The HPA is disabled"
+    ],
+    "answerIndex": 1,
+    "explanation": "Since average CPU (85%) exceeds target (70%), the HPA scales up by adding more pods. This distributes load across more pods, reducing average CPU per pod. It will scale up toward the target utilization, respecting maxReplicas: 10.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-statefulset-ordering",
+    "question": "When scaling a StatefulSet from 3 to 5 replicas, in what order are the new pods created?",
+    "choices": [
+      "Random order",
+      "All pods created simultaneously",
+      "Sequentially: postgres-3 first, then postgres-4, one at a time",
+      "Reverse order: postgres-4 first, then postgres-3"
+    ],
+    "answerIndex": 2,
+    "explanation": "StatefulSets create pods sequentially in ascending order (0, 1, 2, 3, 4...). When scaling from 3 to 5, postgres-3 is created and must be running and ready before postgres-4 is created. This ensures ordered initialization, which is important for stateful applications like databases.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-configmap-env-from",
+    "question": "What happens when you mount a ConfigMap using envFrom in a Pod?",
+    "choices": [
+      "Nothing, envFrom is not valid",
+      "All key-value pairs in the ConfigMap become environment variables in the container",
+      "Only specific keys become environment variables",
+      "The ConfigMap is mounted as a file"
+    ],
+    "answerIndex": 1,
+    "explanation": "envFrom mounts all key-value pairs from the ConfigMap as environment variables in the container. Each key becomes an environment variable name with its corresponding value. Use env with valueFrom for selective mounting.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-rbac-clusterrole-vs-role",
+    "question": "What is the difference between a Role and a ClusterRole in Kubernetes RBAC?",
+    "choices": [
+      "There is no difference",
+      "A Role grants permissions within a specific namespace, while a ClusterRole grants permissions cluster-wide (across all namespaces)",
+      "Roles are for users, ClusterRoles are for services",
+      "Roles are deprecated"
+    ],
+    "answerIndex": 1,
+    "explanation": "A Role is namespace-scoped and grants permissions only within that namespace. A ClusterRole is cluster-scoped and grants permissions across all namespaces. ClusterRoles are typically used for cluster administrators or system components.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "kubernetes-pod-disruption-budget",
+    "question": "What is the purpose of a PodDisruptionBudget (PDB)?",
+    "choices": [
+      "To prevent pods from being created",
+      "To ensure a minimum number of pods remain available during voluntary disruptions (like node maintenance or cluster upgrades)",
+      "To schedule pods on specific nodes",
+      "To limit pod resource usage"
+    ],
+    "answerIndex": 1,
+    "explanation": "A PodDisruptionBudget ensures a minimum number of pods remain available during voluntary disruptions (planned maintenance, node drains, cluster upgrades). It prevents too many pods from being evicted simultaneously, maintaining availability.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-multi-stage-build-kubernetes",
+    "question": "While Kubernetes doesn't build images, it can benefit from multi-stage Docker builds because:",
+    "choices": [
+      "Kubernetes requires multi-stage builds",
+      "Multi-stage builds create smaller final images, reducing resource usage, faster pod startup times, and improved security by excluding build tools from production images",
+      "Multi-stage builds are required for StatefulSets",
+      "Kubernetes automatically optimizes all images"
+    ],
+    "answerIndex": 1,
+    "explanation": "Multi-stage Docker builds create smaller production images by separating build dependencies from runtime. Smaller images mean less storage, faster pulls, faster pod startup, lower resource usage, and improved security (build tools not in production images).",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-operator-pattern",
+    "question": "What problem does the Operator pattern solve in Kubernetes?",
+    "choices": [
+      "Network connectivity between pods",
+      "Managing complex application lifecycles that require application-specific knowledge beyond what standard Kubernetes resources can handle (like database backups, restores, and upgrades)",
+      "Basic pod scheduling",
+      "Simple configuration management"
+    ],
+    "answerIndex": 1,
+    "explanation": "Operators are Kubernetes controllers that manage complex application lifecycles. They encode application-specific operational knowledge (like how to backup a database, restore it, upgrade it) that standard Kubernetes resources don't know. Examples: PostgreSQL operators handle backups, replication, and upgrades automatically.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-service-mesh-benefit",
+    "question": "What is a key benefit of using a service mesh (like Istio or Linkerd) in Kubernetes?",
+    "choices": [
+      "It replaces all Kubernetes services",
+      "It provides observability (metrics, traces, logs), security (mTLS), and traffic management (canary, A/B testing) without modifying application code",
+      "It makes all pods run faster",
+      "It eliminates the need for Deployments"
+    ],
+    "answerIndex": 1,
+    "explanation": "Service meshes provide cross-cutting concerns (observability, security, traffic management) through sidecar proxies. Applications get these features without code changes. For example, you can implement canary deployments or mTLS just by configuring the service mesh.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-namespace-isolation",
+    "question": "By default, what level of isolation do namespaces provide in Kubernetes?",
+    "choices": [
+      "Complete network isolation (pods in different namespaces cannot communicate)",
+      "Logical isolation (resource organization and RBAC scope), but no automatic network isolation unless NetworkPolicies are applied",
+      "Complete resource isolation (pods cannot share anything)",
+      "Namespaces provide no isolation"
+    ],
+    "answerIndex": 1,
+    "explanation": "By default, namespaces provide logical isolation (resource organization, RBAC scope, resource quotas) but NOT network isolation. Pods in different namespaces can communicate unless NetworkPolicies are applied. NetworkPolicies must be explicitly configured for network isolation.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "kubernetes-priority-class-preemption",
+    "question": "How do PriorityClasses affect pod scheduling in Kubernetes?",
+    "choices": [
+      "They have no effect",
+      "Higher priority pods can preempt (evict) lower priority pods from nodes if resources are insufficient, ensuring critical workloads get resources",
+      "They only affect ordering, not preemption",
+      "They are used only for StatefulSets"
+    ],
+    "answerIndex": 1,
+    "explanation": "PriorityClasses assign priorities to pods. During resource contention, Kubernetes can preempt (evict) lower priority pods to make room for higher priority pods. This ensures critical workloads (like system components) always get resources when needed.",
+    "difficulty": "hard"
+  }
+]
+
