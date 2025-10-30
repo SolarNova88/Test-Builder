@@ -1,0 +1,134 @@
+[
+  {
+    "id": "scaling-vert-vs-horz",
+    "question": "Which best describes vertical vs horizontal database scaling?",
+    "choices": [
+      "Vertical adds more servers; horizontal increases RAM/CPU",
+      "Vertical improves reads only; horizontal improves writes only",
+      "Vertical adds resources to one server; horizontal adds more servers",
+      "Vertical uses NoSQL; horizontal uses SQL"
+    ],
+    "answerIndex": 2,
+    "explanation": "Scale-up = bigger single machine; scale-out = more machines behind distribution.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "normalization-vs-denormalization",
+    "question": "What is normalization, and why might denormalization be preferred sometimes?",
+    "choices": [
+      "Normalization stores redundant data; denormalization removes redundancy",
+      "Normalization reduces redundancy; denormalization adds some redundancy for faster queries",
+      "Denormalization is only used in NoSQL; normalization only for SQL",
+      "Normalization adds indexes; denormalization removes them"
+    ],
+    "answerIndex": 1,
+    "explanation": "Normalization reduces duplication; denormalization speeds reads by avoiding costly JOINs.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "acid-vs-base",
+    "question": "Which statement best contrasts ACID and BASE properties?",
+    "choices": [
+      "ACID is used in SQL; BASE in NoSQL",
+      "ACID ensures strong consistency; BASE allows eventual consistency",
+      "BASE guarantees durability; ACID guarantees eventual consistency",
+      "ACID and BASE are synonyms"
+    ],
+    "answerIndex": 1,
+    "explanation": "ACID: strong transactional guarantees. BASE: availability with eventual consistency.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "too-many-indexes",
+    "question": "Why can too many indexes hurt performance?",
+    "choices": [
+      "Indexes slow down SELECT",
+      "Indexes consume memory and slow INSERT/UPDATE due to maintenance",
+      "Indexes prevent foreign keys",
+      "Indexes delete duplicates automatically"
+    ],
+    "answerIndex": 1,
+    "explanation": "Writes must update each index; more indexes = more write overhead and storage.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "sql-join",
+    "question": "What happens when a SQL JOIN is performed?",
+    "choices": [
+      "Rows from two tables are combined based on a related column",
+      "Two tables merge into a single physical table",
+      "A new schema is created",
+      "Data copies from one DB to another"
+    ],
+    "answerIndex": 0,
+    "explanation": "JOINs are logical row combinations across tables using matching keys.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "referential-integrity",
+    "question": "Which key ensures referential integrity between two tables?",
+    "choices": [
+      "Primary key only",
+      "Foreign key only",
+      "Composite key only",
+      "Foreign key referencing a primary key"
+    ],
+    "answerIndex": 3,
+    "explanation": "A foreign key must reference a candidate/primary key in the parent table.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "transaction-log",
+    "question": "What role does a transaction log play?",
+    "choices": [
+      "Speeds up SELECT queries",
+      "Tracks operations for recovery and rollback",
+      "Automatically indexes frequently used tables",
+      "Deletes old data periodically"
+    ],
+    "answerIndex": 1,
+    "explanation": "Change records enable crash recovery, rollbacks, and durability (ACID).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "schema-diff",
+    "question": "How does schema differ between relational and NoSQL databases?",
+    "choices": [
+      "Both require strict schemas",
+      "Relational uses upfront schemas; NoSQL often flexible/schemaless",
+      "NoSQL requires foreign keys; relational does not",
+      "Schema only matters in document stores"
+    ],
+    "answerIndex": 1,
+    "explanation": "Relational enforces table/column types; NoSQL typically allows flexible documents.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "orm-definition",
+    "question": "What is an ORM, and a common pitfall?",
+    "choices": [
+      "Compiler; slow compilation",
+      "Maps objects to tables; can generate inefficient queries (e.g., N+1)",
+      "A NoSQL DB; lacks joins",
+      "Indexing method; uses extra memory"
+    ],
+    "answerIndex": 1,
+    "explanation": "ORMs abstract SQL; careless usage may cause excessive queries or N+1s.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "many-to-many-design",
+    "question": "How to design many-to-many between users and projects in SQL?",
+    "choices": [
+      "Multiple FKs on one table",
+      "Join table (user_projects) with FKs to users and projects",
+      "Arrays of project IDs in users table",
+      "Duplicate project data inside user rows"
+    ],
+    "answerIndex": 1,
+    "explanation": "Use a junction table for M:N with two FKs to maintain integrity and flexibility.",
+    "difficulty": "easy"
+  }
+]
+
+

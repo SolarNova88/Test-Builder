@@ -1,0 +1,134 @@
+[
+  {
+    "id": "event-loop-browser-vs-node",
+    "question": "How does the browser’s event loop differ from Node.js’s event loop?",
+    "choices": [
+      "Browsers do not use an event loop.",
+      "Node.js uses a single-threaded event loop for I/O; browsers handle both rendering and JavaScript events.",
+      "Node.js requires multiple threads for events; browsers are single-threaded.",
+      "They are identical in every way."
+    ],
+    "answerIndex": 1,
+    "explanation": "Browsers manage rendering, user input, and JS callbacks; Node focuses on non-blocking I/O via libuv.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "react-hydration",
+    "question": "What is hydration in React, and why does it matter for SSR?",
+    "choices": [
+      "Hydration automatically updates CSS styles.",
+      "Hydration attaches React event listeners to pre-rendered HTML sent by the server.",
+      "Hydration clears the virtual DOM.",
+      "Hydration compresses JavaScript files."
+    ],
+    "answerIndex": 1,
+    "explanation": "SSR renders HTML; hydration links React’s virtual DOM and events to that HTML.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "cors-purpose",
+    "question": "How do CORS policies protect users?",
+    "choices": [
+      "They encrypt all HTTP traffic.",
+      "They prevent unauthorized cross-origin requests from executing in the browser.",
+      "They restrict database access.",
+      "They cache frontend assets."
+    ],
+    "answerIndex": 1,
+    "explanation": "Browsers enforce CORS so other origins cannot access resources without permission.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "rest-vs-graphql",
+    "question": "What are RESTful constraints, and how does GraphQL differ philosophically?",
+    "choices": [
+      "REST uses RPC; GraphQL is stateless.",
+      "REST emphasizes resources and HTTP verbs; GraphQL lets clients request exactly what they need in one query.",
+      "GraphQL replaces databases; REST replaces servers.",
+      "REST requires JSON; GraphQL requires XML."
+    ],
+    "answerIndex": 1,
+    "explanation": "REST centers on resources (GET/POST/PUT/DELETE); GraphQL shapes responses to client needs.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "separation-of-concerns",
+    "question": "Which indicates poor separation of concerns between frontend and backend?",
+    "choices": [
+      "The frontend only consumes APIs.",
+      "Backend contains rendering logic tightly coupled with client code.",
+      "Frontend and backend communicate via JSON APIs.",
+      "Each layer handles its own validation."
+    ],
+    "answerIndex": 1,
+    "explanation": "Backend should expose APIs and business logic; UI rendering belongs on the frontend.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "react-vdom-performance",
+    "question": "How does React’s virtual DOM improve performance?",
+    "choices": [
+      "It runs all JavaScript in a separate thread.",
+      "It diffs old vs new trees and updates only necessary parts.",
+      "It pre-renders HTML on the server.",
+      "It compresses CSS and JS."
+    ],
+    "answerIndex": 1,
+    "explanation": "React minimizes DOM mutations by reconciling differences and updating only changed nodes.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "monolith-vs-microservices",
+    "question": "Tradeoffs between a monolith and microservices?",
+    "choices": [
+      "Monoliths easier to scale horizontally; microservices faster to develop.",
+      "Monoliths simplify deployment; microservices allow modularity and independent scaling but add ops complexity.",
+      "Microservices cannot use databases.",
+      "Monoliths always outperform microservices."
+    ],
+    "answerIndex": 1,
+    "explanation": "Monoliths are simpler initially; microservices need orchestration, discovery, observability, etc.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "api-error-handling",
+    "question": "How should API error handling be structured for a React frontend?",
+    "choices": [
+      "Return raw stack traces to the client.",
+      "Return standardized error codes/messages the frontend can interpret.",
+      "Ignore backend errors and log only.",
+      "Send HTML error pages instead of JSON."
+    ],
+    "answerIndex": 1,
+    "explanation": "Consistent HTTP codes and JSON error shapes enable graceful UX and retries.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "optimistic-vs-pessimistic",
+    "question": "What is the difference between optimistic and pessimistic UI updates?",
+    "choices": [
+      "Optimistic updates assume success and update UI immediately; pessimistic waits for server confirmation.",
+      "Pessimistic updates are faster.",
+      "Optimistic updates block user input.",
+      "They are the same thing."
+    ],
+    "answerIndex": 0,
+    "explanation": "Optimistic improves perceived speed; pessimistic reduces risk of incorrect state.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "secure-frontend-backend",
+    "question": "How do you secure communication between frontend and backend in production?",
+    "choices": [
+      "Use HTTP and plaintext tokens.",
+      "Use HTTPS, auth tokens (JWT/OAuth), and validate inputs server-side.",
+      "Only rely on frontend validation.",
+      "Use FTP to transfer data."
+    ],
+    "answerIndex": 1,
+    "explanation": "Encrypt transport (TLS), authenticate, authorize, and validate inputs on the server.",
+    "difficulty": "easy"
+  }
+]
+
+

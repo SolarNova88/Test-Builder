@@ -1,0 +1,134 @@
+[
+  {
+    "id": "auth-vs-authz",
+    "question": "What is the main difference between authentication and authorization?",
+    "choices": [
+      "Authentication proves what you can do; authorization proves who you are.",
+      "Authentication proves who you are; authorization proves what you can do.",
+      "Authentication and authorization are the same.",
+      "Authentication only applies to OAuth; authorization only to JWT."
+    ],
+    "answerIndex": 1,
+    "explanation": "Authentication verifies identity; authorization determines permitted actions.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "session-vs-token",
+    "question": "Which is a key difference between session-based and token-based authentication?",
+    "choices": [
+      "Session-based stores info on the server; token-based stores it on the client.",
+      "Token-based auth requires a DB; session-based does not.",
+      "Session-based authentication is stateless.",
+      "Token-based authentication cannot use HTTPS."
+    ],
+    "answerIndex": 0,
+    "explanation": "Sessions keep server-side state (cookie holds ID); tokens carry claims and are validated statelessly.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "jwt-localstorage-risk",
+    "question": "Why is storing JWTs in localStorage potentially risky?",
+    "choices": [
+      "They can be stolen by XSS.",
+      "JWTs expire automatically.",
+      "localStorage is encrypted by default.",
+      "JWTs cannot store user info."
+    ],
+    "answerIndex": 0,
+    "explanation": "localStorage is accessible to page JS; XSS can exfiltrate tokens. Prefer HTTP-only cookies.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "refresh-token-purpose",
+    "question": "What is the purpose of a refresh token?",
+    "choices": [
+      "To speed up the login page.",
+      "To obtain a new access token without logging in again.",
+      "To replace the password entirely.",
+      "To store session data on the server."
+    ],
+    "answerIndex": 1,
+    "explanation": "Short-lived access tokens improve security; refresh tokens allow seamless renewal.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "rbac-vs-abac",
+    "question": "Main difference between RBAC and ABAC?",
+    "choices": [
+      "RBAC is for small apps; ABAC for large apps.",
+      "RBAC assigns permissions via roles; ABAC evaluates attributes (user/resource/environment).",
+      "RBAC requires OAuth2; ABAC requires JWT.",
+      "RBAC and ABAC are identical."
+    ],
+    "answerIndex": 1,
+    "explanation": "RBAC maps roles to permissions; ABAC uses fine-grained policies based on attributes.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "remember-me-security",
+    "question": "Key security consideration for 'remember me' functionality?",
+    "choices": [
+      "Never hash passwords.",
+      "Tokens should be long-lived but revocable and securely stored.",
+      "Only applies to API keys.",
+      "Store plaintext passwords in cookies."
+    ],
+    "answerIndex": 1,
+    "explanation": "Use revocable, HTTP-only, secure cookies; never store plaintext credentials client-side.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "mfa-benefit",
+    "question": "How does multi-factor authentication (MFA) enhance security?",
+    "choices": [
+      "It replaces passwords entirely.",
+      "It requires multiple verification methods (know/have/are).",
+      "It auto-logs users out after 30 seconds.",
+      "It encrypts the database automatically."
+    ],
+    "answerIndex": 1,
+    "explanation": "MFA combines factors to reduce risk from compromised single credentials.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "hashing-importance",
+    "question": "Why hash passwords (bcrypt/Argon2) even if the DB is 'secure'?",
+    "choices": [
+      "Prevents users from forgetting passwords.",
+      "Protects passwords if the DB leaks; hashes are hard to reverse.",
+      "Speeds up login.",
+      "Encrypts network traffic."
+    ],
+    "answerIndex": 1,
+    "explanation": "Hashing with salt mitigates disclosure; raw passwords aren't recoverable from hashes.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "csrf-and-tokens",
+    "question": "What is CSRF and how do anti-CSRF tokens prevent it?",
+    "choices": [
+      "Cross-Site Request Forgery; tokens ensure requests are from the legitimate client.",
+      "Cookie Stealing Risk Factor; tokens encrypt cookies.",
+      "Client-Side Resource Fetching; tokens improve fetch speed.",
+      "Cross-Server Request Function; tokens are unrelated."
+    ],
+    "answerIndex": 0,
+    "explanation": "Tokens bind requests to the app’s origin/user session, blocking forged cross-site posts.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "middleware-vs-authz",
+    "question": "Difference between authentication middleware and authorization logic in an API?",
+    "choices": [
+      "Middleware handles requests; logic handles responses.",
+      "Middleware verifies identity; authorization checks permissions per endpoint.",
+      "Middleware only works in Node.js.",
+      "Authorization logic is optional; middleware is required."
+    ],
+    "answerIndex": 1,
+    "explanation": "AuthN middleware validates identity (e.g., JWT); authZ enforces permissions for resources.",
+    "difficulty": "easy"
+  }
+]
+
+

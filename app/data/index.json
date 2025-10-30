@@ -34,7 +34,47 @@
         "count": 3
       }
     },
-    "Electrical Engineering": {}
+    "Databases": {
+      "Database Fundamentals": {
+        "count": 10
+      }
+    },
+    "Deployment": {
+      "Environment, Deployment, Instance": {
+        "count": 10
+      }
+    },
+    "DevOps": {
+      "Containers, Images, Volumes, Networks": {
+        "count": 10
+      },
+      "Docker Compose Networking & Service Discovery": {
+        "count": 15
+      },
+      "Docker Essentials": {
+        "count": 14
+      },
+      "Docker Scenarios": {
+        "count": 11
+      },
+      "Docker Troubleshooting": {
+        "count": 19
+      },
+      "Docker Troubleshooting Simulation": {
+        "count": 15
+      }
+    },
+    "Electrical Engineering": {},
+    "Full Stack": {
+      "Frontend, Backend, Full Stack": {
+        "count": 10
+      }
+    },
+    "Security": {
+      "Authentication and Authorization": {
+        "count": 10
+      }
+    }
   },
-  "generatedAt": "2025-10-30T19:54:04.327Z"
+  "generatedAt": "2025-10-30T21:03:36.199Z"
 }

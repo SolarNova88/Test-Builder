@@ -1,0 +1,199 @@
+[
+  {
+    "id": "compose-redis-name-resolution",
+    "question": "Compose: api can't resolve 'cache' (redis). Likely cause?",
+    "choices": [
+      "Redis container is down",
+      "Containers on different networks",
+      "Missing EXPOSE 6379 in Redis image",
+      "Redis password required"
+    ],
+    "answerIndex": 1,
+    "explanation": "Services must share a user-defined network for DNS. Ensure both are on the same network/project.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "localhost-inside-container",
+    "question": "Backend fails connecting to http://localhost:8080 (Nginx web). Cause?",
+    "choices": [
+      "Wrong port",
+      "localhost refers to backend container, not host",
+      "Missing network driver",
+      "Port not exposed"
+    ],
+    "answerIndex": 1,
+    "explanation": "Use the service name (web:80) from another container; localhost is self.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "depends-on-readiness-compose",
+    "question": "frontend depends_on api but fails: can't connect to api:5000. Cause?",
+    "choices": [
+      "depends_on doesn’t guarantee readiness",
+      "Wrong service name",
+      "Wrong port mapping",
+      "Missing healthcheck"
+    ],
+    "answerIndex": 0,
+    "explanation": "depends_on sets order only. Add healthcheck or wait script so api is ready first.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "cross-project-isolation",
+    "question": "API in projectA can't reach DB in projectB by name. Cause?",
+    "choices": [
+      "DNS cache issue",
+      "They’re in isolated Compose project networks",
+      "Missing EXPOSE",
+      "Docker daemon misconfigured"
+    ],
+    "answerIndex": 1,
+    "explanation": "Compose networks are project-scoped. Use an external shared network or same project.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "different-networks-frontend-backend",
+    "question": "Web on 'frontend' network calls api:5000 but fails; api on 'backend'. Cause?",
+    "choices": [
+      "Containers on different networks",
+      "Wrong port mapping",
+      "Missing environment variable",
+      "Port already used"
+    ],
+    "answerIndex": 0,
+    "explanation": "Attach web or api to both networks so they share one for service discovery.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "exec-ping-different-network",
+    "question": "docker exec into api: ping db fails (Name or service not known). db is on mynet. Cause?",
+    "choices": [
+      "DNS not working",
+      "api not attached to mynet",
+      "Bridge misconfigured",
+      "Firewall blocking"
+    ],
+    "answerIndex": 1,
+    "explanation": "A container only resolves names on networks it’s attached to (e.g., --network mynet).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "shared-network-yes",
+    "question": "web on frontend; db on frontend and backend. Can web talk to db?",
+    "choices": [
+      "Yes, via db:5432",
+      "No, web only has frontend",
+      "Only if exposed manually",
+      "Only if DB publishes ports"
+    ],
+    "answerIndex": 0,
+    "explanation": "They share 'frontend', so communication via db:5432 works without host port publishing.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "expose-vs-ports",
+    "question": "curl db:5432 works; psql from host fails; db uses expose: ['5432']. Why?",
+    "choices": [
+      "EXPOSE is internal-only",
+      "Postgres isn’t ready",
+      "Wrong credentials",
+      "expose missing quotes"
+    ],
+    "answerIndex": 0,
+    "explanation": "expose reveals ports to other containers only. Use ports: '5432:5432' for host access.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "eai_again_dns",
+    "question": "api logs: getaddrinfo EAI_AGAIN redis. Meaning?",
+    "choices": [
+      "Network driver failure",
+      "Temporary DNS resolution failure",
+      "Redis crashed",
+      "API image missing libc"
+    ],
+    "answerIndex": 1,
+    "explanation": "EAI_AGAIN indicates transient DNS failure. Add retry/backoff; ensure redis is up.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "external-network-missing",
+    "question": "Network 'shared' marked external:true but not found. Fix?",
+    "choices": [
+      "Remove external:true",
+      "Create the network manually",
+      "Rename to default",
+      "Use bridge driver"
+    ],
+    "answerIndex": 1,
+    "explanation": "Create it first: docker network create shared (or remove external:true).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "bound-to-localhost",
+    "question": "compose ps shows 0.0.0.0:5000->5000, but curl localhost:5000 fails. Cause?",
+    "choices": [
+      "Firewall blocking",
+      "App listening on 127.0.0.1 inside container",
+      "Wrong mapping order",
+      "Missing depends_on"
+    ],
+    "answerIndex": 1,
+    "explanation": "Bind the app to 0.0.0.0 inside the container so Docker can expose it.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "default-bridge-no-dns",
+    "question": "You can ping container IPs but not names. Cause?",
+    "choices": [
+      "Using default bridge instead of user-defined bridge",
+      "Docker DNS down",
+      "Wrong base image",
+      "DNS cache in container"
+    ],
+    "answerIndex": 0,
+    "explanation": "Container-name DNS works on user-defined bridge networks, not the default bridge.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "nginx-upstream-not-found",
+    "question": "Nginx proxy_pass http://api:5000; error: host not found 'api'. Cause?",
+    "choices": [
+      "Not on same network",
+      "Missing EXPOSE",
+      "Wrong DNS config",
+      "Port mismatch"
+    ],
+    "answerIndex": 0,
+    "explanation": "Both services must share a user-defined network for name resolution.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "inspect-empty-containers",
+    "question": "network inspect mynet shows no Containers, but services claim network: mynet. Cause?",
+    "choices": [
+      "Different project-scoped 'mynet' names",
+      "Docker bug",
+      "Network corruption",
+      "DNS conflict"
+    ],
+    "answerIndex": 0,
+    "explanation": "Compose prefixes networks with project name. Mark as external:true or use same project.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "host-cant-reach",
+    "question": "Containers can talk internally, but host can’t reach them. Cause?",
+    "choices": [
+      "Used expose: instead of ports:",
+      "Wrong network driver",
+      "Host firewall",
+      "Docker DNS issue"
+    ],
+    "answerIndex": 0,
+    "explanation": "expose is internal only; publish ports with ports: for host access.",
+    "difficulty": "easy"
+  }
+]
+
+

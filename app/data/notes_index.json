@@ -1,0 +1,81 @@
+{
+  "notes": {
+    "CS Fundamentals": {
+      "General": [
+        {
+          "title": "01-host-client-server",
+          "path": "/notes/CS Fundamentals/01-host-client-server.md"
+        },
+        {
+          "title": "02-request-response",
+          "path": "/notes/CS Fundamentals/02-request-response.md"
+        },
+        {
+          "title": "03-api-and-rest-basics",
+          "path": "/notes/CS Fundamentals/03-api-and-rest-basics.md"
+        },
+        {
+          "title": "03b-rest-constraints",
+          "path": "/notes/CS Fundamentals/03b-rest-constraints.md"
+        },
+        {
+          "title": "03c-restful-api-examples",
+          "path": "/notes/CS Fundamentals/03c-restful-api-examples.md"
+        },
+        {
+          "title": "03d-graphql",
+          "path": "/notes/CS Fundamentals/03d-graphql.md"
+        },
+        {
+          "title": "03e-grpc",
+          "path": "/notes/CS Fundamentals/03e-grpc.md"
+        },
+        {
+          "title": "04-process-service-application",
+          "path": "/notes/CS Fundamentals/04-process-service-application.md"
+        },
+        {
+          "title": "05-proxy-gateway-router",
+          "path": "/notes/CS Fundamentals/05-proxy-gateway-router.md"
+        },
+        {
+          "title": "06-ports-sockets-protocols",
+          "path": "/notes/CS Fundamentals/06-ports-sockets-protocols.md"
+        },
+        {
+          "title": "07-containers-images-volumes-networks",
+          "path": "/notes/CS Fundamentals/07-containers-images-volumes-networks.md"
+        },
+        {
+          "title": "08-database-query-schema",
+          "path": "/notes/CS Fundamentals/08-database-query-schema.md"
+        },
+        {
+          "title": "09-environment-deployment-instance",
+          "path": "/notes/CS Fundamentals/09-environment-deployment-instance.md"
+        },
+        {
+          "title": "10-authentication-authorization",
+          "path": "/notes/CS Fundamentals/10-authentication-authorization.md"
+        },
+        {
+          "title": "11-frontend-backend-fullstack",
+          "path": "/notes/CS Fundamentals/11-frontend-backend-fullstack.md"
+        },
+        {
+          "title": "12-devops-cicd-infrastructure",
+          "path": "/notes/CS Fundamentals/12-devops-cicd-infrastructure.md"
+        }
+      ]
+    },
+    "DevOps": {
+      "Docker": [
+        {
+          "title": "overview",
+          "path": "/notes/DevOps/Docker/overview.md"
+        }
+      ]
+    }
+  },
+  "generatedAt": "2025-10-30T22:13:51.640Z"
+}

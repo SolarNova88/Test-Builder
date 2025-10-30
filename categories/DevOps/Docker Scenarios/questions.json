@@ -1,0 +1,147 @@
+[
+  {
+    "id": "pg-empty-after-recreate",
+    "question": "After removing a PostgreSQL container and recreating it, the database is empty. Most likely cause?",
+    "choices": [
+      "The container crashed before saving",
+      "Data was stored inside the container FS, not a volume",
+      "The image was rebuilt",
+      "Docker auto-cleared unused images"
+    ],
+    "answerIndex": 1,
+    "explanation": "Containers are ephemeral; data in /var/lib/postgresql/data is lost unless persisted via a volume.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "pip-install-lost",
+    "question": "You pip install inside a running Python container to fix 'Module not found', but the error returns on restart. Why?",
+    "choices": [
+      "Docker caching issue",
+      "Changes to the container FS are lost on restart",
+      "You didn’t rebuild the image",
+      "Network misconfiguration"
+    ],
+    "answerIndex": 1,
+    "explanation": "Edits inside a running container aren’t persisted. Add installs to the Dockerfile (or commit a new image).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "hostname-not-resolving",
+    "question": "Web can’t resolve DB hostname 'db'. Most likely reason?",
+    "choices": [
+      "Different Docker networks",
+      "Outdated image",
+      "Port 80 not exposed",
+      "Missing volume"
+    ],
+    "answerIndex": 0,
+    "explanation": "Service name resolution works within the same user-defined network.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "slow-builds-layer-cache",
+    "question": "Image builds are slow due to installing deps every time. Best fix?",
+    "choices": [
+      "Add deps at the end of the Dockerfile",
+      "Combine steps and leverage Docker layer caching",
+      "Clear cache after every build",
+      "Use docker commit"
+    ],
+    "answerIndex": 1,
+    "explanation": "Place stable steps early and combine commands so layers can be cached.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "ping-works-conn-refused",
+    "question": "web→db ping works, but app gets 'connection refused'. Likely cause?",
+    "choices": [
+      "Wrong network type",
+      "DB not listening on 0.0.0.0 inside container",
+      "Corrupted volume",
+      "DNS caching in Docker"
+    ],
+    "answerIndex": 1,
+    "explanation": "If DB binds to localhost only, other containers can’t connect.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "compose-env-vars",
+    "question": "Where to define env vars for web to reach db in Docker Compose?",
+    "choices": [
+      "Inside the Dockerfile",
+      "Entrypoint script",
+      "docker-compose.yml under environment:",
+      "Network configuration"
+    ],
+    "answerIndex": 2,
+    "explanation": "Compose supports per-service environment (and .env).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "bind-vs-named-volume",
+    "question": "Host edits don’t appear in container. Most likely?",
+    "choices": [
+      "Named volume used instead of bind mount",
+      "Image needs rebuild",
+      "Container is paused",
+      "Docker socket not shared"
+    ],
+    "answerIndex": 0,
+    "explanation": "A named volume doesn’t reflect host changes; use a bind mount ./dir:/container/dir.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "permission-denied-volume",
+    "question": "Mounted volume, but writes fail with 'Permission denied'. Probable cause?",
+    "choices": [
+      "Volume is read-only",
+      "Container user lacks write permission on host dir",
+      "Network blocking writes",
+      "SELinux misconfigured"
+    ],
+    "answerIndex": 1,
+    "explanation": "Host dir permissions apply inside the container; adjust ownership/permissions or run as compatible user.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "latest-tag-regression",
+    "question": "App breaks after rebuild using 'latest' base. Likely root cause?",
+    "choices": [
+      "Build cache corruption",
+      "Upstream 'latest' changed to a newer version",
+      "Logs truncated",
+      "Unused volumes not pruned"
+    ],
+    "answerIndex": 1,
+    "explanation": "'latest' is mutable; pin specific versions for stability (e.g., node:20.5-alpine).",
+    "difficulty": "hard"
+  },
+  {
+    "id": "two-network-model",
+    "question": "Need internal comms and public exposure. Best strategy?",
+    "choices": [
+      "All services on one bridge",
+      "Two networks: internal (backends) and public (frontend also on public)",
+      "Host networking",
+      "Default bridge for all"
+    ],
+    "answerIndex": 1,
+    "explanation": "Use an internal network for backends and a public-facing network for the frontend only.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "compose-depends-on-readiness",
+    "question": "Compose: web depends_on db, but web fails with 'Connection refused' to db:5432. Most likely cause?",
+    "choices": [
+      "db is on a different network",
+      "DB is only listening on localhost",
+      "depends_on doesn’t wait for DB readiness",
+      "Wrong port mapping on web"
+    ],
+    "answerIndex": 2,
+    "explanation": "depends_on controls start order, not readiness. Add a wait-for/healthcheck to ensure PostgreSQL is ready before web connects.",
+    "difficulty": "medium"
+  }
+]
+
+

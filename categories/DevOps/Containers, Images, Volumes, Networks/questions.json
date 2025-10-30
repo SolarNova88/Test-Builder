@@ -1,0 +1,134 @@
+[
+  {
+    "id": "img-vs-container",
+    "question": "What’s the primary difference between a Docker image and a Docker container?",
+    "choices": [
+      "Images and containers are identical; Docker just uses both terms interchangeably.",
+      "An image is a running instance of a container.",
+      "An image is the blueprint; a container is the running instance created from that image.",
+      "A container is a compiled version of the Dockerfile."
+    ],
+    "answerIndex": 2,
+    "explanation": "An image defines what to run; a container is a running, isolated instance of that image.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "why-lightweight",
+    "question": "Why are containers considered lightweight compared to VMs?",
+    "choices": [
+      "Containers include their own operating system kernel.",
+      "Containers share the host’s OS kernel and isolate processes at the user space level.",
+      "Containers require dedicated CPU cores for each instance.",
+      "Containers use hardware-level virtualization like VMs."
+    ],
+    "answerIndex": 1,
+    "explanation": "Containers reuse the host kernel; isolation is provided by namespaces/cgroups.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "copy-vs-run",
+    "question": "In a Dockerfile, what’s the functional difference between COPY and RUN?",
+    "choices": [
+      "Both create identical image layers.",
+      "COPY copies files from the host into the image; RUN executes a command inside the image.",
+      "RUN copies files and executes them; COPY executes shell commands.",
+      "RUN defines environment variables."
+    ],
+    "answerIndex": 1,
+    "explanation": "COPY transfers files; RUN executes commands (e.g., apt-get, npm install).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "ephemeral-data",
+    "question": "If a container storing user data is removed and data wasn’t in a volume, what happens?",
+    "choices": [
+      "Data is preserved in the Docker cache.",
+      "Data is saved automatically to /var/lib/docker.",
+      "All data inside the container is lost.",
+      "Docker will prompt you to back up before deletion."
+    ],
+    "answerIndex": 2,
+    "explanation": "Container filesystems are ephemeral; use volumes/bind mounts for persistence.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "isolation-mechanism",
+    "question": "How does Docker isolate a container’s processes from the host machine?",
+    "choices": [
+      "By using dedicated virtual machines per container.",
+      "By encrypting the container’s filesystem.",
+      "By using Linux namespaces and control groups (cgroups).",
+      "By running containers inside a secure virtual sandbox."
+    ],
+    "answerIndex": 2,
+    "explanation": "Namespaces isolate; cgroups limit resources. This yields strong, efficient isolation.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "same-network-comm",
+    "question": "If two containers on the same Docker network can’t communicate, likely cause?",
+    "choices": [
+      "Docker doesn’t support container networking.",
+      "They’re on a bridge network but ports aren’t exposed.",
+      "They are on different user-defined networks.",
+      "Docker networking only supports host mode."
+    ],
+    "answerIndex": 2,
+    "explanation": "Service-name DNS works only within the same user-defined bridge network.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "ports-mapping",
+    "question": "In Docker Compose, what does mapping 8080:80 mean?",
+    "choices": [
+      "Container port 8080 maps to host port 80.",
+      "Host port 8080 maps to container port 80.",
+      "The container listens on both ports simultaneously.",
+      "The mapping is random."
+    ],
+    "answerIndex": 1,
+    "explanation": "Format is host:container; so localhost:8080 forwards to container:80.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "entrypoint-vs-cmd",
+    "question": "What’s the purpose of ENTRYPOINT and CMD in a Dockerfile?",
+    "choices": [
+      "They both define environment variables.",
+      "ENTRYPOINT defines the executable; CMD provides default arguments.",
+      "CMD must always override ENTRYPOINT.",
+      "They are interchangeable."
+    ],
+    "answerIndex": 1,
+    "explanation": "ENTRYPOINT sets the main command; CMD supplies defaults that can be overridden.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "multi-stage-benefit",
+    "question": "Why are multi-stage builds important in Docker?",
+    "choices": [
+      "They make builds faster by caching dependencies.",
+      "They reduce final image size by excluding build-time dependencies.",
+      "They allow running multiple containers from one image.",
+      "They enable GPU acceleration."
+    ],
+    "answerIndex": 1,
+    "explanation": "Build in one stage, copy only artifacts to a slim runtime to minimize size and surface.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "best-practice-persistence",
+    "question": "What’s best practice for handling persistent data in containers?",
+    "choices": [
+      "Store all data inside the container filesystem.",
+      "Use a Docker volume or external storage mount.",
+      "Write data to /tmp since it’s auto-backed-up.",
+      "Use environment variables for persistence."
+    ],
+    "answerIndex": 1,
+    "explanation": "Use volumes or external storage (e.g., database/S3); container FS is ephemeral.",
+    "difficulty": "easy"
+  }
+]
+
+

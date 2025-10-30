@@ -1,0 +1,134 @@
+[
+  {
+    "id": "env-separation",
+    "question": "Why do developers use separate environments like development, staging, and production?",
+    "choices": [
+      "To avoid using version control",
+      "To prevent experimental code from affecting live users",
+      "To reduce CPU usage on production servers",
+      "To automatically backup data"
+    ],
+    "answerIndex": 1,
+    "explanation": "Separate envs allow testing/verification without impacting real users; staging mirrors prod.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "config-management",
+    "question": "Why is configuration management important in deployments?",
+    "choices": [
+      "It enforces coding style in production",
+      "It ensures env-specific settings (DB URLs, API keys) are correctly applied",
+      "It eliminates the need for CI/CD pipelines",
+      "It automatically writes unit tests"
+    ],
+    "answerIndex": 1,
+    "explanation": "Manage secrets and env-specific config safely to run the same code across envs.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "blue-green",
+    "question": "Which deployment strategy is ideal for testing a new release with minimal impact?",
+    "choices": [
+      "Rolling deployment",
+      "Blue/Green deployment",
+      "Full stop-and-replace",
+      "Manual FTP deployment"
+    ],
+    "answerIndex": 1,
+    "explanation": "Blue/Green runs the new version in parallel and switches traffic after validation.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "instant-rollback",
+    "question": "What enables instant rollback of a failed deployment?",
+    "choices": [
+      "Restore prod from backups",
+      "Keep previous version live until the new one is verified",
+      "Delete all containers and start from scratch",
+      "Rewrite code to remove the bug"
+    ],
+    "answerIndex": 1,
+    "explanation": "Retain the prior version and switch traffic back immediately if issues occur.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "stateful-vs-stateless",
+    "question": "What is the difference between stateful and stateless deployments?",
+    "choices": [
+      "Stateful saves data on disk; stateless does not",
+      "Stateful uses containers; stateless uses VMs",
+      "Stateless cannot scale horizontally",
+      "Stateful automatically scales horizontally"
+    ],
+    "answerIndex": 0,
+    "explanation": "Stateful keeps persistent data on instances; stateless persists externally and is easier to scale.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "no-hardcode",
+    "question": "Why should environment-specific settings never be hardcoded?",
+    "choices": [
+      "Hardcoding is slower",
+      "Hardcoding prevents scaling",
+      "Hardcoding breaks portability across dev/staging/prod",
+      "Hardcoding reduces memory"
+    ],
+    "answerIndex": 2,
+    "explanation": "Different envs require different settings; hardcoding forces code changes and risks leaks.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "orchestration",
+    "question": "How does container orchestration (e.g., Kubernetes) manage multiple instances?",
+    "choices": [
+      "Runs a single container per service",
+      "Automatically scales, restarts failed containers, and balances traffic",
+      "Merges all containers into one process",
+      "Only monitors CPU usage"
+    ],
+    "answerIndex": 1,
+    "explanation": "Orchestrators handle scaling, health checks, service discovery, and load balancing.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "load-balancer",
+    "question": "What is the role of a load balancer in production?",
+    "choices": [
+      "Store application data",
+      "Encrypt network traffic",
+      "Distribute incoming requests across instances",
+      "Compile code automatically"
+    ],
+    "answerIndex": 2,
+    "explanation": "Load balancers spread traffic to avoid overload and improve reliability.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "zero-downtime",
+    "question": "How can you ensure zero downtime during a deployment?",
+    "choices": [
+      "Use a single container for all traffic",
+      "Stop, deploy, and restart",
+      "Use rolling updates or blue/green deployments",
+      "Restart all servers simultaneously"
+    ],
+    "answerIndex": 2,
+    "explanation": "Rolling replace instances gradually; blue/green swaps traffic after verification.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "horizontal-scaling",
+    "question": "How does horizontal scaling affect the concept of 'instance' in cloud deployments?",
+    "choices": [
+      "Reduces the number of instances",
+      "Adds more instances to handle load",
+      "Merges instances into a single process",
+      "Replaces instances with vCPUs"
+    ],
+    "answerIndex": 1,
+    "explanation": "Scale-out means running more identical instances in parallel to increase capacity.",
+    "difficulty": "easy"
+  }
+]
+
+

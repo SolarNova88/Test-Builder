@@ -1,0 +1,186 @@
+[
+  {
+    "id": "docker-image-definition",
+    "question": "What is a Docker image?",
+    "choices": [
+      "A running process inside a container",
+      "A template used to create containers",
+      "A physical file storing container logs",
+      "A network bridge"
+    ],
+    "answerIndex": 1,
+    "explanation": "An image is the read-only blueprint for creating containers (e.g., python:3.11-slim).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "what-is-container",
+    "question": "Which of the following represents a container?",
+    "choices": [
+      "nginx:latest",
+      "A running instance of nginx:latest",
+      "Dockerfile",
+      "Docker Hub"
+    ],
+    "answerIndex": 1,
+    "explanation": "An image is the recipe; a container is a running instance of that image.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "volume-purpose",
+    "question": "What’s the main purpose of a volume?",
+    "choices": [
+      "Provide persistent storage",
+      "Manage container network traffic",
+      "Build images faster",
+      "Reduce CPU usage"
+    ],
+    "answerIndex": 0,
+    "explanation": "Volumes persist data outside the container lifecycle so data survives container removal.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "docker-network-purpose",
+    "question": "A Docker network is used to:",
+    "choices": [
+      "Connect containers to each other and optionally to the host",
+      "Store container logs",
+      "Mount files from host",
+      "Install dependencies"
+    ],
+    "answerIndex": 0,
+    "explanation": "Docker networks enable inter-container communication and isolation (virtual LAN).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "image-preserved-on-container-delete",
+    "question": "When you delete a container, what happens to its image by default?",
+    "choices": [
+      "It’s also deleted",
+      "It’s preserved",
+      "It’s paused",
+      "It’s archived in /tmp"
+    ],
+    "answerIndex": 1,
+    "explanation": "Deleting a container removes the runtime instance; the image remains available on disk.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "secure-communication-network",
+    "question": "Two containers (API and DB) should communicate securely within Docker by:",
+    "choices": [
+      "Using the same Docker volume",
+      "Sharing a Docker network",
+      "Using host networking only",
+      "Linking through Docker Hub"
+    ],
+    "answerIndex": 1,
+    "explanation": "Containers on the same user-defined network can reach each other by name (e.g., db:5432).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "container-filesystem-changes",
+    "question": "What happens if you modify a container’s filesystem (e.g., install a package)?",
+    "choices": [
+      "The image automatically updates",
+      "Changes are temporary and lost when the container is removed",
+      "Docker saves it to the base image",
+      "It updates all containers from that image"
+    ],
+    "answerIndex": 1,
+    "explanation": "Containers are ephemeral; commit or rebuild via Dockerfile to persist changes.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "persistent-db-data",
+    "question": "To keep database data after a container is deleted, use:",
+    "choices": [
+      "Environment variables",
+      "Volume",
+      "Container’s internal filesystem",
+      "Bind network"
+    ],
+    "answerIndex": 1,
+    "explanation": "Volumes store data independent of the container lifecycle—ideal for databases.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "base-image-update",
+    "question": "After the base image updates, rebuilding your image results in:",
+    "choices": [
+      "No changes whatsoever",
+      "A new image inheriting updates from the base image",
+      "A broken image due to version mismatch",
+      "Your Dockerfile being replaced"
+    ],
+    "answerIndex": 1,
+    "explanation": "Images are layered; rebuilding pulls updated base layers (e.g., security patches).",
+    "difficulty": "hard"
+  },
+  {
+    "id": "shared-volume-visibility",
+    "question": "If two containers use the same volume and one writes a file, the other:",
+    "choices": [
+      "Can’t see it",
+      "Sees it immediately",
+      "Must restart to access it",
+      "Gets a copy-on-write version"
+    ],
+    "answerIndex": 1,
+    "explanation": "Volumes are shared storage; changes are visible across containers using that volume.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "cant-reach-db",
+    "question": "A containerized web app can’t reach the DB in prod; likely cause?",
+    "choices": [
+      "Missing Docker volume",
+      "Containers on different networks",
+      "Missing Dockerfile",
+      "Too many layers in the image"
+    ],
+    "answerIndex": 1,
+    "explanation": "If services are on different networks, name resolution/connectivity fails.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "false-about-networks",
+    "question": "Which statement about Docker networks is false?",
+    "choices": [
+      "Each container can have multiple network interfaces",
+      "Containers on the same network can resolve each other by name",
+      "The bridge network is created automatically",
+      "The none network provides full connectivity by default"
+    ],
+    "answerIndex": 3,
+    "explanation": "The none network isolates the container—no connectivity.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "slim-image-size",
+    "question": "Best way to reduce a 1.2GB image size?",
+    "choices": [
+      "Delete unused volumes",
+      "Reduce layers and use a slim/multi-stage base image",
+      "Restart containers",
+      "Use more volumes"
+    ],
+    "answerIndex": 1,
+    "explanation": "Use lightweight bases and multi-stage builds to cut size significantly.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "compose-service-comm",
+    "question": "With Docker Compose, services communicate by:",
+    "choices": [
+      "Assigned IP addresses only",
+      "Service names defined in docker-compose.yml",
+      "localhost",
+      "Shared volume mounts"
+    ],
+    "answerIndex": 1,
+    "explanation": "Compose creates a default network with built-in service name DNS (e.g., db:5432).",
+    "difficulty": "hard"
+  }
+]
+
+

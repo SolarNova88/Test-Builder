@@ -101,6 +101,11 @@ const server = http.createServer(async (req, res) => {
     const abs = safeResolve(path.join(projectRoot, 'categories'), rel);
     if (abs) return serveFile(abs, res);
   }
+  if (urlPath.startsWith('/notes/')) {
+    const rel = urlPath.replace(/^\/notes\//, '');
+    const abs = safeResolve(path.join(projectRoot, 'notes'), rel);
+    if (abs) return serveFile(abs, res);
+  }
 
   // JSON import endpoint
   if (req.method === 'POST' && urlPath === '/api/import') {

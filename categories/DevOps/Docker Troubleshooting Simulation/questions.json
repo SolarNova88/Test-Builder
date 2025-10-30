@@ -1,0 +1,199 @@
+[
+  {
+    "id": "py-main-missing",
+    "question": "Dockerfile copies code to /usr/src/app but WORKDIR is /app; python can't open /app/main.py. What's wrong?",
+    "choices": [
+      "CMD syntax is invalid",
+      "Wrong WORKDIR before COPY",
+      "Files copied to /usr/src/app, but code runs from /app",
+      "Python version mismatch"
+    ],
+    "answerIndex": 2,
+    "explanation": "Align paths: either COPY into /app or run python from /usr/src/app.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "compose-db-readiness",
+    "question": "Compose: web can't connect to postgres db at startup (connection refused). Likely cause?",
+    "choices": [
+      "DB takes longer to initialize than app startup",
+      "Volume mount failed",
+      "Wrong env var format",
+      "Missing EXPOSE in db Dockerfile"
+    ],
+    "answerIndex": 0,
+    "explanation": "depends_on doesn't ensure readiness. Add a healthcheck or wait-for-db.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "oci-exec-permission",
+    "question": "OCI runtime exec failed: permission denied; container runs as non-root and ENTRYPOINT is ./entrypoint.sh. Cause?",
+    "choices": [
+      "entrypoint.sh not executable",
+      "Missing /bin/bash",
+      "Wrong CMD syntax",
+      "Container network issue"
+    ],
+    "answerIndex": 0,
+    "explanation": "Mark the script executable in the image (RUN chmod +x entrypoint.sh).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "service-backgrounds",
+    "question": "Container exits right away when using 'service nginx start' in CMD. Why?",
+    "choices": [
+      "Wrong COPY path",
+      "service backgrounds the process and container exits",
+      "nginx.conf syntax invalid",
+      "CMD needs array syntax"
+    ],
+    "answerIndex": 1,
+    "explanation": "Run nginx in foreground, e.g., CMD ['nginx','-g','daemon off;'].",
+    "difficulty": "medium"
+  },
+  {
+    "id": "port-binding-conflict",
+    "question": "Two services map 8080:80 in Compose; error: address already in use. Cause?",
+    "choices": [
+      "Missing network mode",
+      "Both containers try to bind host 8080",
+      "Wrong port mapping syntax",
+      "Image conflict"
+    ],
+    "answerIndex": 1,
+    "explanation": "Use distinct host ports (e.g., 8081:80).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "dockerignore-package-json",
+    "question": "node build can't find package.json after COPY package*.json ./; likely cause?",
+    "choices": [
+      ".dockerignore excludes package.json",
+      "Bad node version",
+      "Wrong WORKDIR",
+      "Missing npm globally"
+    ],
+    "answerIndex": 0,
+    "explanation": "Ensure .dockerignore doesn't filter package*.json.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "compose-network-missing",
+    "question": "api can't resolve redis hostname in Compose backend network. Likely issue?",
+    "choices": [
+      "Redis not attached to same network",
+      "Redis crashed",
+      "API using wrong port",
+      "Redis image corrupted"
+    ],
+    "answerIndex": 0,
+    "explanation": "Attach redis to the same user-defined network as api.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "crlf-entrypoint",
+    "question": "Alpine container fails: exec user process: no such file or directory for entrypoint.sh. Cause?",
+    "choices": [
+      "Windows CRLF line endings",
+      "Missing execute bit",
+      "Alpine doesn't support sh",
+      "Missing CMD"
+    ],
+    "answerIndex": 0,
+    "explanation": "Convert line endings (dos2unix) before COPY.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "start-sh-permission",
+    "question": "exec: '/app/start.sh': permission denied. Cause?",
+    "choices": [
+      "start.sh not executable",
+      "Wrong WORKDIR",
+      "Missing ENTRYPOINT",
+      "App crashed after start"
+    ],
+    "answerIndex": 0,
+    "explanation": "Add RUN chmod +x /app/start.sh in Dockerfile.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "compose-network-mismatch",
+    "question": "api uses REDIS_URL=redis://cache:6379 but can't resolve 'cache'. Cause?",
+    "choices": [
+      "Containers on different networks",
+      "Redis not exposed",
+      "Wrong env var format",
+      "Port conflict"
+    ],
+    "answerIndex": 0,
+    "explanation": "Add api to the same network as cache (and/or define a shared network).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "build-context-permission",
+    "question": "docker build fails: failed to walk /context: permission denied. Cause?",
+    "choices": [
+      "Building from a directory without read access",
+      "Dockerfile syntax error",
+      "Disk full",
+      "Daemon down"
+    ],
+    "answerIndex": 0,
+    "explanation": "Ensure read permission on the build context path.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "overlapping-subnet",
+    "question": "docker network create --subnet 172.18.0.0/16 mynet -> overlaps error. Cause?",
+    "choices": [
+      "Subnet overlaps with existing bridge network",
+      "Invalid subnet mask",
+      "Docker Hub timeout",
+      "DNS conflict"
+    ],
+    "answerIndex": 0,
+    "explanation": "Choose a non-overlapping subnet (e.g., 172.30.0.0/16).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "flask-not-found",
+    "question": "ModuleNotFoundError: No module named 'flask' at runtime. Cause?",
+    "choices": [
+      "Requirements not installed",
+      "Wrong CMD syntax",
+      "Missing WORKDIR",
+      "Flask installed globally"
+    ],
+    "answerIndex": 0,
+    "explanation": "Install dependencies in image (RUN pip install -r requirements.txt).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "nginx-volume-empty",
+    "question": "Mounted ./site:/usr/share/nginx/html but site is empty in container. Cause?",
+    "choices": [
+      "Wrong host path",
+      "SELinux blocking mount",
+      "Local path empty",
+      "Any of the above"
+    ],
+    "answerIndex": 3,
+    "explanation": "Empty or inaccessible host dirs appear empty in the container. Verify path and permissions.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "gunicorn-not-found",
+    "question": "CMD ['gunicorn','app:app'] fails: gunicorn not found. Cause?",
+    "choices": [
+      "gunicorn not in requirements.txt",
+      "Wrong CMD syntax",
+      "Missing EXPOSE",
+      "Wrong base image"
+    ],
+    "answerIndex": 0,
+    "explanation": "Add gunicorn to requirements.txt and rebuild image.",
+    "difficulty": "easy"
+  }
+]
+
+

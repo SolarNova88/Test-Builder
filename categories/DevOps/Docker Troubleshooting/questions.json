@@ -1,0 +1,251 @@
+[
+  {
+    "id": "node-layer-caching",
+    "question": "Node.js Dockerfile build is slow after small code changes. What’s wrong?",
+    "choices": [
+      "COPY must come before RUN npm install",
+      "You’re not using layer caching effectively",
+      "You didn’t prune old images",
+      "Node images can’t be cached"
+    ],
+    "answerIndex": 1,
+    "explanation": "COPY . . after RUN npm install invalidates the cache on code changes. Copy package*.json and run npm install before copying the rest to cache deps.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "compose-project-network",
+    "question": "Web can’t reach DB by hostname in Compose. Likely issue?",
+    "choices": [
+      "Different Compose projects created separate networks",
+      "You forgot to expose port 5432",
+      "Docker DNS is down",
+      "Containers can’t use hostnames"
+    ],
+    "answerIndex": 0,
+    "explanation": "Compose isolates projects/network names. Services must be in the same project/network for name resolution.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "volume-permissions",
+    "question": "Mounted volume exists, but container can’t write to /app/logs. Cause?",
+    "choices": [
+      "Volume is read-only by default",
+      "Host directory permissions restrict writes",
+      "Dockerfile missing VOLUME",
+      "Network bridge misconfigured"
+    ],
+    "answerIndex": 1,
+    "explanation": "Volumes inherit host permissions. If running as non-root, ensure write access to the host dir.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "lan-access-nginx",
+    "question": "docker run -p 8080:80 nginx, but LAN clients can’t connect. Why?",
+    "choices": [
+      "The container isn’t running",
+      "Docker bound to localhost (127.0.0.1)",
+      "Port 8080 is in use",
+      "You forgot to map port 443"
+    ],
+    "answerIndex": 1,
+    "explanation": "Bind to all interfaces, e.g., -p 0.0.0.0:8080:80 for LAN access (and ensure host firewall rules).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "rm-loses-data",
+    "question": "Started container with --rm; logs/data gone after exit. Why?",
+    "choices": [
+      "Logs go to /tmp",
+      "--rm deletes the container and ephemeral data",
+      "You forgot to mount /var/log",
+      "Docker stopped unexpectedly"
+    ],
+    "answerIndex": 1,
+    "explanation": "--rm removes the container on exit. Use volumes or avoid --rm for persistent data.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "old-image-running",
+    "question": "Rebuilt/redeployed, but old version still runs. Most likely?",
+    "choices": [
+      "Docker cached old layers",
+      "Container still uses old tag/image",
+      "Build context too large",
+      "Logs not cleared"
+    ],
+    "answerIndex": 1,
+    "explanation": "If reusing a tag (e.g., latest), services may still run the old image. Use --build or new tags.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "depends-on-readiness",
+    "question": "Compose has depends_on: db for web, but web fails; DB not ready. Why?",
+    "choices": [
+      "DB port isn’t exposed",
+      "depends_on doesn’t wait for readiness",
+      "Compose syntax is wrong",
+      "DB is misconfigured"
+    ],
+    "answerIndex": 1,
+    "explanation": "depends_on controls start order only. Add healthchecks or wait-for-it before connecting.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "mount-shadowed-files",
+    "question": "Mounted /usr/src/app; entrypoint script 'disappeared'. What happened?",
+    "choices": [
+      "Working directory overridden",
+      "Bind mount shadowed files inside the image",
+      "Image didn’t build",
+      "Wrong port mounted"
+    ],
+    "answerIndex": 1,
+    "explanation": "A bind mount replaces the target path contents, hiding files baked into the image.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "prod-dns-fails",
+    "question": "Compose services work locally, but in prod db hostname fails. Why?",
+    "choices": [
+      "Docker DNS unsupported on Linux",
+      "Containers not on same user-defined network",
+      "Ports not exposed",
+      "Compose supports only one container"
+    ],
+    "answerIndex": 1,
+    "explanation": "Service-name DNS works only within user-defined networks shared by both containers.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "missing-config-in-image",
+    "question": "Go app fails in Docker: cannot open /tmp/config.yaml. Cause?",
+    "choices": [
+      "File not copied into the image",
+      "Wrong Docker network",
+      "Missing volume definition",
+      "Container storage full"
+    ],
+    "answerIndex": 0,
+    "explanation": "Runtime files must be copied in (COPY) or mounted as a volume; they’re not present by default.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "name-conflict",
+    "question": "Deploy error: container name 'web' is already in use. Quick fix?",
+    "choices": [
+      "Delete the image",
+      "Restart Docker",
+      "docker rm -f web",
+      "Rebuild the network"
+    ],
+    "answerIndex": 2,
+    "explanation": "Remove the existing container before starting a new one with the same name.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "entrypoint-permission",
+    "question": "Logs show: ./entrypoint.sh: Permission denied. Issue?",
+    "choices": [
+      "Wrong entrypoint path",
+      "File lacks execute permission in the image",
+      "Container user is root",
+      "SELinux blocking execution"
+    ],
+    "answerIndex": 1,
+    "explanation": "Mark scripts executable in the Dockerfile (RUN chmod +x entrypoint.sh).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "builder-cache-df",
+    "question": "docker system df shows huge 'Build cache'. What should you do?",
+    "choices": [
+      "docker system prune -a",
+      "docker image rm $(docker images -q)",
+      "docker builder prune",
+      "Delete /var/lib/docker manually"
+    ],
+    "answerIndex": 2,
+    "explanation": "docker builder prune removes unused build cache safely without wiping all images/containers.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "no-internet-in-container",
+    "question": "Container cannot reach the internet (ping 8.8.8.8 fails). Likely cause?",
+    "choices": [
+      "Firewall/iptables issue",
+      "Container uses none network driver",
+      "Docker daemon misconfiguration",
+      "Any of the above"
+    ],
+    "answerIndex": 3,
+    "explanation": "Outbound connectivity issues can stem from firewall rules, network driver (none), or daemon config.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "latest-breaks-build",
+    "question": "Dockerfile starts FROM node:latest; a month later, build breaks. Why?",
+    "choices": [
+      "Node updated and broke compatibility",
+      "You need to prune old containers",
+      "Dockerfile syntax changed",
+      "Compose version mismatch"
+    ],
+    "answerIndex": 0,
+    "explanation": "'latest' floats to new tags; pin a specific version (e.g., node:20.10-alpine) for reproducibility.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "sharing-files-between-containers",
+    "question": "Two containers need to share files; COPY in both Dockerfiles didn’t work. Fix?",
+    "choices": [
+      "Use a shared volume or bind mount",
+      "Expose ports",
+      "Rebuild images",
+      "Disable cache"
+    ],
+    "answerIndex": 0,
+    "explanation": "COPY bakes files into image layers. For runtime sharing, mount a volume or bind a host directory.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "exec-format-error",
+    "question": "Container crashes with 'exec format error'. Most likely cause?",
+    "choices": [
+      "Incorrect CPU architecture for base image",
+      "Missing execute permissions",
+      "Corrupted image",
+      "Missing CMD"
+    ],
+    "answerIndex": 0,
+    "explanation": "Built for amd64 but running on arm64 (or vice versa). Use --platform or multi-arch builds.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "private-registry-auth",
+    "question": "Deploy fails to pull private images. Likely cause?",
+    "choices": [
+      "Wrong credentials or missing docker login on target host",
+      "Invalid image tag",
+      "Docker daemon not restarted",
+      "Network MTU mismatch"
+    ],
+    "answerIndex": 0,
+    "explanation": "Private registries require auth (login/secret). Configure credentials on the runtime host/cluster.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "only-one-receives-traffic",
+    "question": "Scaled to 3 containers, but only one receives traffic. Why?",
+    "choices": [
+      "Only one container port is published to the host",
+      "Docker internal load balancer failed",
+      "Others use host networking",
+      "Swarm misconfiguration"
+    ],
+    "answerIndex": 0,
+    "explanation": "ports: exposes a single container’s port. Use an ingress/load balancer or an external reverse proxy for distribution.",
+    "difficulty": "hard"
+  }
+]
+
+
