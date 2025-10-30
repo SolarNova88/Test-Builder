@@ -87,6 +87,29 @@ Each `questions.json` contains an array of question objects:
 - Keep naming consistent. Capitalization in directory names is used as displayed labels.
 - If you provide raw study text, I will derive Q/A/choices/explanations and produce the JSON for you.
 
+## ChatGPT-Assisted JSON Generation
+
+If you prefer using ChatGPT to convert text to JSON format:
+
+1. Open `http://localhost:8080/public/import.html`
+2. Click **"💬 Get ChatGPT Prompt"** button
+3. Paste your study material in the textarea provided
+4. The prompt preview will automatically update with your content inserted
+5. Click **"📋 Copy Full Prompt"** to copy the complete prompt (including your content) to clipboard
+6. Click **"Open ChatGPT →"** or open ChatGPT manually in another tab
+7. Paste the complete prompt into ChatGPT
+8. ChatGPT will generate a JSON array in the required format
+9. Copy the JSON from ChatGPT's response
+10. Paste it into the "Questions JSON Array" textarea on the import page
+11. Fill in Category and Subcategory fields
+12. Click "Import" to save the questions
+
+**Benefits**:
+- No manual JSON formatting required
+- ChatGPT handles question generation, explanations, and difficulty assignment
+- Fast conversion from text to ready-to-import JSON
+- The prompt is pre-configured with all schema requirements
+
 ## Post-processing Cleanup
 
 After I complete importing or generating questions and refresh the index:

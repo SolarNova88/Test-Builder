@@ -70,15 +70,30 @@ See `data/README_PROCEDURES.md` for the step-by-step procedure we will follow wh
 
 For a quick start, open `INTAKE_TEMPLATE.md` at the project root, fill in the three big inputs (Category, Subcategory, Source Content), and share it with me in Cursor. I’ll take it from there and run the scanner. After processing, I’ll clear those three fields so it’s ready for next time.
 
-### Importing JSON (optional)
+### Importing JSON
 
-- Open `http://localhost:8080/public/import.html` to paste ready-made JSON. The app will save it to `categories/<Category>/<Subcategory>/questions.json` and refresh counts.
+**Method 1: Direct JSON Import**
+- Open `http://localhost:8080/public/import.html` to paste ready-made JSON
+- The app will save it to `categories/<Category>/<Subcategory>/questions.json` and refresh counts
 
-### JSON Authoring Prompt (optional)
+**Method 2: ChatGPT-Assisted JSON Generation** (Recommended for converting text to JSON)
+- Open `http://localhost:8080/public/import.html`
+- Click **"💬 Get ChatGPT Prompt"** button
+- Paste your study material in the textarea (it will be inserted into the prompt automatically)
+- The complete prompt with your content will appear in the preview below
+- Click **"📋 Copy Full Prompt"** to copy everything to clipboard
+- Click **"Open ChatGPT →"** or open ChatGPT manually
+- Paste the complete prompt into ChatGPT
+- ChatGPT will generate the JSON array in the required format
+- Copy the JSON from ChatGPT and paste it into the "Questions JSON Array" textarea on the import page
 
-If you prefer generating JSON yourself with ChatGPT or similar, use this prompt:
+The ChatGPT prompt includes:
+- Exact JSON schema requirements
+- Instructions for generating questions, choices, explanations, and difficulty levels
+- Your study material already inserted (ready to paste)
+- Output format specifications
 
-Convert the following study content into an array of JSON multiple-choice questions following this exact schema: id (string), question (string), choices (array of 2+ strings), answerIndex (number, 0-based), explanation (string, optional), difficulty (string: easy|medium|hard, optional). Only return valid JSON (no commentary).
+This workflow makes it easy to convert any text content into properly formatted JSON questions without manual formatting.
 
 ### Security (optional but recommended)
 

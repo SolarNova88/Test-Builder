@@ -115,7 +115,9 @@ const server = http.createServer(async (req, res) => {
         const sent = req.headers['x-import-token'];
         if (sent !== importToken) {
           res.writeHead(403, { 'Content-Type': 'application/json' });
-          return res.end(JSON.stringify({ error: 'Forbidden' }));
+          return res.end(JSON.stringify({ 
+            error: 'Forbidden: Invalid or missing import token. If you set IMPORT_TOKEN in your .env file, make sure you pasted the same token in the Import Token field on the import page.' 
+          }));
         }
       }
       const len = parseInt(req.headers['content-length'] || '0', 10);

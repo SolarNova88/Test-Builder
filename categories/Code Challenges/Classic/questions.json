@@ -1,0 +1,80 @@
+[
+  {
+    "id": "binary-search-comparisons",
+    "question": "You have a sorted array: [2, 4, 6, 8, 10, 12]. You perform binary search to find 8. How many comparisons will it take in the worst case?",
+    "choices": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answerIndex": 2,
+    "explanation": "Binary search halves the search space each step. In the worst case (finding 2 or 12), 3 comparisons are needed.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "linear-search-complexity",
+    "question": "Which of the following is true about linear search?",
+    "choices": [
+      "Requires sorted data",
+      "Worst-case complexity is O(n)",
+      "Can eliminate half the array each step",
+      "Always faster than binary search"
+    ],
+    "answerIndex": 1,
+    "explanation": "Linear search checks every element sequentially, so in the worst case, all n elements are examined. It doesn't require sorting and cannot halve the array.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "recursion-requirements",
+    "question": "Which of the following is NOT necessary for a recursive function to work correctly?",
+    "choices": [
+      "A base case",
+      "A recursive call",
+      "A loop",
+      "Return values"
+    ],
+    "answerIndex": 2,
+    "explanation": "Recursion works by calling itself until a base case is reached. Explicit loops are not required.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "big-o-comparison",
+    "question": "Which algorithm is faster for large n?\n\nAlgorithm\tComplexity\nLinear Search\tO(n)\nBinary Search\tO(log n)",
+    "choices": [
+      "Linear",
+      "Binary",
+      "Same",
+      "Depends on n"
+    ],
+    "answerIndex": 1,
+    "explanation": "Binary search halves the search space each step (O(log n)), whereas linear search examines all elements (O(n)), making binary search faster for large n.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "divide-and-conquer-sorting",
+    "question": "Which sorting algorithm is divide-and-conquer?",
+    "choices": [
+      "Bubble Sort",
+      "Insertion Sort",
+      "Merge Sort",
+      "Selection Sort"
+    ],
+    "answerIndex": 2,
+    "explanation": "Merge Sort splits the array into halves, sorts them recursively, and merges them. The others iterate sequentially and do not use divide-and-conquer.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "arrays-vs-linked-lists",
+    "question": "Which statement is TRUE?",
+    "choices": [
+      "Arrays allow O(1) insertion at the start",
+      "Linked lists allow O(1) insertion at the start",
+      "Linked lists allow O(1) access by index",
+      "Arrays allow O(1) deletion anywhere"
+    ],
+    "answerIndex": 1,
+    "explanation": "Linked lists can insert or remove elements at the head in O(1) time, while arrays require shifting. Arrays allow O(1) access by index; linked lists do not.",
+    "difficulty": "medium"
+  }
+]

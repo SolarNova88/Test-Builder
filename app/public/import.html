@@ -6,64 +6,344 @@
     <title>Import Questions - Test Builder</title>
     <link rel="stylesheet" href="/public/styles.css" />
     <style>
-      .container { max-width: 960px; margin: 20px auto; background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
-      textarea { width: 100%; min-height: 220px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-      input { width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 8px; }
-      .notice { margin-top: 12px; font-size: 14px; }
+      body {
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #06b6d4 50%, #10b981 75%, #667eea 100%);
+        min-height: 100vh;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, sans-serif;
+      }
+      .container {
+        max-width: 1400px;
+        width: 95%;
+        margin: 20px auto;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 24px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      }
+      h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #111827;
+      }
+      .form-section {
+        margin-bottom: 20px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #374151;
+        font-size: 14px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      textarea {
+        width: 100%;
+        min-height: 300px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        padding: 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 13px;
+        resize: vertical;
+        box-sizing: border-box;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .token-section {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+      }
+      .token-controls {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .token-input-group {
+        width: 33.333%;
+        min-width: 200px;
+      }
+      .token-generate-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .bottom-actions {
+        margin-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .token-section-left {
+        flex: 1;
+        min-width: 400px;
+      }
+      .import-button-right {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .notice {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .notice.success {
+        background-color: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #bbf7d0;
+      }
+      .notice.error {
+        background-color: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+      }
       /* Instant tooltip */
-      .tip { position: relative; display: inline-block; }
-      .tip::after { content: attr(data-tip); position: absolute; left: 50%; transform: translateX(-50%); bottom: 125%; background: #111827; color: white; padding: 8px 10px; border-radius: 6px; white-space: pre-wrap; min-width: 260px; max-width: 520px; font-size: 14px; line-height: 1.35; box-shadow: 0 6px 20px rgba(0,0,0,0.15); opacity: 0; pointer-events: none; transition: opacity 0.1s ease; z-index: 20; }
-      .tip::before { content: ""; position: absolute; left: 50%; transform: translateX(-50%); bottom: 118%; border: 6px solid transparent; border-top-color: #111827; opacity: 0; transition: opacity 0.1s ease; z-index: 20; }
-      .tip:hover::after, .tip:hover::before { opacity: 1; }
+      .tip {
+        position: relative;
+        display: inline-block;
+      }
+      .tip::after {
+        content: attr(data-tip);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 125%;
+        background: #111827;
+        color: white;
+        padding: 8px 10px;
+        border-radius: 6px;
+        white-space: pre-wrap;
+        min-width: 260px;
+        max-width: 520px;
+        font-size: 13px;
+        line-height: 1.4;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.1s ease;
+        z-index: 20;
+      }
+      .tip::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 118%;
+        border: 6px solid transparent;
+        border-top-color: #111827;
+        opacity: 0;
+        transition: opacity 0.1s ease;
+        z-index: 20;
+      }
+      .tip:hover::after,
+      .tip:hover::before {
+        opacity: 1;
+      }
+      .tip-icon {
+        cursor: help;
+        margin-left: 6px;
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1px solid #e5e7eb;
+        text-align: center;
+        line-height: 18px;
+        font-weight: 700;
+        font-size: 12px;
+        background: #f9fafb;
+        color: #6b7280;
+      }
+      .tip-icon:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2 style="margin-top:0">Import Questions (JSON)</h2>
-      <div class="row">
-        <div>
-          <label>Category</label>
-          <input id="category" placeholder="e.g., Computer Science" />
-        </div>
-        <div>
-          <label>Subcategory</label>
-          <input id="subcategory" placeholder="e.g., Network Protocols" />
+      <h2>Import Questions (JSON)</h2>
+      
+      <div class="form-section">
+        <div class="row">
+          <div>
+            <label>Category</label>
+            <input id="category" placeholder="e.g., Computer Science" />
+          </div>
+          <div>
+            <label>Subcategory</label>
+            <input id="subcategory" placeholder="e.g., Network Protocols" />
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div>
-          <label>Import Token (optional if server configured)
-            <span class="tip" data-tip="Why this matters: prevents drive-by imports from other websites (CSRF) and stops anything on your machine from silently posting to this endpoint.\nHow to use: start the server with IMPORT_TOKEN set to a secret, then paste the same value here. If no token is set on the server, leave this blank." style="cursor: help; margin-left:6px; display:inline-block; width:18px; height:18px; border-radius:50%; border:1px solid #e5e7eb; text-align:center; line-height:18px; font-weight:700; font-size:12px; background:#f9fafb;">?
-            </span>
-          </label>
-          <input id="token" placeholder="Set IMPORT_TOKEN env on server and paste here" />
+
+      <div class="form-section">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <label style="margin-bottom: 0;">Questions JSON Array</label>
+          <button class="btn" id="chatgptPromptBtn" style="font-size: 13px; padding: 6px 12px;">
+            💬 Get ChatGPT Prompt
+          </button>
         </div>
-        <div></div>
-      </div>
-      <label>Questions JSON Array</label>
-      <textarea id="json" placeholder='[
+        <div id="chatgptPrompt" style="display: none; margin-bottom: 12px; padding: 12px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px;">
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #0369a1; font-size: 13px;">
+              Paste your study material here (will be inserted into prompt):
+            </label>
+            <textarea id="userContent" placeholder="Paste your study material, questions, or content here...&#10;&#10;This content will be inserted into the ChatGPT prompt automatically." style="width: 100%; min-height: 150px; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px; padding: 10px; border: 1px solid #bae6fd; border-radius: 6px; background: white; resize: vertical; box-sizing: border-box; pointer-events: auto; cursor: text;" autofocus></textarea>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: start; gap: 12px; margin-bottom: 8px;">
+            <strong style="color: #0369a1;">Complete ChatGPT Prompt (ready to paste):</strong>
+            <button class="btn primary" id="copyFullPromptBtn" style="font-size: 13px; padding: 6px 12px;">📋 Copy Full Prompt</button>
+          </div>
+          <textarea id="promptText" readonly style="width: 100%; min-height: 200px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; padding: 8px; border: 1px solid #bae6fd; border-radius: 6px; background: white; resize: vertical; line-height: 1.5;"></textarea>
+          <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
+            <a href="https://chatgpt.com" target="_blank" class="btn primary" style="font-size: 13px; padding: 6px 12px;">
+              Open ChatGPT →
+            </a>
+            <span style="font-size: 12px; color: #6b7280;">After opening, paste the complete prompt above</span>
+          </div>
+        </div>
+        <textarea id="json" placeholder='[
   {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
 ]'></textarea>
-      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap: wrap; align-items:center;">
-        <button class="btn" id="genToken">Generate 32‑char token</button>
-        <button class="btn primary" id="importBtn">Import</button>
-        <a class="btn" href="/">Back</a>
       </div>
+
+      <div class="bottom-actions">
+        <div class="token-section-left">
+          <div class="token-section">
+            <label>
+              Import Token (optional if server configured)
+              <span class="tip tip-icon" data-tip="Why this matters: prevents drive-by imports from other websites (CSRF) and stops anything on your machine from silently posting to this endpoint.&#10;&#10;How to use: start the server with IMPORT_TOKEN set to a secret, then paste the same value here. If no token is set on the server, leave this blank.">?</span>
+            </label>
+            <div class="token-controls">
+              <div class="token-input-group">
+                <input id="token" placeholder="Set IMPORT_TOKEN env on server and paste here" />
+              </div>
+              <div class="token-generate-group">
+                <button class="btn" id="genToken">Generate 32‑char token</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="import-button-right">
+          <a class="btn" href="/">Back</a>
+          <button class="btn primary" id="importBtn">Import</button>
+        </div>
+      </div>
+
       <div class="notice" id="notice"></div>
     </div>
     <script>
       function generateToken() {
-        const bytes = new Uint8Array(24); // 24 bytes -> 32 chars in base64url approx; we'll hex it for simplicity
+        const bytes = new Uint8Array(24);
         if (window.crypto && window.crypto.getRandomValues) {
           window.crypto.getRandomValues(bytes);
         } else {
           for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
         }
-        // Hex 48 chars; trim to 32 for requirement
         const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
         return hex;
       }
+
+      const chatgptPromptTemplate = `Convert the following text content into a JSON array of multiple-choice questions in the exact format specified below.
+
+JSON Format Requirements:
+- Each question must be an object in a JSON array
+- Each question object must have these fields:
+  * "id": A unique identifier (string, lowercase with hyphens, e.g., "docker-image-definition")
+  * "question": The question text (string)
+  * "choices": An array of 2-6 answer choices (array of strings)
+  * "answerIndex": The 0-based index of the correct answer in the choices array (number: 0, 1, 2, etc.)
+  * "explanation": An explanation of why the answer is correct (string, optional but recommended)
+  * "difficulty": One of "easy", "medium", or "hard" (string, optional)
+- The output must be a valid JSON array starting with [ and ending with ]
+
+Instructions:
+1. Extract or generate multiple-choice questions from the text below
+2. Create plausible incorrect answer choices (distractors) for each question
+3. Assign appropriate difficulty levels (easy/medium/hard) based on complexity
+4. Generate clear, concise explanations for each correct answer
+5. Ensure each question has a unique, descriptive ID
+6. Output ONLY the JSON array, no additional text or markdown formatting
+
+Text content to convert:
+
+{{USER_CONTENT}}
+
+Output the JSON array now:`;
+
+      function buildPromptWithContent() {
+        const userContent = document.getElementById('userContent').value.trim();
+        if (!userContent) {
+          return chatgptPromptTemplate.replace('{{USER_CONTENT}}', '[PASTE YOUR STUDY MATERIAL HERE]');
+        }
+        return chatgptPromptTemplate.replace('{{USER_CONTENT}}', userContent);
+      }
+
+      function updatePromptPreview() {
+        const promptTextarea = document.getElementById('promptText');
+        promptTextarea.value = buildPromptWithContent();
+      }
+
+      document.getElementById('chatgptPromptBtn').onclick = async () => {
+        const promptSection = document.getElementById('chatgptPrompt');
+        promptSection.style.display = 'block';
+        updatePromptPreview();
+        const notice = document.getElementById('notice');
+        notice.textContent = 'Paste your study material in the textarea above, then click "Copy Full Prompt" when ready.';
+        notice.className = 'notice success';
+      };
+
+      document.getElementById('copyFullPromptBtn').onclick = async () => {
+        const fullPrompt = buildPromptWithContent();
+        try {
+          await navigator.clipboard.writeText(fullPrompt);
+          const notice = document.getElementById('notice');
+          notice.textContent = 'Complete prompt (with your content) copied to clipboard! Open ChatGPT and paste it.';
+          notice.className = 'notice success';
+        } catch (e) {
+          console.error('Failed to copy:', e);
+          const notice = document.getElementById('notice');
+          notice.textContent = 'Failed to copy. Please copy manually from the textarea above.';
+          notice.className = 'notice error';
+        }
+      };
+
+      // Update preview when user types/pastes content
+      document.getElementById('userContent').addEventListener('input', () => {
+        updatePromptPreview();
+      });
 
       document.getElementById('genToken').onclick = async () => {
         const tokenField = document.getElementById('token');
@@ -73,10 +353,10 @@
         try {
           await navigator.clipboard.writeText(`IMPORT_TOKEN="${t}"`);
           notice.textContent = 'Token generated and copied. Add it to your .env (gitignored) as IMPORT_TOKEN, restart the server, then refresh this page and paste the token here (or leave blank if the server loads it).';
-          notice.style.color = '#065f46';
+          notice.className = 'notice success';
         } catch {
           notice.textContent = 'Token generated. Copy this into your .env as IMPORT_TOKEN, restart the server, then refresh this page.';
-          notice.style.color = '#065f46';
+          notice.className = 'notice success';
         }
       };
 
@@ -86,26 +366,46 @@
         const raw = document.getElementById('json').value.trim();
         const notice = document.getElementById('notice');
         notice.textContent = '';
+        notice.className = 'notice';
         let questions;
-        try { questions = JSON.parse(raw); } catch(e) { notice.textContent = 'Invalid JSON'; notice.style.color = '#dc2626'; return; }
-        if (!Array.isArray(questions)) { notice.textContent = 'JSON must be an array'; notice.style.color = '#dc2626'; return; }
-        if (!category || !subcategory) { notice.textContent = 'Category and Subcategory required'; notice.style.color = '#dc2626'; return; }
+        try {
+          questions = JSON.parse(raw);
+        } catch(e) {
+          notice.textContent = 'Invalid JSON';
+          notice.className = 'notice error';
+          return;
+        }
+        if (!Array.isArray(questions)) {
+          notice.textContent = 'JSON must be an array';
+          notice.className = 'notice error';
+          return;
+        }
+        if (!category || !subcategory) {
+          notice.textContent = 'Category and Subcategory required';
+          notice.className = 'notice error';
+          return;
+        }
         try {
           const token = document.getElementById('token').value.trim();
           const headers = { 'Content-Type': 'application/json' };
           if (token) headers['x-import-token'] = token;
-          const res = await fetch('/api/import', { method: 'POST', headers, body: JSON.stringify({ category, subcategory, questions }) });
+          const res = await fetch('/api/import', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ category, subcategory, questions })
+          });
           const json = await res.json();
           if (!res.ok) throw new Error(json.error || 'Import failed');
           notice.textContent = 'Imported successfully. Saved to: ' + json.saved;
-          notice.style.color = '#16a34a';
+          notice.className = 'notice success';
+          document.getElementById('category').value = '';
+          document.getElementById('subcategory').value = '';
+          document.getElementById('json').value = '';
         } catch (e) {
           notice.textContent = 'Import failed: ' + (e.message || e);
-          notice.style.color = '#dc2626';
+          notice.className = 'notice error';
         }
       };
     </script>
   </body>
-  </html>
-
-
+</html>
