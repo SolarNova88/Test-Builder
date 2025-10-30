@@ -1,0 +1,33 @@
+[
+  {
+    "id": "rest-constraints-count",
+    "question": "How many core REST constraints must be followed to be truly RESTful (excluding optional)?",
+    "choices": ["3", "4", "5", "6"],
+    "answerIndex": 2,
+    "explanation": "Fielding defines six constraints; five are core and one (code-on-demand) is optional.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "stateless-meaning",
+    "question": "What does 'stateless' mean in REST?",
+    "choices": [
+      "Server stores client session state between requests",
+      "Each request contains all info needed; server doesn't keep client context",
+      "Clients must use WebSockets",
+      "Responses are never cached"
+    ],
+    "answerIndex": 1,
+    "explanation": "Statelessness means no server-side session per client; requests are self-contained.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "cacheable",
+    "question": "Which constraint encourages using HTTP caching where appropriate?",
+    "choices": ["Layered system", "Cacheable", "Uniform interface", "Client-server"],
+    "answerIndex": 1,
+    "explanation": "REST encourages cacheable responses when applicable to improve performance.",
+    "difficulty": "easy"
+  }
+]
+
+

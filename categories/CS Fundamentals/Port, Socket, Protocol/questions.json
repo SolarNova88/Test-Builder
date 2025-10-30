@@ -1,0 +1,43 @@
+[
+  {
+    "id": "protocol-definition",
+    "question": "What is a protocol?",
+    "choices": [
+      "A hardware network interface",
+      "A set of rules for communication",
+      "A database table",
+      "A routing table entry"
+    ],
+    "answerIndex": 1,
+    "explanation": "Protocols define how data is formatted and transmitted (e.g., HTTP, TCP, UDP).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "port-definition",
+    "question": "Which statement about ports is correct?",
+    "choices": [
+      "Ports are security tokens",
+      "A port identifies a service on a machine (e.g., 80 for HTTP)",
+      "Ports are only used by UDP",
+      "Ports are IP addresses"
+    ],
+    "answerIndex": 1,
+    "explanation": "Ports are logical numbers that services listen on.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "socket-definition",
+    "question": "What best describes a socket?",
+    "choices": [
+      "A physical connector on a router",
+      "A combination of IP + Port + Protocol representing a connection endpoint",
+      "An API endpoint URL",
+      "A JSON object in REST"
+    ],
+    "answerIndex": 1,
+    "explanation": "A socket identifies the precise communication endpoint between client and server.",
+    "difficulty": "medium"
+  }
+]
+
+

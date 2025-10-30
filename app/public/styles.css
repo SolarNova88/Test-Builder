@@ -13,7 +13,8 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .muted { color: #6b7280; font-size: 12px; }
 .hidden { display: none; }
 
-.question { font-size: 18px; margin-bottom: 12px; }
+.question { font-size: 18px; margin: 16px 0 16px; }
+.quiz-meta { margin: 8px 0 8px; }
 .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; margin-left: 8px; border: 1px solid #e5e7eb; background: #f3f4f6; }
 .badge.easy { border-color: #bbf7d0; background: #ecfdf5; color: #065f46; }
 .badge.medium { border-color: #fde68a; background: #fffbeb; color: #92400e; }

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "request-meaning",
+    "question": "What is an HTTP request?",
+    "choices": [
+      "A message a server sends to a client",
+      "A message a client sends to a server",
+      "A database transaction",
+      "A TCP handshake"
+    ],
+    "answerIndex": 1,
+    "explanation": "A client sends a request to a server to retrieve or modify resources.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "response-meaning",
+    "question": "What is an HTTP response?",
+    "choices": [
+      "A server's reply to a client's request",
+      "A client's reply to a server's request",
+      "A protocol definition",
+      "A browser cache"
+    ],
+    "answerIndex": 0,
+    "explanation": "Servers return responses that include status codes and data.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "http-protocol",
+    "question": "HTTP is best described as what?",
+    "choices": [
+      "A storage engine",
+      "A protocol defining request/response format",
+      "An operating system",
+      "A reverse proxy"
+    ],
+    "answerIndex": 1,
+    "explanation": "HTTP standardizes how requests and responses are structured and transmitted.",
+    "difficulty": "easy"
+  }
+]
+
+

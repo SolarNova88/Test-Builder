@@ -50,26 +50,58 @@ function renderSubcategories(category) {
   quizEl.classList.add('hidden');
   navEl.classList.remove('hidden');
   const subs = state.index.categories[category] || {};
+  const subKeys = Object.keys(subs);
   navEl.innerHTML = `
     <button class="btn" id="backRoot">← Back</button>
     <h2 style="margin:8px 0 0 0">${category}</h2>
+    <div style="margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <button class="btn" id="selectAll">Select All</button>
+      <button class="btn" id="clearAll">Clear</button>
+      <button class="btn primary" id="startCustom" disabled>Start Custom Test</button>
+    </div>
     <div class="grid" style="margin-top:12px">
-      ${Object.keys(subs).map(sub => {
+      ${subKeys.map(sub => {
         const c = subs[sub].count || 0;
         return `<div class="card" data-sub="${sub}">
-          <div style="font-weight:600">${sub}</div>
-          <div class="muted">${c} questions</div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <div>
+              <div style="font-weight:600">${sub}</div>
+              <div class="muted">${c} questions</div>
+            </div>
+            <input type="checkbox" class="subchk" data-sub="${sub}" />
+          </div>
         </div>`;
       }).join('')}
     </div>
   `;
   document.getElementById('backRoot').onclick = renderCategories;
+  // click card starts single quiz (excluding checkbox click)
   navEl.querySelectorAll('.card').forEach(el => {
-    el.addEventListener('click', async () => {
+    el.addEventListener('click', async (e) => {
+      if (e.target && (e.target.classList.contains('subchk') || e.target.tagName === 'INPUT' )) return;
       const sub = el.getAttribute('data-sub');
       await startQuiz(category, sub);
     });
   });
+
+  const startBtn = document.getElementById('startCustom');
+  const updateStartState = () => {
+    const selected = Array.from(navEl.querySelectorAll('.subchk:checked')).map(i => i.getAttribute('data-sub'));
+    startBtn.disabled = selected.length === 0;
+  };
+  navEl.querySelectorAll('.subchk').forEach(cb => cb.addEventListener('change', updateStartState));
+  document.getElementById('selectAll').onclick = () => {
+    navEl.querySelectorAll('.subchk').forEach(cb => cb.checked = true);
+    updateStartState();
+  };
+  document.getElementById('clearAll').onclick = () => {
+    navEl.querySelectorAll('.subchk').forEach(cb => cb.checked = false);
+    updateStartState();
+  };
+  startBtn.onclick = async () => {
+    const selected = Array.from(navEl.querySelectorAll('.subchk:checked')).map(i => i.getAttribute('data-sub'));
+    if (selected.length) await startCustomTest(category, selected);
+  };
 }
 
 async function startQuiz(category, subcategory) {
@@ -80,6 +112,37 @@ async function startQuiz(category, subcategory) {
     category,
     subcategory,
     questions,
+    currentIdx: 0,
+    correct: 0,
+    incorrect: 0,
+    answered: false
+  };
+  renderQuiz();
+}
+
+function shuffleInPlace(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+async function startCustomTest(category, subcategories) {
+  const all = [];
+  for (const sub of subcategories) {
+    const url = `/categories/${encodeURIComponent(category)}/${encodeURIComponent(sub)}/questions.json`;
+    const res = await fetch(url);
+    if (res.ok) {
+      const qs = await res.json();
+      if (Array.isArray(qs)) all.push(...qs);
+    }
+  }
+  shuffleInPlace(all);
+  state.current = {
+    category: `${category}`,
+    subcategory: `Custom (${subcategories.length} sets)`,
+    questions: all,
     currentIdx: 0,
     correct: 0,
     incorrect: 0,
@@ -105,7 +168,7 @@ function renderQuiz() {
       <div class="progress" style="flex:1"><div style="width:${Math.min(progressPct,100)}%"></div></div>
       <div class="score">${cur.correct}✔ / ${cur.incorrect}✖ (${isFinite(scorePct)?scorePct:0}%)</div>
     </div>
-    <div class="muted">${cur.category} / ${cur.subcategory} — Question ${idx + 1} of ${total}</div>
+    <div class="muted quiz-meta">${cur.category} / ${cur.subcategory} — Question ${idx + 1} of ${total}</div>
     <div class="question">${q.question}${q.difficulty ? ` <span class="badge ${q.difficulty}">${q.difficulty}</span>` : ''}</div>
     <div class="choices">
       ${q.choices.map((c, i) => {

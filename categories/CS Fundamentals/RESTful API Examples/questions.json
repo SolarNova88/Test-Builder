@@ -1,0 +1,33 @@
+[
+  {
+    "id": "create-user-method",
+    "question": "Which method + URL creates a user in a RESTful design?",
+    "choices": [
+      "GET /users",
+      "POST /users",
+      "PUT /users",
+      "DELETE /users/{id}"
+    ],
+    "answerIndex": 1,
+    "explanation": "POST /users is the conventional way to create a new user resource.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "update-user-method",
+    "question": "To fully replace a user resource, which is most appropriate?",
+    "choices": ["PATCH /users/{id}", "PUT /users/{id}", "GET /users/{id}", "POST /users/{id}"],
+    "answerIndex": 1,
+    "explanation": "PUT typically replaces a resource; PATCH partially updates it.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "delete-user-method",
+    "question": "Which removes a user?",
+    "choices": ["DELETE /users/{id}", "POST /users/delete", "GET /deleteUser?id=1", "PUT /users/{id}"],
+    "answerIndex": 0,
+    "explanation": "DELETE /users/{id} is standard for deletion.",
+    "difficulty": "easy"
+  }
+]
+
+

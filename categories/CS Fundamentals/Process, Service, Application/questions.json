@@ -1,0 +1,43 @@
+[
+  {
+    "id": "process-definition",
+    "question": "What is a process?",
+    "choices": [
+      "A collection of services, frontends, and databases",
+      "A running instance of a program in memory",
+      "A reverse proxy in front of services",
+      "A database table"
+    ],
+    "answerIndex": 1,
+    "explanation": "A process is a program executing with its own memory and resources.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "service-definition",
+    "question": "Which best describes a service?",
+    "choices": [
+      "A long-running process providing a specific function",
+      "Any HTTP endpoint",
+      "A single SQL query",
+      "A UI component"
+    ],
+    "answerIndex": 0,
+    "explanation": "Services run continuously and provide specific functionality (e.g., Auth).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "application-definition",
+    "question": "An application is typically what?",
+    "choices": [
+      "A single process",
+      "A collection of services, UIs, and data stores working together",
+      "Only a front-end",
+      "Only a database"
+    ],
+    "answerIndex": 1,
+    "explanation": "Applications combine multiple services and components.",
+    "difficulty": "easy"
+  }
+]
+
+

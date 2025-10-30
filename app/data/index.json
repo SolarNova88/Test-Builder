@@ -1,5 +1,34 @@
 {
   "categories": {
+    "CS Fundamentals": {
+      "APIs and REST Basics": {
+        "count": 4
+      },
+      "Host, Client, Server": {
+        "count": 4
+      },
+      "Port, Socket, Protocol": {
+        "count": 3
+      },
+      "Process, Service, Application": {
+        "count": 3
+      },
+      "Proxy, Gateway, Router": {
+        "count": 3
+      },
+      "REST Constraints": {
+        "count": 3
+      },
+      "REST vs GraphQL vs gRPC": {
+        "count": 3
+      },
+      "RESTful API Examples": {
+        "count": 3
+      },
+      "Request and Response": {
+        "count": 3
+      }
+    },
     "Computer Science": {
       "Network Protocols": {
         "count": 3
@@ -7,5 +36,5 @@
     },
     "Electrical Engineering": {}
   },
-  "generatedAt": "2025-10-30T18:09:09.252Z"
+  "generatedAt": "2025-10-30T19:54:04.327Z"
 }

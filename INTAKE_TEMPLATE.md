@@ -7,7 +7,7 @@ Paste your inputs into the three big sections below. Type plain text directly in
 ## Category (required)
 
 ```
-Category Name:
+Category Name: 
 ```
 
 ## Subcategory (required)

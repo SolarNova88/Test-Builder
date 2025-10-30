@@ -1,0 +1,56 @@
+[
+  {
+    "id": "host-definition",
+    "question": "What best describes a host in computing?",
+    "choices": [
+      "A browser sending HTTP requests",
+      "A physical or virtual machine running your services",
+      "A specific API endpoint",
+      "A reverse proxy in front of services"
+    ],
+    "answerIndex": 1,
+    "explanation": "A host is the physical or virtual machine; in Docker, the host is the real computer.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "server-role",
+    "question": "Which statement describes a server?",
+    "choices": [
+      "It initiates requests and waits for responses",
+      "It waits for requests and responds with data or services",
+      "It only caches content for clients",
+      "It is always a physical machine, never virtual"
+    ],
+    "answerIndex": 1,
+    "explanation": "Servers typically listen for requests and return data or perform actions.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "client-role",
+    "question": "In a typical web scenario, which component is the client?",
+    "choices": [
+      "Browser or program that sends requests",
+      "Database that stores records",
+      "Reverse proxy forwarding traffic",
+      "Operating system kernel"
+    ],
+    "answerIndex": 0,
+    "explanation": "A client sends requests to a server; a browser is a common client.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "example-client-server",
+    "question": "In the example given, your browser sends a request to an API Gateway. What roles do they play?",
+    "choices": [
+      "Browser = server, API Gateway = client",
+      "Browser = client, API Gateway = server",
+      "Both are clients",
+      "Both are servers"
+    ],
+    "answerIndex": 1,
+    "explanation": "The browser is the client; the API Gateway is the server responding to requests.",
+    "difficulty": "easy"
+  }
+]
+
+

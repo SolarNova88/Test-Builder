@@ -1,0 +1,33 @@
+[
+  {
+    "id": "graphql-endpoint",
+    "question": "GraphQL typically exposes how many endpoints?",
+    "choices": ["Multiple per resource", "A single /graphql endpoint", "One per method", "None"],
+    "answerIndex": 1,
+    "explanation": "GraphQL usually serves a single endpoint where clients specify the data shape.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "grpc-nature",
+    "question": "Which best describes gRPC?",
+    "choices": [
+      "Human-readable JSON over HTTP/1",
+      "Binary Protocol Buffers over HTTP/2 with RPC methods",
+      "XML envelopes with strict schemas",
+      "Single-endpoint flexible queries"
+    ],
+    "answerIndex": 1,
+    "explanation": "gRPC uses Protocol Buffers and HTTP/2 for high-performance RPC.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "rest-suitable",
+    "question": "Which is generally best for public, human-readable web APIs?",
+    "choices": ["gRPC", "GraphQL", "REST", "Raw TCP"],
+    "answerIndex": 2,
+    "explanation": "REST with JSON is widely used and easy for public APIs.",
+    "difficulty": "easy"
+  }
+]
+
+

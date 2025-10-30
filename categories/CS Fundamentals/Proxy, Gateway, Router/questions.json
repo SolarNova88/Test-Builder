@@ -1,0 +1,43 @@
+[
+  {
+    "id": "proxy-definition",
+    "question": "What does a proxy primarily do?",
+    "choices": [
+      "Translates between different protocols",
+      "Directs packets based on IP at network layer",
+      "Acts as an intermediary that forwards requests",
+      "Stores application state"
+    ],
+    "answerIndex": 2,
+    "explanation": "A proxy forwards requests/responses between clients and servers.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "gateway-role",
+    "question": "Which is a function of a gateway?",
+    "choices": [
+      "Forwarding packets within same protocol",
+      "Translating between networks/protocols",
+      "Serving static files",
+      "Executing database migrations"
+    ],
+    "answerIndex": 1,
+    "explanation": "Gateways connect different networks or protocols (e.g., PSTN↔IP).",
+    "difficulty": "medium"
+  },
+  {
+    "id": "router-role",
+    "question": "A router primarily operates at which layer and function?",
+    "choices": [
+      "Application layer—caching",
+      "Network layer—packet forwarding by IP",
+      "Transport layer—session management",
+      "Physical layer—signal modulation"
+    ],
+    "answerIndex": 1,
+    "explanation": "Routers route based on IP addresses at the network layer.",
+    "difficulty": "easy"
+  }
+]
+
+

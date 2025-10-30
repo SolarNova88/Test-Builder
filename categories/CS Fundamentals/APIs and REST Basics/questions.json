@@ -1,0 +1,56 @@
+[
+  {
+    "id": "api-definition",
+    "question": "What is an API?",
+    "choices": [
+      "A database engine",
+      "A set of rules that let software systems communicate",
+      "A front-end framework",
+      "A reverse proxy"
+    ],
+    "answerIndex": 1,
+    "explanation": "APIs define how software components talk to each other (e.g., endpoints, methods).",
+    "difficulty": "easy"
+  },
+  {
+    "id": "rest-not-framework",
+    "question": "Which statement about REST is correct?",
+    "choices": [
+      "REST is a framework for building APIs",
+      "REST is a database query language",
+      "REST is an architectural style, not a framework",
+      "REST requires XML"
+    ],
+    "answerIndex": 2,
+    "explanation": "REST is an architectural style leveraging HTTP semantics.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "method-crud-mapping",
+    "question": "Which mapping is correct for REST methods to CRUD?",
+    "choices": [
+      "GET→Create, POST→Read, PUT→Delete, DELETE→Update",
+      "GET→Read, POST→Create, PUT→Update, DELETE→Delete",
+      "POST→Read, PATCH→Create, GET→Update, DELETE→Delete",
+      "PUT→Create, GET→Delete, POST→Update, DELETE→Read"
+    ],
+    "answerIndex": 1,
+    "explanation": "Typical mapping: GET=Read, POST=Create, PUT/PATCH=Update, DELETE=Delete.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "endpoint-example",
+    "question": "Which is a valid REST endpoint example from the notes?",
+    "choices": [
+      "/auth/login",
+      "SELECT * FROM users",
+      "C:\\users\\login",
+      "graphql:mutateUser"
+    ],
+    "answerIndex": 0,
+    "explanation": "Endpoints are URL paths that represent resources or actions.",
+    "difficulty": "easy"
+  }
+]
+
+
