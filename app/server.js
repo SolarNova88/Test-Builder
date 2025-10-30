@@ -4,6 +4,23 @@ const path = require('path');
 
 const port = process.env.PORT || 8080;
 const { scan } = require('./tools/scan');
+// Minimal .env loader (no external deps)
+try {
+  const envPath = path.join(path.join(__dirname, '..'), '.env');
+  if (fs.existsSync(envPath)) {
+    const lines = fs.readFileSync(envPath, 'utf8').split(/\r?\n/);
+    for (const line of lines) {
+      const m = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/.exec(line);
+      if (!m) continue;
+      const key = m[1];
+      let val = m[2];
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith('\'') && val.endsWith('\''))) {
+        val = val.slice(1, -1);
+      }
+      if (!(key in process.env)) process.env[key] = val;
+    }
+  }
+} catch {}
 const appRoot = __dirname;
 const projectRoot = path.join(__dirname, '..');
 

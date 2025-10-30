@@ -86,4 +86,15 @@ Convert the following study content into an array of JSON multiple-choice questi
   - On the import page, enter the same token in the "Import Token" field (sent as `x-import-token`).
 - Static and import paths are sanitized and constrained to project folders.
 
+### Secure Setup Procedure (for forks)
+
+1. Clone repo and run once: `node app/tools/scan.js` then `node app/server.js`.
+2. Generate a token:
+   - In browser: open `/public/import.html` and click "Generate 32‑char token" (copied to clipboard), or use `openssl rand -hex 16`.
+3. Create a `.env` file at project root (gitignored). You can copy the example:
+   - `cp .env.example .env` (then edit)
+   - Set: `IMPORT_TOKEN="YOUR_TOKEN_HERE"`
+4. Restart server: `node app/server.js` (the server auto-loads `.env`).
+5. On `/public/import.html`, either leave token blank (server already has it) or paste the same token. Import your JSON safely.
+
 

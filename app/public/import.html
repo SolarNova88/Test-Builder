@@ -28,7 +28,10 @@
       </div>
       <div class="row">
         <div>
-          <label>Import Token (optional if server configured)</label>
+          <label>Import Token (optional if server configured)
+            <span title="Why this matters: prevents drive-by imports from other websites (CSRF) and stops anything on your machine from silently posting to this endpoint. How to use: start the server with IMPORT_TOKEN set to a secret, then paste the same value here. If no token is set on the server, leave this blank." style="cursor: help; margin-left:6px; display:inline-block; width:18px; height:18px; border-radius:50%; border:1px solid #e5e7eb; text-align:center; line-height:18px; font-weight:700; font-size:12px; background:#f9fafb;">?
+            </span>
+          </label>
           <input id="token" placeholder="Set IMPORT_TOKEN env on server and paste here" />
         </div>
         <div></div>
@@ -37,13 +40,41 @@
       <textarea id="json" placeholder='[
   {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
 ]'></textarea>
-      <div style="margin-top:12px; display:flex; gap:8px">
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap: wrap; align-items:center;">
+        <button class="btn" id="genToken">Generate 32‑char token</button>
         <button class="btn primary" id="importBtn">Import</button>
         <a class="btn" href="/">Back</a>
       </div>
       <div class="notice" id="notice"></div>
     </div>
     <script>
+      function generateToken() {
+        const bytes = new Uint8Array(24); // 24 bytes -> 32 chars in base64url approx; we'll hex it for simplicity
+        if (window.crypto && window.crypto.getRandomValues) {
+          window.crypto.getRandomValues(bytes);
+        } else {
+          for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+        }
+        // Hex 48 chars; trim to 32 for requirement
+        const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
+        return hex;
+      }
+
+      document.getElementById('genToken').onclick = async () => {
+        const tokenField = document.getElementById('token');
+        const t = generateToken();
+        tokenField.value = t;
+        const notice = document.getElementById('notice');
+        try {
+          await navigator.clipboard.writeText(`IMPORT_TOKEN="${t}"`);
+          notice.textContent = 'Token generated and copied. Add it to your .env (gitignored) as IMPORT_TOKEN, restart the server, then refresh this page and paste the token here (or leave blank if the server loads it).';
+          notice.style.color = '#065f46';
+        } catch {
+          notice.textContent = 'Token generated. Copy this into your .env as IMPORT_TOKEN, restart the server, then refresh this page.';
+          notice.style.color = '#065f46';
+        }
+      };
+
       document.getElementById('importBtn').onclick = async () => {
         const category = document.getElementById('category').value.trim();
         const subcategory = document.getElementById('subcategory').value.trim();
