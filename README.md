@@ -66,9 +66,22 @@ This scans `categories/` and writes `app/data/index.json` with counts for progre
 
 ### Adding/Updating Questions
 
-See `data/README_PROCEDURES.md` for the step-by-step procedure we will follow whenever you paste source material and instruct to create/update a test.
+There are three ways to add questions:
 
-For a quick start, open `INTAKE_TEMPLATE.md` at the project root, fill in the three big inputs (Category, Subcategory, Source Content), and share it with me in Cursor. I’ll take it from there and run the scanner. After processing, I’ll clear those three fields so it’s ready for next time.
+**Method 1: AI Agent Processing** (Recommended if using Cursor)
+- Open `INTAKE_TEMPLATE.md` at the project root
+- Fill in Category, Subcategory, and Source Content
+- Share it with me in Cursor and say: "Follow the Test Question Loading Procedure to create/update category X/subcategory Y from this content"
+- I'll extract questions, generate JSON, create files, and run the scanner
+- After processing, I'll clear those three fields so it's ready for next time
+
+**Method 2: ChatGPT-Assisted Import** (Recommended for converting text to JSON)
+- See "Importing JSON → Method 2: ChatGPT-Assisted JSON Generation" below
+
+**Method 3: Manual JSON Import**
+- See "Importing JSON → Method 1: Direct JSON Import" below
+
+See `data/README_PROCEDURES.md` for detailed procedures.
 
 ### Importing JSON
 
