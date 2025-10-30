@@ -40,7 +40,7 @@
   },
   {
     "id": "endpoint-example",
-    "question": "Which is a valid REST endpoint example from the notes?",
+    "question": "Which is a valid REST-style API endpoint?",
     "choices": [
       "/auth/login",
       "SELECT * FROM users",
@@ -48,7 +48,7 @@
       "graphql:mutateUser"
     ],
     "answerIndex": 0,
-    "explanation": "Endpoints are URL paths that represent resources or actions.",
+    "explanation": "REST endpoints are URL paths served over HTTP, e.g., /auth/login.",
     "difficulty": "easy"
   }
 ]
