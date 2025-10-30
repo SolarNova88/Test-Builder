@@ -76,4 +76,14 @@ If you prefer generating JSON yourself with ChatGPT or similar, use this prompt:
 
 Convert the following study content into an array of JSON multiple-choice questions following this exact schema: id (string), question (string), choices (array of 2+ strings), answerIndex (number, 0-based), explanation (string, optional), difficulty (string: easy|medium|hard, optional). Only return valid JSON (no commentary).
 
+### Security (optional but recommended)
+
+- The server binds to `127.0.0.1` (local-only).
+- Protect the import endpoint with a token (prevents drive-by requests):
+  - Start server with a secret token:
+    - macOS/Linux: `IMPORT_TOKEN="your-strong-token" node app/server.js`
+    - Windows (PowerShell): `$env:IMPORT_TOKEN="your-strong-token"; node app/server.js`
+  - On the import page, enter the same token in the "Import Token" field (sent as `x-import-token`).
+- Static and import paths are sanitized and constrained to project folders.
+
 
