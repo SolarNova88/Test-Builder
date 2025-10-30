@@ -64,6 +64,10 @@ function scan() {
   console.log(`[scan] Wrote ${outFile}`);
 }
 
-scan();
+if (require.main === module) {
+  scan();
+}
+
+module.exports = { scan };
 
 

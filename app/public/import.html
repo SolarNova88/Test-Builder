@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Import Questions - Test Builder</title>
+    <link rel="stylesheet" href="/public/styles.css" />
+    <style>
+      .container { max-width: 960px; margin: 20px auto; background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
+      textarea { width: 100%; min-height: 220px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+      input { width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 8px; }
+      .notice { margin-top: 12px; font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 style="margin-top:0">Import Questions (JSON)</h2>
+      <div class="row">
+        <div>
+          <label>Category</label>
+          <input id="category" placeholder="e.g., Computer Science" />
+        </div>
+        <div>
+          <label>Subcategory</label>
+          <input id="subcategory" placeholder="e.g., Network Protocols" />
+        </div>
+      </div>
+      <label>Questions JSON Array</label>
+      <textarea id="json" placeholder='[
+  {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
+]'></textarea>
+      <div style="margin-top:12px; display:flex; gap:8px">
+        <button class="btn primary" id="importBtn">Import</button>
+        <a class="btn" href="/">Back</a>
+      </div>
+      <div class="notice" id="notice"></div>
+    </div>
+    <script>
+      document.getElementById('importBtn').onclick = async () => {
+        const category = document.getElementById('category').value.trim();
+        const subcategory = document.getElementById('subcategory').value.trim();
+        const raw = document.getElementById('json').value.trim();
+        const notice = document.getElementById('notice');
+        notice.textContent = '';
+        let questions;
+        try { questions = JSON.parse(raw); } catch(e) { notice.textContent = 'Invalid JSON'; notice.style.color = '#dc2626'; return; }
+        if (!Array.isArray(questions)) { notice.textContent = 'JSON must be an array'; notice.style.color = '#dc2626'; return; }
+        if (!category || !subcategory) { notice.textContent = 'Category and Subcategory required'; notice.style.color = '#dc2626'; return; }
+        try {
+          const res = await fetch('/api/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ category, subcategory, questions }) });
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.error || 'Import failed');
+          notice.textContent = 'Imported successfully. Saved to: ' + json.saved;
+          notice.style.color = '#16a34a';
+        } catch (e) {
+          notice.textContent = 'Import failed: ' + (e.message || e);
+          notice.style.color = '#dc2626';
+        }
+      };
+    </script>
+  </body>
+  </html>
+
+

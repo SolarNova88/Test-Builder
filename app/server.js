@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const port = process.env.PORT || 8080;
+const { scan } = require('./tools/scan');
 const appRoot = __dirname;
 const projectRoot = path.join(__dirname, '..');
 
@@ -31,7 +32,18 @@ function serveFile(filePath, res) {
   });
 }
 
-const server = http.createServer((req, res) => {
+function readJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    req.on('data', chunk => { data += chunk; if (data.length > 5 * 1024 * 1024) req.destroy(); });
+    req.on('end', () => {
+      try { resolve(JSON.parse(data || '{}')); } catch (e) { reject(e); }
+    });
+    req.on('error', reject);
+  });
+}
+
+const server = http.createServer(async (req, res) => {
   const urlPath = decodeURIComponent(req.url.split('?')[0]);
   if (urlPath === '/' || urlPath === '/index.html') {
     return serveFile(path.join(appRoot, 'public', 'index.html'), res);
@@ -46,6 +58,30 @@ const server = http.createServer((req, res) => {
   }
   if (urlPath.startsWith('/categories/')) {
     return serveFile(path.join(projectRoot, urlPath), res);
+  }
+
+  // JSON import endpoint
+  if (req.method === 'POST' && urlPath === '/api/import') {
+    try {
+      const body = await readJsonBody(req);
+      const category = String(body.category || '').trim();
+      const subcategory = String(body.subcategory || '').trim();
+      const questions = body.questions;
+      if (!category || !subcategory || !Array.isArray(questions)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'category, subcategory, and questions[] are required' }));
+      }
+      const targetDir = path.join(projectRoot, 'categories', category, subcategory);
+      fs.mkdirSync(targetDir, { recursive: true });
+      const targetFile = path.join(targetDir, 'questions.json');
+      fs.writeFileSync(targetFile, JSON.stringify(questions, null, 2) + '\n', 'utf8');
+      scan();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ ok: true, saved: targetFile }));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Import failed', detail: String(e.message || e) }));
+    }
   }
 
   // Fallback: try public first
