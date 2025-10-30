@@ -11,6 +11,11 @@
       .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
       input { width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 8px; }
       .notice { margin-top: 12px; font-size: 14px; }
+      /* Instant tooltip */
+      .tip { position: relative; display: inline-block; }
+      .tip::after { content: attr(data-tip); position: absolute; left: 50%; transform: translateX(-50%); bottom: 125%; background: #111827; color: white; padding: 8px 10px; border-radius: 6px; white-space: pre-wrap; min-width: 260px; max-width: 520px; font-size: 14px; line-height: 1.35; box-shadow: 0 6px 20px rgba(0,0,0,0.15); opacity: 0; pointer-events: none; transition: opacity 0.1s ease; z-index: 20; }
+      .tip::before { content: ""; position: absolute; left: 50%; transform: translateX(-50%); bottom: 118%; border: 6px solid transparent; border-top-color: #111827; opacity: 0; transition: opacity 0.1s ease; z-index: 20; }
+      .tip:hover::after, .tip:hover::before { opacity: 1; }
     </style>
   </head>
   <body>
@@ -29,7 +34,7 @@
       <div class="row">
         <div>
           <label>Import Token (optional if server configured)
-            <span title="Why this matters: prevents drive-by imports from other websites (CSRF) and stops anything on your machine from silently posting to this endpoint. How to use: start the server with IMPORT_TOKEN set to a secret, then paste the same value here. If no token is set on the server, leave this blank." style="cursor: help; margin-left:6px; display:inline-block; width:18px; height:18px; border-radius:50%; border:1px solid #e5e7eb; text-align:center; line-height:18px; font-weight:700; font-size:12px; background:#f9fafb;">?
+            <span class="tip" data-tip="Why this matters: prevents drive-by imports from other websites (CSRF) and stops anything on your machine from silently posting to this endpoint.\nHow to use: start the server with IMPORT_TOKEN set to a secret, then paste the same value here. If no token is set on the server, leave this blank." style="cursor: help; margin-left:6px; display:inline-block; width:18px; height:18px; border-radius:50%; border:1px solid #e5e7eb; text-align:center; line-height:18px; font-weight:700; font-size:12px; background:#f9fafb;">?
             </span>
           </label>
           <input id="token" placeholder="Set IMPORT_TOKEN env on server and paste here" />

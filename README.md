@@ -17,6 +17,10 @@ node app/server.js
 
 An AI agent (this assistant) processes the content you paste in `INTAKE_TEMPLATE.md`. It extracts or generates questions, writes JSON into `categories/<Category>/<Subcategory>/questions.json`, and refreshes counts. If you already have JSON, you can also import it directly (see Importing JSON below).
 
+#### Agent‑Powered Workflow (Cursor, etc.)
+
+If you use an agent‑powered editor like Cursor, the agent can automate: parsing your paste, generating/normalizing MCQs, writing `questions.json`, running the scanner, and clearing the input blocks in `INTAKE_TEMPLATE.md` for the next run. See the “Using an Agent‑Powered Editor” section inside `INTAKE_TEMPLATE.md`.
+
 ### Project Structure
 
 - `app/` — All app code

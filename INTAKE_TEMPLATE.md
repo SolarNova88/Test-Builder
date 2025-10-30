@@ -57,3 +57,15 @@ Paste your content here below:
 - Clear Category, Subcategory, and Source Content in this file after processing so it’s ready next time.
 
 For schema and flow, see `data/README_PROCEDURES.md`.
+
+---
+
+## Using an Agent‑Powered Editor (e.g., Cursor)
+
+This template is optimized for agent workflows. When you paste Category, Subcategory, and Source Content in an agent‑powered editor like Cursor, the agent can:
+
+- Parse your content, generate or normalize MCQs, and write JSON to `categories/<Category>/<Subcategory>/questions.json` automatically.
+- Run the scanner to update counts and refresh the UI locally.
+- Clear the three input blocks in this template after processing so it’s ready for your next paste.
+
+Benefits: faster authoring, fewer manual steps, consistent formatting, and immediate preview in the running app. If not using an agent editor, you can still paste JSON directly via the Import page or follow the procedures to create/update files manually.
