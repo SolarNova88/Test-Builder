@@ -1,0 +1,28 @@
+[
+  {
+    "id": "tcp-vs-udp",
+    "question": "Which protocol is connection-oriented?",
+    "choices": ["UDP", "TCP", "ICMP", "ARP"],
+    "answerIndex": 1,
+    "explanation": "TCP establishes a reliable, ordered, connection before data transfer.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "dns-port",
+    "question": "What is the default port number for DNS over UDP?",
+    "choices": ["25", "53", "80", "443"],
+    "answerIndex": 1,
+    "explanation": "DNS typically uses UDP/53 for queries; TCP/53 for zone transfers or large responses.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "https-tls",
+    "question": "HTTPS relies on which protocol for encryption?",
+    "choices": ["TLS", "SSH", "IPsec", "Kerberos"],
+    "answerIndex": 0,
+    "explanation": "HTTPS is HTTP over TLS.",
+    "difficulty": "easy"
+  }
+]
+
+
