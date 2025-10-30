@@ -26,6 +26,13 @@
           <input id="subcategory" placeholder="e.g., Network Protocols" />
         </div>
       </div>
+      <div class="row">
+        <div>
+          <label>Import Token (optional if server configured)</label>
+          <input id="token" placeholder="Set IMPORT_TOKEN env on server and paste here" />
+        </div>
+        <div></div>
+      </div>
       <label>Questions JSON Array</label>
       <textarea id="json" placeholder='[
   {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
@@ -48,7 +55,10 @@
         if (!Array.isArray(questions)) { notice.textContent = 'JSON must be an array'; notice.style.color = '#dc2626'; return; }
         if (!category || !subcategory) { notice.textContent = 'Category and Subcategory required'; notice.style.color = '#dc2626'; return; }
         try {
-          const res = await fetch('/api/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ category, subcategory, questions }) });
+          const token = document.getElementById('token').value.trim();
+          const headers = { 'Content-Type': 'application/json' };
+          if (token) headers['x-import-token'] = token;
+          const res = await fetch('/api/import', { method: 'POST', headers, body: JSON.stringify({ category, subcategory, questions }) });
           const json = await res.json();
           if (!res.ok) throw new Error(json.error || 'Import failed');
           notice.textContent = 'Imported successfully. Saved to: ' + json.saved;

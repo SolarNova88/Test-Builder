@@ -43,35 +43,78 @@ function readJsonBody(req) {
   });
 }
 
+function safeResolve(baseDir, relPath) {
+  const trimmed = String(relPath || '').replace(/^\/+/, '');
+  const normalized = path.normalize(trimmed);
+  const abs = path.resolve(baseDir, normalized);
+  if (!abs.startsWith(baseDir + path.sep)) return null;
+  return abs;
+}
+
+function sanitizeSegment(name) {
+  const s = String(name || '').trim();
+  if (!s) return null;
+  // Allow letters, numbers, spaces, dashes, underscores, dots
+  if (!/^[A-Za-z0-9 _.-]+$/.test(s)) return null;
+  return s;
+}
+
+const importToken = process.env.IMPORT_TOKEN || '';
+
 const server = http.createServer(async (req, res) => {
-  const urlPath = decodeURIComponent(req.url.split('?')[0]);
+  const urlPathRaw = req.url.split('?')[0];
+  const urlPath = decodeURIComponent(urlPathRaw);
   if (urlPath === '/' || urlPath === '/index.html') {
     return serveFile(path.join(appRoot, 'public', 'index.html'), res);
   }
 
   // Serve /public/* and /data/* directly
   if (urlPath.startsWith('/public/')) {
-    return serveFile(path.join(appRoot, urlPath), res);
+    const rel = urlPath.replace(/^\/public\//, '');
+    const abs = safeResolve(path.join(appRoot, 'public'), rel);
+    if (abs) return serveFile(abs, res);
   }
   if (urlPath.startsWith('/data/')) {
-    return serveFile(path.join(appRoot, urlPath), res);
+    const rel = urlPath.replace(/^\/data\//, '');
+    const abs = safeResolve(path.join(appRoot, 'data'), rel);
+    if (abs) return serveFile(abs, res);
   }
   if (urlPath.startsWith('/categories/')) {
-    return serveFile(path.join(projectRoot, urlPath), res);
+    const rel = urlPath.replace(/^\/categories\//, '');
+    const abs = safeResolve(path.join(projectRoot, 'categories'), rel);
+    if (abs) return serveFile(abs, res);
   }
 
   // JSON import endpoint
   if (req.method === 'POST' && urlPath === '/api/import') {
     try {
+      // Basic CSRF/token check if set
+      if (importToken) {
+        const sent = req.headers['x-import-token'];
+        if (sent !== importToken) {
+          res.writeHead(403, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ error: 'Forbidden' }));
+        }
+      }
+      const len = parseInt(req.headers['content-length'] || '0', 10);
+      if (len && len > 5 * 1024 * 1024) {
+        res.writeHead(413, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'Payload too large' }));
+      }
       const body = await readJsonBody(req);
-      const category = String(body.category || '').trim();
-      const subcategory = String(body.subcategory || '').trim();
+      const category = sanitizeSegment(body.category);
+      const subcategory = sanitizeSegment(body.subcategory);
       const questions = body.questions;
       if (!category || !subcategory || !Array.isArray(questions)) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ error: 'category, subcategory, and questions[] are required' }));
       }
-      const targetDir = path.join(projectRoot, 'categories', category, subcategory);
+      const base = path.join(projectRoot, 'categories');
+      const targetDir = safeResolve(base, path.join(category, subcategory));
+      if (!targetDir) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'Invalid category/subcategory' }));
+      }
       fs.mkdirSync(targetDir, { recursive: true });
       const targetFile = path.join(targetDir, 'questions.json');
       fs.writeFileSync(targetFile, JSON.stringify(questions, null, 2) + '\n', 'utf8');
@@ -85,16 +128,16 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Fallback: try public first
-  const candidate = path.join(appRoot, 'public', urlPath);
-  if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
-    return serveFile(candidate, res);
+  const absFallback = safeResolve(path.join(appRoot, 'public'), urlPath);
+  if (absFallback && fs.existsSync(absFallback) && fs.statSync(absFallback).isFile()) {
+    return serveFile(absFallback, res);
   }
 
   res.writeHead(404, { 'Content-Type': 'text/plain; charset=UTF-8' });
   res.end('Not found');
 });
 
-server.listen(port, () => {
+server.listen(port, '127.0.0.1', () => {
   console.log(`Test Builder running at http://localhost:${port}`);
 });
 
