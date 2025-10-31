@@ -13,6 +13,7 @@
         min-height: 100vh;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, sans-serif;
       }
+      .header { position: static; background: transparent; }
       .container {
         max-width: 1400px;
         width: 95%;
@@ -113,13 +114,17 @@
       }
       .notice {
         margin-top: 12px;
-        padding: 12px;
+        padding: 12px 14px;
         border-radius: 8px;
         font-size: 14px;
         line-height: 1.5;
-        position: sticky;
-        top: 0;
-        z-index: 40;
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        z-index: auto;
+        max-width: 100%;
+        display: block;
         box-shadow: 0 6px 20px rgba(0,0,0,0.08);
       }
       .notice.success {
@@ -255,6 +260,18 @@
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
           <label style="margin-bottom: 0;" id="jsonLabel">Questions JSON Array</label>
         </div>
+          <div id="showPromptCta" style="display: none; margin-bottom: 12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+              <div>
+                <button type="button" class="btn" id="clearJsonBtn" style="font-size: 12px; padding: 6px 10px;" disabled>Clear</button>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <button type="button" class="btn" id="showCopyPromptBtn" style="font-size: 13px; padding: 6px 12px;">📋 Copy ChatGPT Prompt</button>
+                <a href="https://chatgpt.com" target="_blank" class="btn" id="openChatgptBtn" style="font-size: 13px; padding: 6px 12px; display: none;">Open ChatGPT →</a>
+              </div>
+            </div>
+          </div>
+        <!--
         <div id="chatgptPrompt" style="display: none; margin-bottom: 12px; padding: 12px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px;">
           <div style="margin-bottom: 8px;">
             <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #0369a1; font-size: 13px;">
@@ -267,6 +284,7 @@
             <a href="https://chatgpt.com" target="_blank" class="btn" style="font-size: 13px; padding: 6px 12px;">Open ChatGPT →</a>
           </div>
         </div>
+        -->
         <div id="jsonWrapper" style="position: relative; min-height:300px;">
           <textarea id="json" placeholder='[
   {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
@@ -280,10 +298,8 @@
               </div>
             </div>
             <div id="overlayPasteMode" style="display:none; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
-              <div style="font-size:13px; color:#374151; margin:0;">Ready to paste ChatGPT result</div>
               <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button type="button" class="btn primary" id="btnPasteClipboard">Paste JSON from Clipboard</button>
-                <button type="button" class="btn" id="btnEnableManualPaste">Enable editor to paste manually</button>
+                <button type="button" class="btn primary" id="btnPasteClipboard">Paste JSON Data</button>
               </div>
             </div>
           </div>
@@ -320,17 +336,6 @@
       (function setActive(){
         const el = document.getElementById('nav-home');
         if (el) el.classList.add('active');
-      })();
-      // Flash notice on any update and bring into view
-      (function enhanceNotice(){
-        const n = document.getElementById('notice');
-        if (!n) return;
-        const obs = new MutationObserver(() => {
-          n.classList.add('flash');
-          try { n.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
-          setTimeout(() => n.classList.remove('flash'), 900);
-        });
-        obs.observe(n, { childList: true, attributes: true, attributeFilter: ['class'] });
       })();
       function generateToken() {
         const bytes = new Uint8Array(24);
@@ -438,31 +443,42 @@ Text content to convert:
 Output the JSON array now:`;
 
       function buildPromptWithContent() {
-        const userContent = document.getElementById('userContent').value.trim();
+        const ucEl = document.getElementById('userContent');
+        const jsonEl = document.getElementById('json');
+        const fromUc = ucEl ? ucEl.value.trim() : '';
+        const fromJson = jsonEl ? jsonEl.value.trim() : '';
+        const source = fromUc || fromJson;
         const type = document.getElementById('contentType').value;
         const tmpl = type === 'flashcards'
           ? chatgptPromptTemplateFlashcards
           : (type === 'notes' ? chatgptPromptTemplateNotes : chatgptPromptTemplateQuestions);
-        if (!userContent) {
+        if (!source) {
           return tmpl.replace('{{USER_CONTENT}}', '[PASTE YOUR STUDY MATERIAL HERE]');
         }
-        return tmpl.replace('{{USER_CONTENT}}', userContent);
+        return tmpl.replace('{{USER_CONTENT}}', source);
       }
 
       function updatePromptPreview() {
         const promptTextarea = document.getElementById('promptText');
-        promptTextarea.value = buildPromptWithContent();
+        if (promptTextarea) {
+          promptTextarea.value = buildPromptWithContent();
+        }
       }
 
       // Enable/disable Copy Prompt based on raw content presence
       (function gateCopyPrompt(){
         const raw = document.getElementById('userContent');
+        const jsonArea = document.getElementById('json');
         const copyBtn = document.getElementById('copyFullPromptBtn');
-        if (raw && copyBtn) {
-          const sync = () => { copyBtn.disabled = raw.value.trim().length === 0; };
-          raw.addEventListener('input', sync);
-          sync();
-        }
+        if (!copyBtn) return;
+        const sync = () => {
+          const a = raw ? raw.value.trim().length : 0;
+          const b = jsonArea ? jsonArea.value.trim().length : 0;
+          copyBtn.disabled = (a + b) === 0;
+        };
+        if (raw) raw.addEventListener('input', sync);
+        if (jsonArea) jsonArea.addEventListener('input', sync);
+        sync();
       })();
 
       // Overlay actions
@@ -483,16 +499,19 @@ Output the JSON array now:`;
             jsonArea.focus();
           });
         }
-        if (btnRaw && overlay && promptSection) {
+        if (btnRaw && overlay) {
           btnRaw.addEventListener('click', () => {
             overlay.style.display = 'none';
-            promptSection.style.display = 'block';
-            const uc = document.getElementById('userContent');
-            if (uc) uc.focus();
-            updatePromptPreview();
+            jsonArea.disabled = false;
+            jsonArea.style.background = 'white';
+            jsonArea.style.cursor = 'text';
+            jsonArea.focus();
+            const showPromptCta = document.getElementById('showPromptCta');
+            if (showPromptCta) showPromptCta.style.display = 'block';
+            if (promptSection) promptSection.style.display = 'none';
             const notice = document.getElementById('notice');
             if (notice) {
-              notice.textContent = 'Paste your study material, then click "Copy ChatGPT Prompt". Next, paste ChatGPT output into the JSON box to validate.';
+              notice.textContent = 'Paste your raw study material into the editor. Then click "Copy ChatGPT Prompt" to convert it, and paste the JSON back here to validate.';
               notice.className = 'notice success';
             }
           });
@@ -523,6 +542,76 @@ Output the JSON array now:`;
           jsonArea.style.cursor = 'text';
           overlay.style.display = 'none';
           jsonArea.focus();
+        });
+      })();
+
+      // Make the CTA directly copy the generated prompt (no separate panel)
+      (function bindShowPromptBtn(){
+        const showBtn = document.getElementById('showCopyPromptBtn');
+        if (!showBtn) return;
+        showBtn.addEventListener('click', async () => {
+          const fullPrompt = buildPromptWithContent();
+          try {
+            await navigator.clipboard.writeText(fullPrompt);
+            const notice = document.getElementById('notice');
+            if (notice) {
+              notice.textContent = 'Copied! Open ChatGPT and paste the prompt, then paste the JSON back here to validate.';
+              notice.className = 'notice success';
+            }
+            // Reveal the ChatGPT link to the right and animate it in
+            const chatgptLink = document.getElementById('openChatgptBtn');
+            if (chatgptLink) {
+              chatgptLink.style.display = 'inline-flex';
+              // start hidden, then animate to visible for a slide-in effect
+              chatgptLink.style.opacity = '0';
+              chatgptLink.style.transform = 'translateX(8px)';
+              chatgptLink.style.transition = 'opacity 150ms ease, transform 150ms ease';
+              requestAnimationFrame(() => {
+                chatgptLink.style.opacity = '1';
+                chatgptLink.style.transform = 'translateX(0)';
+              });
+            }
+            // Strong, local button feedback
+            const prev = showBtn.textContent;
+            showBtn.textContent = '✅ Copied!';
+            showBtn.disabled = true;
+            const prevTransition = showBtn.style.transition;
+            const prevTransform = showBtn.style.transform;
+            showBtn.style.transition = 'transform 120ms ease';
+            showBtn.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+              showBtn.style.transform = prevTransform || '';
+              showBtn.style.transition = prevTransition || '';
+              showBtn.textContent = prev;
+              showBtn.disabled = false;
+            }, 1200);
+            const overlay = document.getElementById('loadOverlay');
+            const loadMode = document.getElementById('overlayLoadMode');
+            const pasteMode = document.getElementById('overlayPasteMode');
+            if (overlay && loadMode && pasteMode) {
+              overlay.style.display = 'flex';
+              loadMode.style.display = 'none';
+              pasteMode.style.display = 'flex';
+            }
+          } catch (e) {
+            const notice = document.getElementById('notice');
+            if (notice) {
+              notice.textContent = 'Failed to copy. Please copy manually from your content.';
+              notice.className = 'notice error';
+            }
+            // Brief failure feedback on the button
+            const prev = showBtn.textContent;
+            showBtn.textContent = '❌ Copy failed';
+            const prevTransition = showBtn.style.transition;
+            const prevTransform = showBtn.style.transform;
+            showBtn.style.transition = 'transform 120ms ease';
+            showBtn.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+              showBtn.style.transform = prevTransform || '';
+              showBtn.style.transition = prevTransition || '';
+              showBtn.textContent = prev;
+            }, 1200);
+          }
         });
       })();
 
@@ -562,10 +651,12 @@ Output the JSON array now:`;
         const importBtn = document.getElementById('importBtn');
         const notice = document.getElementById('notice');
         const contentType = document.getElementById('contentType');
+        const clearBtn = document.getElementById('clearJsonBtn');
         if (!jsonArea || !importBtn || !contentType) return;
         const run = () => {
           importBtn.disabled = true;
           const raw = jsonArea.value.trim();
+          if (clearBtn) clearBtn.disabled = raw.length === 0;
           if (!raw) {
             // Reset to initial state when cleared
             const overlay = document.getElementById('loadOverlay');
@@ -578,6 +669,8 @@ Output the JSON array now:`;
             jsonArea.style.cursor = 'not-allowed';
             const promptSection = document.getElementById('chatgptPrompt');
             if (promptSection) promptSection.style.display = 'none';
+            const showPromptCta = document.getElementById('showPromptCta');
+            if (showPromptCta) showPromptCta.style.display = 'none';
             const copyBtn = document.getElementById('copyFullPromptBtn');
             if (copyBtn) copyBtn.disabled = true;
             notice.textContent = '';
@@ -599,16 +692,33 @@ Output the JSON array now:`;
                 notice.className = 'notice error';
                 importBtn.disabled = true;
               }
+              const showPromptCta = document.getElementById('showPromptCta');
+              if (showPromptCta) showPromptCta.style.display = 'none';
+              const promptSection = document.getElementById('chatgptPrompt');
+              if (promptSection) promptSection.style.display = 'none';
             } else {
-              notice.textContent = 'Validation failed: ' + errors.slice(0,3).join('; ') + (errors.length>3?' ...':'') + ' — click "Get ChatGPT Prompt" to convert raw content to valid JSON.';
+              notice.textContent = 'Validation failed: ' + errors.slice(0,3).join('; ') + (errors.length>3?' ...':'') + ' — click "Copy ChatGPT Prompt" to convert raw content to valid JSON.';
               notice.className = 'notice error';
+              const showPromptCta = document.getElementById('showPromptCta');
+              if (showPromptCta) showPromptCta.style.display = 'block';
+              const promptSection = document.getElementById('chatgptPrompt');
+              if (promptSection) promptSection.style.display = 'none';
             }
           } catch (e) {
-            notice.textContent = 'Invalid JSON — click "Get ChatGPT Prompt" to convert raw content to valid JSON.';
+            notice.textContent = 'Invalid JSON — click "Copy ChatGPT Prompt" to convert raw content to valid JSON.';
             notice.className = 'notice error';
+            const showPromptCta = document.getElementById('showPromptCta');
+            if (showPromptCta) showPromptCta.style.display = 'block';
+            const promptSection = document.getElementById('chatgptPrompt');
+            if (promptSection) promptSection.style.display = 'none';
           }
         };
         jsonArea.addEventListener('input', run);
+        if (clearBtn) clearBtn.addEventListener('click', () => {
+          jsonArea.value = '';
+          jsonArea.dispatchEvent(new Event('input'));
+          jsonArea.focus();
+        });
         const catEl = document.getElementById('category');
         const subEl = document.getElementById('subcategory');
         if (catEl) catEl.addEventListener('input', run);
@@ -657,10 +767,12 @@ Output the JSON array now:`;
 
       // ChatGPT prompt is hidden by default and only shown when user selects "Paste Raw Study Material" from the overlay
 
-      document.getElementById('copyFullPromptBtn').onclick = async (e) => {
+      const _copyFullPromptBtn = document.getElementById('copyFullPromptBtn');
+      if (_copyFullPromptBtn) _copyFullPromptBtn.onclick = async (e) => {
         const btn = e.currentTarget;
         const fullPrompt = buildPromptWithContent();
         try {
+          // Try modern clipboard API first
           await navigator.clipboard.writeText(fullPrompt);
           const notice = document.getElementById('notice');
           notice.textContent = 'Copied! Open ChatGPT and paste the prompt, then paste the JSON back here to validate.';
@@ -690,9 +802,10 @@ Output the JSON array now:`;
       };
 
       // Update preview when user types/pastes content
-      document.getElementById('userContent').addEventListener('input', () => {
-        updatePromptPreview();
-      });
+      (function bindUserContentInput(){
+        const uc = document.getElementById('userContent');
+        if (uc) uc.addEventListener('input', () => { updatePromptPreview(); });
+      })();
 
       document.getElementById('genToken').onclick = async () => {
         const tokenField = document.getElementById('token');
