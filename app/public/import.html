@@ -33,7 +33,7 @@
       }
       .row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         gap: 16px;
         margin-bottom: 16px;
       }
@@ -221,7 +221,7 @@
       
       <div class="form-section">
         <div class="row">
-          <div>
+          <div style="grid-column: 1 / -1;">
             <label>Content Type</label>
             <div class="segmented">
               <button type="button" class="btn" id="typeNotes">Notes</button>
