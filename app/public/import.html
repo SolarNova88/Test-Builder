@@ -257,7 +257,7 @@
           </div>
           <div style="display: flex; justify-content: space-between; align-items: start; gap: 12px; margin-bottom: 8px;">
             <strong style="color: #0369a1;">Complete ChatGPT Prompt (ready to paste):</strong>
-            <button class="btn primary" id="copyFullPromptBtn" style="font-size: 13px; padding: 6px 12px;">📋 Copy Full Prompt</button>
+            <button class="btn primary" id="copyFullPromptBtn" style="font-size: 13px; padding: 6px 12px;" disabled>📋 Copy Full Prompt</button>
           </div>
           <textarea id="promptText" readonly style="width: 100%; min-height: 200px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; padding: 8px; border: 1px solid #bae6fd; border-radius: 6px; background: white; resize: vertical; line-height: 1.5;"></textarea>
           <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
@@ -267,9 +267,18 @@
             <span style="font-size: 12px; color: #6b7280;">After opening, paste the complete prompt above</span>
           </div>
         </div>
-        <textarea id="json" placeholder='[
+        <div id="jsonWrapper" style="position: relative;">
+          <textarea id="json" placeholder='[
   {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
-]'></textarea>
+]' disabled style="background:#f3f4f6; cursor:not-allowed;"></textarea>
+          <div id="loadOverlay" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; background:rgba(243,244,246,0.85); border:1px dashed #c7c9cf; border-radius:8px;">
+            <div style="font-size:13px; color:#374151; margin-bottom:6px;">Choose how you want to provide content</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button type="button" class="btn primary" id="btnLoadJson">Paste Formatted JSON</button>
+              <button type="button" class="btn" id="btnLoadRaw">Paste Raw Study Material</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="bottom-actions">
@@ -292,7 +301,7 @@
         
         <div class="import-button-right">
           <a class="btn" href="/">Back</a>
-          <button class="btn primary" id="importBtn">Import</button>
+          <button class="btn primary" id="importBtn" disabled>Import</button>
         </div>
       </div>
 
@@ -425,6 +434,103 @@ Output the JSON array now:`;
         promptTextarea.value = buildPromptWithContent();
       }
 
+      // Enable/disable Copy Prompt based on raw content presence
+      (function gateCopyPrompt(){
+        const raw = document.getElementById('userContent');
+        const copyBtn = document.getElementById('copyFullPromptBtn');
+        if (raw && copyBtn) {
+          const sync = () => { copyBtn.disabled = raw.value.trim().length === 0; };
+          raw.addEventListener('input', sync);
+          sync();
+        }
+      })();
+
+      // Overlay actions
+      (function bindOverlay(){
+        const overlay = document.getElementById('loadOverlay');
+        const jsonArea = document.getElementById('json');
+        const btnJson = document.getElementById('btnLoadJson');
+        const btnRaw = document.getElementById('btnLoadRaw');
+        const promptSection = document.getElementById('chatgptPrompt');
+        if (btnJson && overlay && jsonArea) {
+          btnJson.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            jsonArea.disabled = false;
+            jsonArea.style.background = 'white';
+            jsonArea.style.cursor = 'text';
+            jsonArea.focus();
+          });
+        }
+        if (btnRaw && overlay && promptSection) {
+          btnRaw.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            promptSection.style.display = 'block';
+            const uc = document.getElementById('userContent');
+            if (uc) uc.focus();
+            updatePromptPreview();
+          });
+        }
+      })();
+
+      // Schema validators per content type
+      function validateArrayForType(type, data) {
+        if (!Array.isArray(data)) return { valid:false, errors:['Root must be a JSON array'] };
+        const errors = [];
+        if (type === 'flashcards') {
+          data.forEach((c, i) => {
+            if (!c || typeof c !== 'object') errors.push(`Item ${i}: must be object`);
+            if (!c.id || typeof c.id !== 'string') errors.push(`Item ${i}: missing id`);
+            if (!c.term || typeof c.term !== 'string') errors.push(`Item ${i}: missing term`);
+            if (!c.definition || typeof c.definition !== 'string') errors.push(`Item ${i}: missing definition`);
+          });
+        } else if (type === 'notes') {
+          data.forEach((n, i) => {
+            if (!n || typeof n !== 'object') errors.push(`Item ${i}: must be object`);
+            if (!n.title || typeof n.title !== 'string') errors.push(`Item ${i}: missing title`);
+            if (!n.slug || typeof n.slug !== 'string') errors.push(`Item ${i}: missing slug`);
+            if (!n.markdown || typeof n.markdown !== 'string') errors.push(`Item ${i}: missing markdown`);
+          });
+        } else { // questions
+          data.forEach((q, i) => {
+            if (!q || typeof q !== 'object') errors.push(`Item ${i}: must be object`);
+            if (!q.id || typeof q.id !== 'string') errors.push(`Item ${i}: missing id`);
+            if (!q.question || typeof q.question !== 'string') errors.push(`Item ${i}: missing question`);
+            if (!Array.isArray(q.choices) || q.choices.length < 2 || q.choices.length > 6) errors.push(`Item ${i}: choices 2-6 required`);
+            if (typeof q.answerIndex !== 'number' || q.answerIndex < 0 || q.answerIndex >= (q.choices ? q.choices.length : 0)) errors.push(`Item ${i}: invalid answerIndex`);
+          });
+        }
+        return { valid: errors.length === 0, errors };
+      }
+
+      // Gate Import button based on JSON validity
+      (function bindValidation(){
+        const jsonArea = document.getElementById('json');
+        const importBtn = document.getElementById('importBtn');
+        const notice = document.getElementById('notice');
+        const contentType = document.getElementById('contentType');
+        if (!jsonArea || !importBtn || !contentType) return;
+        const run = () => {
+          importBtn.disabled = true;
+          const raw = jsonArea.value.trim();
+          if (!raw) return;
+          try {
+            const data = JSON.parse(raw);
+            const { valid, errors } = validateArrayForType(contentType.value, data);
+            if (valid) {
+              notice.textContent = 'Data validated — ready to import.';
+              notice.className = 'notice success';
+              importBtn.disabled = false;
+            } else {
+              notice.textContent = 'Validation failed: ' + errors.slice(0,3).join('; ') + (errors.length>3?' ...':'') + ' — click "Get ChatGPT Prompt" to convert raw content to valid JSON.';
+              notice.className = 'notice error';
+            }
+          } catch (e) {
+            notice.textContent = 'Invalid JSON — click "Get ChatGPT Prompt" to convert raw content to valid JSON.';
+            notice.className = 'notice error';
+          }
+        };
+        jsonArea.addEventListener('input', run);
+      })();
       // Wire segmented buttons to set content type and update UI
       function setContentType(type) {
         const hidden = document.getElementById('contentType');
