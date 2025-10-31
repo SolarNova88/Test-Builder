@@ -595,17 +595,22 @@ Output the JSON array now:`;
 
       // ChatGPT prompt is hidden by default and only shown when user selects "Paste Raw Study Material" from the overlay
 
-      document.getElementById('copyFullPromptBtn').onclick = async () => {
+      document.getElementById('copyFullPromptBtn').onclick = async (e) => {
+        const btn = e.currentTarget;
         const fullPrompt = buildPromptWithContent();
         try {
           await navigator.clipboard.writeText(fullPrompt);
           const notice = document.getElementById('notice');
-          notice.textContent = 'Complete prompt (with your content) copied to clipboard! Open ChatGPT and paste it.';
+          notice.textContent = 'Copied! Open ChatGPT and paste the prompt, then paste the JSON back here to validate.';
           notice.className = 'notice success';
+          const prev = btn.textContent;
+          btn.textContent = '✅ Copied!';
+          btn.disabled = true;
+          setTimeout(() => { btn.textContent = prev; btn.disabled = false; }, 1500);
         } catch (e) {
           console.error('Failed to copy:', e);
           const notice = document.getElementById('notice');
-          notice.textContent = 'Failed to copy. Please copy manually from the textarea above.';
+          notice.textContent = 'Failed to copy. Please copy manually from the generated prompt.';
           notice.className = 'notice error';
         }
       };
