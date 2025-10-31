@@ -22,24 +22,52 @@ async function loadIndex() {
   state.index = await res.json();
 }
 
+function getTopGroupsFromIndex(idx) {
+  const cats = Object.keys(idx.categories || {});
+  return cats.map(cat => {
+    const subs = idx.categories[cat] || {};
+    const total = Object.values(subs).reduce((a, b) => a + (b.count || 0), 0);
+    return { key: cat, label: cat, totalCount: total, subKeys: Object.keys(subs) };
+  }).sort((a, b) => a.label.localeCompare(b.label));
+}
+
+function getSubGroupsFromIndex(idx, category) {
+  const subs = (idx.categories && idx.categories[category]) || {};
+  return Object.keys(subs).map(sub => ({ key: sub, label: sub, count: subs[sub]?.count || 0 }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
 function renderCategories() {
   quizEl.classList.add('hidden');
   navEl.classList.remove('hidden');
-  const cats = Object.keys(state.index.categories);
+  const groups = getTopGroupsFromIndex(state.index);
   navEl.innerHTML = `
-    <h2 style="margin-top:0">Categories</h2>
-    <div class="grid">
-      ${cats.map(cat => {
-        const sub = state.index.categories[cat];
-        const total = Object.values(sub).reduce((a,b)=>a + (b.count||0), 0);
-        return `<div class="card" data-cat="${cat}">
-          <div style="font-weight:600">${cat}</div>
-          <div class="muted">${total} total questions</div>
-        </div>`;
-      }).join('')}
+    <h2 style="margin-top:0">Subjects</h2>
+    <div class="panel">
+      <div class="grid">
+        ${groups.map(g => `
+          <div class="card" data-cat="${g.key}">
+            <div style="font-weight:600; text-transform:capitalize;">${g.label}</div>
+            <div class="muted">${g.totalCount} total questions</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="panel" style="margin-top:12px;">
+      <div style="font-weight:600; margin-bottom:6px;">Preview</div>
+      <div class="grid">
+        ${groups.map(g => `
+          <div class="panel" style="cursor: default;">
+            <div class="muted" style="text-transform: capitalize;">${g.label}</div>
+            <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+              ${getSubGroupsFromIndex(state.index, g.key).map(sg => `<div class=\"muted\" style=\"text-transform: capitalize;\">• ${sg.label} (${sg.count})</div>`).join('') || '<div class=\"muted\">No subtopics</div>'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
     </div>
   `;
-  navEl.querySelectorAll('.card').forEach(el => {
+  navEl.querySelectorAll('[data-cat]').forEach(el => {
     el.addEventListener('click', () => {
       const cat = el.getAttribute('data-cat');
       renderSubcategories(cat);
@@ -73,6 +101,17 @@ function renderSubcategories(category) {
           </div>
         </div>`;
       }).join('')}
+    </div>
+    <div class="panel" style="margin-top:12px;">
+      <div class="muted" style="margin-bottom:6px;">Preview</div>
+      <div class="grid">
+        <div class="panel" style="cursor: default;">
+          <div class="muted" style="text-transform: capitalize;">${category}</div>
+          <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+            ${getSubGroupsFromIndex(state.index, category).map(sg => `<div class=\"muted\" style=\"text-transform: capitalize;\">• ${sg.label} (${sg.count})</div>`).join('') || '<div class=\"muted\">No subtopics</div>'}
+          </div>
+        </div>
+      </div>
     </div>
   `;
   document.getElementById('backRoot').onclick = renderCategories;
