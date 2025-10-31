@@ -38,6 +38,18 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 
 /* Steps */
 .steps { display:flex; flex-direction:column; gap:10px; margin-top:10px; }
+.hero-steps { display:grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 18px; }
+@media (max-width: 900px) { .hero-steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .hero-steps { grid-template-columns: 1fr; } }
+.hero-steps .step { display:flex; flex-direction: column; align-items: center; text-align: center; }
+.hero-steps .step-num { margin-bottom: 4px; }
+.hero-steps .step-body { display:flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 140px; }
+@media (max-width: 900px) { .hero-steps .step-body { min-height: 120px; } }
+@media (max-width: 560px) { .hero-steps .step-body { min-height: unset; } }
+.hero-steps .step-title, .hero-steps .step-text { text-align: center; }
+.hero-steps .step-text { margin: 0; }
+.hero-steps .step-icon { margin-top: 4px; text-align: center; color: #6b7280; opacity: 0.95; }
+.hero-steps .step-icon svg { width: 24px; height: 24px; display: inline-block; }
 .step { display:flex; gap:10px; }
 .step-num { width:24px; height:24px; border-radius:999px; background: var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex: 0 0 24px; }
 .step-body { flex:1; }
