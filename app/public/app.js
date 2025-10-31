@@ -16,7 +16,8 @@ let state = {
 };
 
 async function loadIndex() {
-  const res = await fetch('/data/index.json');
+  // Add cache-busting to always get the latest index
+  const res = await fetch(`/data/index.json?t=${Date.now()}`);
   if (!res.ok) throw new Error('Failed to load index');
   state.index = await res.json();
 }

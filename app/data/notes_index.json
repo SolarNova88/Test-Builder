@@ -71,6 +71,10 @@
     "DevOps": {
       "Docker": [
         {
+          "title": "00-architecture-and-history",
+          "path": "/notes/DevOps/Docker/00-architecture-and-history.md"
+        },
+        {
           "title": "01-fundamentals",
           "path": "/notes/DevOps/Docker/01-fundamentals.md"
         },
@@ -85,6 +89,10 @@
       ],
       "Kubernetes": [
         {
+          "title": "00-architecture-and-history",
+          "path": "/notes/DevOps/Kubernetes/00-architecture-and-history.md"
+        },
+        {
           "title": "01-fundamentals",
           "path": "/notes/DevOps/Kubernetes/01-fundamentals.md"
         },
@@ -95,9 +103,13 @@
         {
           "title": "03-advanced-scenarios",
           "path": "/notes/DevOps/Kubernetes/03-advanced-scenarios.md"
+        },
+        {
+          "title": "overview",
+          "path": "/notes/DevOps/Kubernetes/overview.md"
         }
       ]
     }
   },
-  "generatedAt": "2025-10-30T22:23:46.428Z"
+  "generatedAt": "2025-10-31T02:00:28.689Z"
 }

@@ -4,14 +4,21 @@ This section contains comprehensive Docker notes covering fundamentals through a
 
 ## Contents
 
-1. **Docker Fundamentals** (`01-fundamentals.md`)
+1. **Docker Architecture and History** (`00-architecture-and-history.md`)
+   - The problem before containers ("works on my machine")
+   - Evolution of containerization (chroot, LXC, Docker)
+   - Docker architecture deep dive (engine, layers, networking, storage)
+   - Design principles and reasoning
+   - Container ecosystem (OCI, runtimes)
+
+2. **Docker Fundamentals** (`01-fundamentals.md`)
    - What Docker is and why it matters
    - Core concepts: Images, Containers, Dockerfiles
    - Building, running, volumes, networks
    - Health checks, resource limits
    - Best practices
 
-2. **Docker Advanced Topics** (`02-advanced.md`)
+3. **Docker Advanced Topics** (`02-advanced.md`)
    - Multi-stage builds
    - Docker Compose
    - Layer caching strategies

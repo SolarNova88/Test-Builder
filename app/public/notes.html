@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Notes - Test Builder</title>
     <link rel="stylesheet" href="/public/styles.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
       .toc a { text-decoration: none; color: #111827; }
       .toc a:hover { text-decoration: underline; }
@@ -15,11 +16,33 @@
       .md h3 { font-size: 18px; margin: 14px 0 6px; }
       .md p { margin: 8px 0; line-height: 1.5; }
       .md ul, .md ol { margin: 8px 0 8px 22px; }
-      #content { max-width: 100%; overflow-x: hidden; box-sizing: border-box; }
+      #content { max-width: 100%; overflow-x: visible; box-sizing: border-box; }
       .md { max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; box-sizing: border-box; }
-      .md code { background: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; word-break: break-word; max-width: 100%; overflow-wrap: break-word; }
-      .md pre { background: #0b1021; color: #e5e7eb; padding: 12px; border-radius: 8px; overflow-x: auto; max-width: 100%; box-sizing: border-box; display: block; width: 100%; }
-      .md pre code { background: transparent; padding: 0; white-space: pre; word-wrap: normal; overflow-wrap: normal; display: block; max-width: 100%; overflow-x: auto; }
+      .md code { background: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 14px; word-break: break-word; max-width: 100%; overflow-wrap: break-word; }
+      .md pre { background: #2d2d2d; color: #cccccc; padding: 12px; border-radius: 8px; overflow-x: auto; overflow-y: hidden; max-width: 100%; box-sizing: border-box; display: block; width: 100%; font-size: 14px; }
+      .md pre code { background: transparent; padding: 0; white-space: pre; word-wrap: normal; overflow-wrap: normal; display: block; font-size: 14px; color: inherit; }
+      /* ASCII art diagrams - must NOT wrap to preserve alignment, but smaller font and smooth scroll */
+      .md pre.language-text { 
+        overflow-x: auto;
+        overflow-y: visible;
+        width: 100%;
+        white-space: pre !important; /* Must preserve exact spacing */
+        font-size: 12px !important; /* Smaller font so more fits */
+      }
+      .md pre code[class*="language-text"] { 
+        /* ASCII art must NOT wrap - preserve exact character positions */
+        white-space: pre !important; 
+        word-wrap: normal !important;
+        overflow-wrap: normal !important;
+        word-break: normal !important;
+        display: block;
+        width: max-content; /* Allow content to be wider than container */
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+        line-height: 1.2;
+        font-size: 12px !important;
+      }
+      /* Override Prism colors if needed */
+      .md pre[class*="language-"] { margin: 16px 0; }
       .md table { width: 100%; max-width: 100%; border-collapse: collapse; margin: 16px 0; table-layout: fixed; box-sizing: border-box; }
       .md table td, .md table th { padding: 8px; border: 1px solid #e5e7eb; word-break: break-word; overflow-wrap: break-word; }
     </style>
@@ -92,15 +115,34 @@
                 <div class="toc">${headingsToc}</div>
               </div>
             </aside>
-            <article style="flex:3 1 520px; min-width:0; max-width:900px; overflow:hidden; box-sizing:border-box;">
+            <article style="flex:3 1 520px; min-width:0; max-width:900px; box-sizing:border-box;">
               <div class="note md" style="width:100%; max-width:100%; box-sizing:border-box;">${html}</div>
             </article>
           </div>`;
+        // Apply syntax highlighting with Prism (skip text/ASCII art blocks)
+        if (window.Prism) {
+          contentEl.querySelectorAll('pre code[class*="language-"]').forEach(block => {
+            // Don't highlight text/ASCII art blocks - they need exact formatting preserved
+            if (!block.classList.contains('language-text')) {
+              window.Prism.highlightElement(block);
+            }
+          });
+        }
       }
       function markdownToHtml(md) {
         function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-        // code fences
-        md = md.replace(/```([\s\S]*?)```/g, (_, code) => `<pre><code>${esc(code)}</code></pre>`);
+        // code fences with language support
+        md = md.replace(/```(\w+)?\s*\n([\s\S]*?)```/g, (_, lang, code) => {
+          // For text/ASCII art, preserve all whitespace including leading/trailing newlines
+          let processed = lang === 'text' ? code : code.trim();
+          // Ensure newlines are preserved (already are, but be explicit)
+          processed = processed.replace(/\r\n/g, '\n'); // Normalize line endings
+          if (lang) {
+            const langClass = ` class="language-${lang}"`;
+            return `<pre${langClass}><code${langClass}>${esc(processed)}</code></pre>`;
+          }
+          return `<pre><code>${esc(processed)}</code></pre>`;
+        });
         // headings
         md = md.replace(/^######\s+(.*)$/gm, '<h6>$1</h6>')
                .replace(/^#####\s+(.*)$/gm, '<h5>$1</h5>')
@@ -132,6 +174,23 @@
         return Array.from(hs).map(h => `<div style="margin-left:${(parseInt(h.tagName[1])-1)*8}px"><a href="#${h.id}">${escapeHtml(h.textContent)}</a></div>`).join('');
       }
       function escapeHtml(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+      // Load Prism.js for syntax highlighting
+      const prismScript = document.createElement('script');
+      prismScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js';
+      prismScript.onload = () => {
+        // Load common languages
+        const langs = ['yaml', 'json', 'bash', 'javascript', 'python', 'go', 'dockerfile', 'markdown'];
+        langs.forEach(lang => {
+          const script = document.createElement('script');
+          script.src = `https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-${lang}.min.js`;
+          document.head.appendChild(script);
+        });
+      };
+      prismScript.onerror = () => {
+        console.warn('Prism.js failed to load, syntax highlighting disabled');
+      };
+      document.head.appendChild(prismScript);
+      // Initialize app (don't wait for Prism)
       (async function(){
         const idx = await loadIndex();
         if (idx) renderTOC(idx);
