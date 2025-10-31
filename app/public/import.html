@@ -117,6 +117,10 @@
         border-radius: 8px;
         font-size: 14px;
         line-height: 1.5;
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
       }
       .notice.success {
         background-color: #ecfdf5;
@@ -128,6 +132,12 @@
         color: #991b1b;
         border: 1px solid #fecaca;
       }
+      @keyframes flashPop {
+        0% { transform: scale(0.98); box-shadow: 0 0 0 rgba(0,0,0,0); }
+        30% { transform: scale(1.01); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        100% { transform: scale(1); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+      }
+      .notice.flash { animation: flashPop 900ms ease-out; }
       /* Instant tooltip */
       .tip {
         position: relative;
@@ -310,6 +320,17 @@
       (function setActive(){
         const el = document.getElementById('nav-home');
         if (el) el.classList.add('active');
+      })();
+      // Flash notice on any update and bring into view
+      (function enhanceNotice(){
+        const n = document.getElementById('notice');
+        if (!n) return;
+        const obs = new MutationObserver(() => {
+          n.classList.add('flash');
+          try { n.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
+          setTimeout(() => n.classList.remove('flash'), 900);
+        });
+        obs.observe(n, { childList: true, attributes: true, attributeFilter: ['class'] });
       })();
       function generateToken() {
         const bytes = new Uint8Array(24);
