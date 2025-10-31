@@ -227,7 +227,7 @@
           <a id="nav-tests" class="btn" href="/public/index.html#tests">Tests</a>
         </nav>
         <div class="nav-right">
-          <a class="btn primary" href="/public/import.html">+ Import JSON</a>
+          <a class="btn primary" href="/public/import.html">Import Content</a>
         </div>
       </div>
     </header>
@@ -311,7 +311,7 @@
           <div class="token-section">
             <label>
               Import Token (optional if server configured)
-              <span class="tip tip-icon" data-tip="Why this matters: prevents drive-by imports from other websites (CSRF) and stops anything on your machine from silently posting to this endpoint.&#10;&#10;How to use: start the server with IMPORT_TOKEN set to a secret, then paste the same value here. If no token is set on the server, leave this blank.">?</span>
+              <span class="tip tip-icon" data-tip="What this does: protects the import endpoint so only you can use it.&#10;&#10;Set it up (one-time):&#10;1) Create a file named .env in the project root (if it doesn’t exist).&#10;2) Add a line: IMPORT_TOKEN=your-secret-here&#10;3) Save the file and restart the server.&#10;&#10;Use it here (each import): Paste the same token value into this field so the server accepts your import. If your server isn’t using a token, leave this blank.">?</span>
             </label>
             <div class="token-controls">
               <div class="token-input-group">
@@ -507,7 +507,7 @@ Output the JSON array now:`;
             jsonArea.style.cursor = 'text';
             jsonArea.focus();
             const showPromptCta = document.getElementById('showPromptCta');
-            if (showPromptCta) showPromptCta.style.display = 'block';
+            if (showPromptCta) showPromptCta.style.display = 'none';
             if (promptSection) promptSection.style.display = 'none';
             const notice = document.getElementById('notice');
             if (notice) {

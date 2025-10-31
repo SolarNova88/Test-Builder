@@ -71,7 +71,7 @@ function renderTopGroups() {
   }
   const groups = getTopGroups(decks);
   navEl.innerHTML = `
-    <h2 style="margin-top:0">Topics</h2>
+    <h2 style="margin-top:0">Subjects</h2>
     <div class="panel">
       <div class="grid">
       ${groups.map(g => `
@@ -112,7 +112,7 @@ function renderSubGroups(group) {
   navEl.classList.remove('hidden');
   navEl.innerHTML = `
     <div class="toolbar" style="margin-bottom:12px;">
-      <button class="btn" id="fc-back-topics">← Topics</button>
+      <button class="btn" id="fc-back-topics">← Subjects</button>
     </div>
     <div class="panel">
       <div style="font-weight:600; margin-bottom:6px; text-transform: capitalize;">${group.label}</div>
