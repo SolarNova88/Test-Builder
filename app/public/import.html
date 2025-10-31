@@ -262,10 +262,19 @@
   {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
 ]' disabled style="background:#f3f4f6; cursor:not-allowed;"></textarea>
           <div id="loadOverlay" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; background:rgba(243,244,246,0.85); border:1px dashed #c7c9cf; border-radius:8px;">
-            <div style="font-size:13px; color:#374151; margin:0;">Choose how you want to provide content</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button type="button" class="btn primary" id="btnLoadJson">Paste Formatted JSON</button>
-              <button type="button" class="btn" id="btnLoadRaw">Paste Raw Study Material</button>
+            <div id="overlayLoadMode" style="display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
+              <div style="font-size:13px; color:#374151; margin:0;">Choose how you want to provide content</div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="btn primary" id="btnLoadJson">Paste Formatted JSON</button>
+                <button type="button" class="btn" id="btnLoadRaw">Paste Raw Study Material</button>
+              </div>
+            </div>
+            <div id="overlayPasteMode" style="display:none; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
+              <div style="font-size:13px; color:#374151; margin:0;">Ready to paste ChatGPT result</div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="btn primary" id="btnPasteClipboard">Paste JSON from Clipboard</button>
+                <button type="button" class="btn" id="btnEnableManualPaste">Enable editor to paste manually</button>
+              </div>
             </div>
           </div>
         </div>
@@ -442,6 +451,8 @@ Output the JSON array now:`;
         const btnJson = document.getElementById('btnLoadJson');
         const btnRaw = document.getElementById('btnLoadRaw');
         const promptSection = document.getElementById('chatgptPrompt');
+        const loadMode = document.getElementById('overlayLoadMode');
+        const pasteMode = document.getElementById('overlayPasteMode');
         if (btnJson && overlay && jsonArea) {
           btnJson.addEventListener('click', () => {
             overlay.style.display = 'none';
@@ -465,6 +476,33 @@ Output the JSON array now:`;
             }
           });
         }
+        // Paste mode handlers
+        const pasteBtn = document.getElementById('btnPasteClipboard');
+        const manualBtn = document.getElementById('btnEnableManualPaste');
+        if (pasteBtn) pasteBtn.addEventListener('click', async () => {
+          try {
+            const text = await navigator.clipboard.readText();
+            if (!text) throw new Error('Clipboard empty');
+            jsonArea.value = text;
+            jsonArea.disabled = false;
+            jsonArea.style.background = 'white';
+            jsonArea.style.cursor = 'text';
+            overlay.style.display = 'none';
+            jsonArea.focus();
+            jsonArea.dispatchEvent(new Event('input'));
+          } catch (e) {
+            const notice = document.getElementById('notice');
+            notice.textContent = 'Could not read from clipboard. Enable editor to paste manually.';
+            notice.className = 'notice error';
+          }
+        });
+        if (manualBtn) manualBtn.addEventListener('click', () => {
+          jsonArea.disabled = false;
+          jsonArea.style.background = 'white';
+          jsonArea.style.cursor = 'text';
+          overlay.style.display = 'none';
+          jsonArea.focus();
+        });
       })();
 
       // Schema validators per content type
@@ -511,6 +549,9 @@ Output the JSON array now:`;
             // Reset to initial state when cleared
             const overlay = document.getElementById('loadOverlay');
             if (overlay) overlay.style.display = 'flex';
+            const loadMode = document.getElementById('overlayLoadMode');
+            const pasteMode = document.getElementById('overlayPasteMode');
+            if (loadMode && pasteMode) { loadMode.style.display = 'flex'; pasteMode.style.display = 'none'; }
             jsonArea.disabled = true;
             jsonArea.style.background = '#f3f4f6';
             jsonArea.style.cursor = 'not-allowed';
@@ -607,6 +648,18 @@ Output the JSON array now:`;
           btn.textContent = '✅ Copied!';
           btn.disabled = true;
           setTimeout(() => { btn.textContent = prev; btn.disabled = false; }, 1500);
+          // Switch overlay into Paste mode for easy return path
+          const overlay = document.getElementById('loadOverlay');
+          const loadMode = document.getElementById('overlayLoadMode');
+          const pasteMode = document.getElementById('overlayPasteMode');
+          if (overlay && loadMode && pasteMode) {
+            overlay.style.display = 'flex';
+            loadMode.style.display = 'none';
+            pasteMode.style.display = 'flex';
+          }
+          // Hide prompt panel to reduce noise
+          const promptSection = document.getElementById('chatgptPrompt');
+          if (promptSection) promptSection.style.display = 'none';
         } catch (e) {
           console.error('Failed to copy:', e);
           const notice = document.getElementById('notice');
