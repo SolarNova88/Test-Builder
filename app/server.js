@@ -4,6 +4,7 @@ const path = require('path');
 
 const port = process.env.PORT || 8080;
 const { scan } = require('./tools/scan');
+const { scan: scanFlashcards } = require('./tools/flashcards_scan');
 // Minimal .env loader (no external deps)
 try {
   const envPath = path.join(path.join(__dirname, '..'), '.env');
@@ -71,8 +72,8 @@ function safeResolve(baseDir, relPath) {
 function sanitizeSegment(name) {
   const s = String(name || '').trim();
   if (!s) return null;
-  // Allow letters, numbers, spaces, dashes, underscores, dots
-  if (!/^[A-Za-z0-9 _.-]+$/.test(s)) return null;
+  // Allow letters, numbers, spaces, dashes, underscores, dots, commas, ampersands
+  if (!/^[A-Za-z0-9 _.,&-]+$/.test(s)) return null;
   return s;
 }
 
@@ -148,6 +149,56 @@ const server = http.createServer(async (req, res) => {
     } catch (e) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ error: 'Import failed', detail: String(e.message || e) }));
+    }
+  }
+
+  // Flashcards import endpoint
+  if (req.method === 'POST' && urlPath === '/api/import-flashcards') {
+    try {
+      if (importToken) {
+        const sent = req.headers['x-import-token'];
+        if (sent !== importToken) {
+          res.writeHead(403, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ error: 'Forbidden: Invalid or missing import token.' }));
+        }
+      }
+      const len = parseInt(req.headers['content-length'] || '0', 10);
+      if (len && len > 5 * 1024 * 1024) {
+        res.writeHead(413, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'Payload too large' }));
+      }
+      const body = await readJsonBody(req);
+      const category = sanitizeSegment(body.category);
+      const subcategory = sanitizeSegment(body.subcategory);
+      const cards = body.cards;
+      if (!category || !subcategory || !Array.isArray(cards)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'category, subcategory, and cards[] are required' }));
+      }
+      // Validate minimal card shape
+      for (const c of cards) {
+        if (!c || typeof c.term !== 'string' || typeof c.definition !== 'string') {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ error: 'Each card must include string fields: term and definition' }));
+        }
+      }
+      const base = path.join(appRoot, 'data', 'flashcards');
+      const targetDir = safeResolve(base, path.join(category));
+      if (!targetDir) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'Invalid category' }));
+      }
+      fs.mkdirSync(targetDir, { recursive: true });
+      const fileName = `${subcategory}.json`;
+      const targetFile = path.join(targetDir, fileName);
+      fs.writeFileSync(targetFile, JSON.stringify(cards, null, 2) + '\n', 'utf8');
+      // Rebuild flashcards index
+      scanFlashcards();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ ok: true, saved: targetFile }));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Flashcards import failed', detail: String(e.message || e) }));
     }
   }
 

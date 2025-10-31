@@ -49,20 +49,52 @@
   </head>
   <body>
     <div class="app">
-      <header class="header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <h1 style="margin:0">Notes</h1>
-        <nav>
-          <a class="btn" href="/">← Back</a>
-        </nav>
+      <header class="header">
+        <div class="nav-bar">
+          <div class="nav-left">
+            <a href="/public/index.html" class="brand" title="Home">
+              <span class="logo-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 7l9-4 9 4-9 4-9-4z" fill="currentColor" style="color: var(--accent);"/>
+                  <path d="M5 10v6c0 .6.4 1 1 1l6 3 6-3c.6 0 1-.4 1-1v-6" stroke="#4B5563" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="brand-text"><span class="accent">Study</span> Buddy</span>
+            </a>
+          </div>
+          <nav class="nav-center">
+            <a id="nav-home" class="btn" href="/public/index.html">Home</a>
+            <a id="nav-notes" class="btn" href="/public/notes.html">Notes</a>
+            <a id="nav-flash" class="btn" href="/public/flashcards.html">Flashcards</a>
+            <a id="nav-tests" class="btn" href="/public/index.html#tests">Tests</a>
+          </nav>
+          <div class="nav-right">
+            <a class="btn primary" href="/public/import.html" title="Paste JSON to add questions">+ Import JSON</a>
+          </div>
+        </div>
       </header>
       <main class="main">
-        <section id="toc" class="panel fade"></section>
+        <section id="notes-landing" class="panel fade hidden"></section>
+        <section id="toc" class="panel fade hidden"></section>
         <section id="content" class="panel fade hidden"></section>
       </main>
     </div>
+    <script>
+      (function setActive(){
+        const el = document.getElementById('nav-notes');
+        if (el) el.classList.add('active');
+      })();
+    </script>
     <script type="module">
+      const landingEl = document.getElementById('notes-landing');
       const tocEl = document.getElementById('toc');
       const contentEl = document.getElementById('content');
+      function getQuery() {
+        const p = new URLSearchParams(location.search);
+        const cat = p.get('cat');
+        const sub = p.get('sub');
+        return { cat, sub };
+      }
       async function loadIndex() {
         const res = await fetch('/data/notes_index.json');
         if (!res.ok) {
@@ -71,15 +103,20 @@
         }
         return await res.json();
       }
-      function renderTOC(idx) {
-        const cats = Object.keys(idx.notes);
+      function renderTOC(idx, filterCat, filterSub) {
+        const cats = filterCat ? [filterCat] : Object.keys(idx.notes);
+        const title = filterCat ? `${filterCat}${filterSub ? ' / ' + filterSub : ''}` : 'Table of Contents';
         tocEl.innerHTML = `
-          <h2 style="margin-top:0">Table of Contents</h2>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <h2 style="margin:0">${title}</h2>
+            ${filterCat ? `<a class="btn" href="/public/notes.html">← All Subjects</a>` : ''}
+          </div>
           ${cats.map(cat => {
-            const subs = Object.keys(idx.notes[cat] || {});
+            const subsAll = Object.keys(idx.notes[cat] || {});
+            const subs = filterSub ? subsAll.filter(s => s === filterSub) : subsAll;
             return `<div style="margin-bottom:10px">
-              <div style="font-weight:700">${cat}</div>
-              <div style="margin-left:10px">
+              ${filterCat ? '' : `<div style=\"font-weight:700\">${cat}</div>`}
+              <div style="margin-left:${filterCat ? '0' : '10px'}">
                 ${subs.map(sub => {
                   const files = idx.notes[cat][sub] || [];
                   return `<div style="margin:6px 0">
@@ -100,6 +137,30 @@
             await showNote(p);
           });
         });
+      }
+
+      function renderLanding(idx) {
+        const notes = idx.notes || {};
+        const cats = Object.keys(notes);
+        landingEl.classList.remove('hidden');
+        tocEl.classList.add('hidden');
+        contentEl.classList.add('hidden');
+        landingEl.innerHTML = `
+          <h2 style="margin-top:0">Subjects</h2>
+          <div class="grid">
+            ${cats.map(cat => {
+              const subs = Object.keys(notes[cat] || {});
+              const count = subs.reduce((a,s)=> a + (notes[cat][s]?.length||0), 0);
+              return `<div class="card">
+                <div style="font-weight:600; text-transform:capitalize;">${cat}</div>
+                <div class="muted" style="margin:4px 0 8px 0;">${count} note(s)</div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  ${subs.map(sub => `<a class=\"btn\" href=\"/public/notes.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}\">${sub}</a>`).join('')}
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        `;
       }
       async function showNote(p) {
         const res = await fetch(p);
@@ -193,7 +254,15 @@
       // Initialize app (don't wait for Prism)
       (async function(){
         const idx = await loadIndex();
-        if (idx) renderTOC(idx);
+        if (!idx) return;
+        const { cat, sub } = getQuery();
+        if (cat || sub) {
+          landingEl.classList.add('hidden');
+          tocEl.classList.remove('hidden');
+          renderTOC(idx, cat || null, sub || null);
+        } else {
+          renderLanding(idx);
+        }
       })();
     </script>
   </body>

@@ -93,6 +93,7 @@
         align-items: center;
         gap: 8px;
       }
+      .segmented { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
       .bottom-actions {
         margin-top: 24px;
         display: flex;
@@ -191,11 +192,44 @@
     </style>
   </head>
   <body>
+    <header class="header">
+      <div class="nav-bar" style="max-width:1400px; margin:0 auto; padding:0 8px;">
+        <div class="nav-left">
+          <a href="/public/index.html" class="brand" title="Home">
+            <span class="logo-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 7l9-4 9 4-9 4-9-4z" fill="currentColor" style="color: var(--accent);"/>
+                <path d="M5 10v6c0 .6.4 1 1 1l6 3 6-3c.6 0 1-.4 1-1v-6" stroke="#4B5563" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="brand-text"><span class="accent">Study</span> Buddy</span>
+          </a>
+        </div>
+        <nav class="nav-center">
+          <a id="nav-home" class="btn" href="/public/index.html">Home</a>
+          <a id="nav-notes" class="btn" href="/public/notes.html">Notes</a>
+          <a id="nav-flash" class="btn" href="/public/flashcards.html">Flashcards</a>
+          <a id="nav-tests" class="btn" href="/public/index.html#tests">Tests</a>
+        </nav>
+        <div class="nav-right">
+          <a class="btn primary" href="/public/import.html">+ Import JSON</a>
+        </div>
+      </div>
+    </header>
     <div class="container">
-      <h2>Import Questions (JSON)</h2>
+      <h2>Import Content (Questions or Flashcards)</h2>
       
       <div class="form-section">
         <div class="row">
+          <div>
+            <label>Content Type</label>
+            <div class="segmented">
+              <button type="button" class="btn" id="typeNotes">Notes</button>
+              <button type="button" class="btn primary" id="typeQuestions">Questions</button>
+              <button type="button" class="btn" id="typeFlashcards">Flashcards</button>
+            </div>
+            <input type="hidden" id="contentType" value="questions" />
+          </div>
           <div>
             <label>Category</label>
             <input id="category" placeholder="e.g., Computer Science" />
@@ -209,7 +243,7 @@
 
       <div class="form-section">
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <label style="margin-bottom: 0;">Questions JSON Array</label>
+          <label style="margin-bottom: 0;" id="jsonLabel">Questions JSON Array</label>
           <button class="btn" id="chatgptPromptBtn" style="font-size: 13px; padding: 6px 12px;">
             💬 Get ChatGPT Prompt
           </button>
@@ -265,6 +299,10 @@
       <div class="notice" id="notice"></div>
     </div>
     <script>
+      (function setActive(){
+        const el = document.getElementById('nav-home');
+        if (el) el.classList.add('active');
+      })();
       function generateToken() {
         const bytes = new Uint8Array(24);
         if (window.crypto && window.crypto.getRandomValues) {
@@ -276,7 +314,7 @@
         return hex;
       }
 
-      const chatgptPromptTemplate = `Convert the following text content into a JSON array of multiple-choice questions in the exact format specified below.
+      const chatgptPromptTemplateQuestions = `Convert the following text content into a JSON array of multiple-choice questions in the exact format specified below.
 
 JSON Format Requirements:
 - Each question must be an object in a JSON array
@@ -303,18 +341,86 @@ Text content to convert:
 
 Output the JSON array now:`;
 
+      const chatgptPromptTemplateFlashcards = `Convert the following text content into a JSON array of flashcards in the exact format specified below.
+
+JSON Format Requirements:
+- Each flashcard must be an object in a JSON array
+- Each flashcard object must have these fields:
+  * "id": A unique identifier (string, lowercase with hyphens, e.g., "socket-definition")
+  * "term": The concept or term (string)
+  * "definition": A concise definition for study (string)
+- Optional fields allowed:
+  * "tags": array of strings
+  * "source": string (e.g., note path or URL)
+- The output must be a valid JSON array starting with [ and ending with ]
+
+Instructions:
+1. Extract important terms and their definitions from the text below
+2. Keep definitions short, precise, and exam-friendly
+3. Ensure each flashcard has a unique, descriptive ID
+4. Output ONLY the JSON array, no additional text or markdown formatting
+
+Text content to convert:
+
+{{USER_CONTENT}}
+
+Output the JSON array now:`;
+
       function buildPromptWithContent() {
         const userContent = document.getElementById('userContent').value.trim();
+        const type = document.getElementById('contentType').value;
+        const tmpl = type === 'flashcards' ? chatgptPromptTemplateFlashcards : chatgptPromptTemplateQuestions;
         if (!userContent) {
-          return chatgptPromptTemplate.replace('{{USER_CONTENT}}', '[PASTE YOUR STUDY MATERIAL HERE]');
+          return tmpl.replace('{{USER_CONTENT}}', '[PASTE YOUR STUDY MATERIAL HERE]');
         }
-        return chatgptPromptTemplate.replace('{{USER_CONTENT}}', userContent);
+        return tmpl.replace('{{USER_CONTENT}}', userContent);
       }
 
       function updatePromptPreview() {
         const promptTextarea = document.getElementById('promptText');
         promptTextarea.value = buildPromptWithContent();
       }
+
+      // Wire segmented buttons to set content type and update UI
+      function setContentType(type) {
+        const hidden = document.getElementById('contentType');
+        if (hidden) hidden.value = type;
+
+        // Toggle selected button style
+        const bNotes = document.getElementById('typeNotes');
+        const bQs = document.getElementById('typeQuestions');
+        const bFlash = document.getElementById('typeFlashcards');
+        if (bNotes && bQs && bFlash) {
+          bNotes.classList.toggle('primary', type === 'notes');
+          bQs.classList.toggle('primary', type === 'questions');
+          bFlash.classList.toggle('primary', type === 'flashcards');
+        }
+
+        // Update label/placeholder like the change listener below
+        const jsonLabel = document.getElementById('jsonLabel');
+        const jsonTextarea = document.getElementById('json');
+        if (type === 'flashcards') {
+          if (jsonLabel) jsonLabel.textContent = 'Flashcards JSON Array';
+          if (jsonTextarea) jsonTextarea.placeholder = '[\n  {"id":"...","term":"...","definition":"...","tags":["optional"],"source":"optional"}\n]';
+        } else if (type === 'notes') {
+          if (jsonLabel) jsonLabel.textContent = 'Notes JSON Array';
+          if (jsonTextarea) jsonTextarea.placeholder = '[\n  {"title":"...","slug":"...","markdown":"# Your note content..."}\n]';
+        } else {
+          if (jsonLabel) jsonLabel.textContent = 'Questions JSON Array';
+          if (jsonTextarea) jsonTextarea.placeholder = '[\n  {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}\n]';
+        }
+        updatePromptPreview();
+      }
+
+      // Initial wiring for segmented buttons
+      (function bindTypeButtons(){
+        const n = document.getElementById('typeNotes');
+        const q = document.getElementById('typeQuestions');
+        const f = document.getElementById('typeFlashcards');
+        if (n) n.addEventListener('click', () => setContentType('notes'));
+        if (q) q.addEventListener('click', () => setContentType('questions'));
+        if (f) f.addEventListener('click', () => setContentType('flashcards'));
+      })();
 
       document.getElementById('chatgptPromptBtn').onclick = async () => {
         const promptSection = document.getElementById('chatgptPrompt');
@@ -367,15 +473,15 @@ Output the JSON array now:`;
         const notice = document.getElementById('notice');
         notice.textContent = '';
         notice.className = 'notice';
-        let questions;
+        let dataArray;
         try {
-          questions = JSON.parse(raw);
+          dataArray = JSON.parse(raw);
         } catch(e) {
           notice.textContent = 'Invalid JSON';
           notice.className = 'notice error';
           return;
         }
-        if (!Array.isArray(questions)) {
+        if (!Array.isArray(dataArray)) {
           notice.textContent = 'JSON must be an array';
           notice.className = 'notice error';
           return;
@@ -389,11 +495,10 @@ Output the JSON array now:`;
           const token = document.getElementById('token').value.trim();
           const headers = { 'Content-Type': 'application/json' };
           if (token) headers['x-import-token'] = token;
-          const res = await fetch('/api/import', {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ category, subcategory, questions })
-          });
+          const type = document.getElementById('contentType').value;
+          const endpoint = type === 'flashcards' ? '/api/import-flashcards' : '/api/import';
+          const payload = type === 'flashcards' ? { category, subcategory, cards: dataArray } : { category, subcategory, questions: dataArray };
+          const res = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(payload) });
           const json = await res.json();
           if (!res.ok) throw new Error(json.error || 'Import failed');
           notice.textContent = 'Imported successfully. Saved to: ' + json.saved;
@@ -406,6 +511,32 @@ Output the JSON array now:`;
           notice.className = 'notice error';
         }
       };
+
+      // Update UI labels and placeholders on type change
+      document.getElementById('contentType').addEventListener('change', () => {
+        const type = document.getElementById('contentType').value;
+        const jsonLabel = document.getElementById('jsonLabel');
+        const jsonTextarea = document.getElementById('json');
+        if (type === 'flashcards') {
+          jsonLabel.textContent = 'Flashcards JSON Array';
+          jsonTextarea.placeholder = '[\n  {"id":"...","term":"...","definition":"...","tags":["optional"],"source":"optional"}\n]';
+        } else if (type === 'notes') {
+          jsonLabel.textContent = 'Notes JSON Array';
+          jsonTextarea.placeholder = '[\n  {"title":"...","slug":"...","markdown":"# Your note content..."}\n]';
+        } else {
+          jsonLabel.textContent = 'Questions JSON Array';
+          jsonTextarea.placeholder = '[\n  {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}\n]';
+        }
+        updatePromptPreview();
+      });
     </script>
   </body>
+  <script>
+    (function(){
+      ['nav-home','nav-notes','nav-flash','nav-tests'].forEach(id=>{
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+    })();
+  </script>
 </html>

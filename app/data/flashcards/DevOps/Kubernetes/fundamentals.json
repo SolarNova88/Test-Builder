@@ -1,0 +1,24 @@
+[
+  {"id":"cluster","term":"Cluster","definition":"A set of control plane and worker nodes managed as a single Kubernetes system.","tags":["core"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"deployment","term":"Deployment","definition":"Controller that manages ReplicaSets to keep a desired number of Pod replicas and roll out updates.","tags":["workload"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"replicaset","term":"ReplicaSet","definition":"Ensures a specified number of identical Pods are running at any time.","tags":["workload"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"pod-ephemeral","term":"Pod (ephemeral)","definition":"Smallest deployable unit; Pods are short-lived and replaced rather than updated in place.","tags":["core"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"readiness","term":"Readiness Probe","definition":"Health check indicating when a container is ready to serve traffic; gates Service endpoints.","tags":["probes"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"liveness","term":"Liveness Probe","definition":"Health check that restarts a container when it becomes unhealthy.","tags":["probes"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"service-dns","term":"Service Discovery (DNS)","definition":"Pods reach Services via DNS names like service.namespace.svc.cluster.local.","tags":["network"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"clusterip-def","term":"Service: ClusterIP","definition":"Default service type; exposes an internal virtual IP reachable only inside the cluster.","tags":["network"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"nodeport-def","term":"Service: NodePort","definition":"Opens a static port on every node to forward traffic to a Service.","tags":["network"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"loadbalancer-def","term":"Service: LoadBalancer","definition":"Provisions a cloud load balancer to expose a Service externally.","tags":["network","cloud"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"ingress-def","term":"Ingress","definition":"Routes HTTP/HTTPS from outside the cluster to Services using rules and an Ingress controller.","tags":["network"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"configmap","term":"ConfigMap","definition":"Stores non-sensitive configuration; mount as env vars or files for Pods.","tags":["config"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"secret","term":"Secret","definition":"Stores sensitive data (passwords, keys); referenced by Pods securely.","tags":["security","config"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"namespace-def","term":"Namespace","definition":"Logical partitioning of cluster resources for isolation and policy scoping.","tags":["multi-tenancy"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"quota","term":"ResourceQuota","definition":"Namespace-wide limits on resource consumption (CPU, memory, objects).","tags":["policy"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"requests-limits","term":"Requests & Limits","definition":"Per-container CPU/memory requests (scheduling) and limits (enforcement) for fairness and stability.","tags":["resources"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"hpa","term":"Horizontal Pod Autoscaler (HPA)","definition":"Scales Pod replicas based on metrics (e.g., CPU 70% utilization).","tags":["scaling"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"kubectl","term":"kubectl","definition":"CLI to interact with the Kubernetes API (apply, get, describe, logs, exec, rollout, etc.).","tags":["cli"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"labels-selectors","term":"Labels & Selectors","definition":"Key/value metadata used to group resources; selectors match objects for Services, Deployments, etc.","tags":["core"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"},
+  {"id":"rolling-update","term":"Rolling Update","definition":"Gradual replacement of Pods to a new version with zero downtime and automatic rollback.","tags":["deploy"],"source":"/notes/DevOps/Kubernetes/01-fundamentals.md"}
+]
+
+

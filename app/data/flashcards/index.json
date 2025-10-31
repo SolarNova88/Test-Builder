@@ -1,0 +1,32 @@
+[
+  {
+    "id": "DevOps/Docker/architecture and history",
+    "title": "DevOps / Docker / architecture and history",
+    "path": "/data/flashcards/DevOps/Docker/architecture and history.json",
+    "count": 29
+  },
+  {
+    "id": "DevOps/Kubernetes/advanced scenarios",
+    "title": "DevOps / Kubernetes / advanced scenarios",
+    "path": "/data/flashcards/DevOps/Kubernetes/advanced scenarios.json",
+    "count": 26
+  },
+  {
+    "id": "DevOps/Kubernetes/advanced",
+    "title": "DevOps / Kubernetes / advanced",
+    "path": "/data/flashcards/DevOps/Kubernetes/advanced.json",
+    "count": 15
+  },
+  {
+    "id": "DevOps/Kubernetes/architecture and history",
+    "title": "DevOps / Kubernetes / architecture and history",
+    "path": "/data/flashcards/DevOps/Kubernetes/architecture and history.json",
+    "count": 24
+  },
+  {
+    "id": "DevOps/Kubernetes/fundamentals",
+    "title": "DevOps / Kubernetes / fundamentals",
+    "path": "/data/flashcards/DevOps/Kubernetes/fundamentals.json",
+    "count": 20
+  }
+]

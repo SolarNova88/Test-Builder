@@ -1,0 +1,19 @@
+[
+  {"id":"statefulset","term":"StatefulSet","definition":"Workload for stateful apps; stable pod identities and per-pod persistent storage.","tags":["workload","stateful"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"daemonset","term":"DaemonSet","definition":"Ensures a copy of a Pod runs on every (or selected) node in the cluster.","tags":["workload"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"job","term":"Job","definition":"Runs Pods to completion for one-time tasks; restarts on failure per policy.","tags":["batch"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"cronjob","term":"CronJob","definition":"Creates Jobs on a schedule using cron syntax (e.g., 0 2 * * *).","tags":["batch","schedule"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"taints","term":"Taints & Tolerations","definition":"Taints repel Pods from nodes unless the Pods have matching tolerations.","tags":["scheduling"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"affinity","term":"Affinity/Anti-Affinity","definition":"Scheduling rules that attract or repel Pods to/from specific nodes or other Pods.","tags":["scheduling"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"pdb","term":"Pod Disruption Budget (PDB)","definition":"Policy that limits how many Pods can be down during voluntary disruptions.","tags":["reliability"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"rbac","term":"RBAC","definition":"Role-Based Access Control defining who can perform which actions on which resources.","tags":["security"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"netpol","term":"NetworkPolicy","definition":"Kubernetes firewall for Pods to restrict ingress/egress traffic by selector and port.","tags":["security","network"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"hpa-advanced","term":"HPA (Autoscaling)","definition":"Automatically adjusts replicas based on metrics (CPU, memory, custom).","tags":["scaling"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"storageclass-adv","term":"StorageClass","definition":"Defines dynamic storage provisioning; PVCs request storage by class.","tags":["storage"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"operator","term":"Operator","definition":"Custom controller that automates app lifecycle using Custom Resources (CRDs).","tags":["extensibility"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"crd","term":"CRD","definition":"CustomResourceDefinition adds new resource types to the Kubernetes API.","tags":["extensibility"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"ingress-controller","term":"Ingress Controller","definition":"Controller that implements Ingress resources, routing HTTP(S) to Services.","tags":["network"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"},
+  {"id":"service-mesh","term":"Service Mesh","definition":"Sidecar proxies add mTLS, traffic policy, and observability to service-to-service communication.","tags":["mesh","network"],"source":"/notes/DevOps/Kubernetes/02-advanced.md"}
+]
+
+

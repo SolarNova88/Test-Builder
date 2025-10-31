@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flashcards • Test Builder</title>
+    <link rel="stylesheet" href="/public/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="nav-bar">
+          <div class="nav-left">
+            <a href="/public/index.html" class="brand" title="Home">
+              <span class="logo-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 7l9-4 9 4-9 4-9-4z" fill="currentColor" style="color: var(--accent);"/>
+                  <path d="M5 10v6c0 .6.4 1 1 1l6 3 6-3c.6 0 1-.4 1-1v-6" stroke="#4B5563" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="brand-text"><span class="accent">Study</span> Buddy</span>
+            </a>
+          </div>
+          <nav class="nav-center">
+            <a id="nav-home" class="btn" href="/public/index.html">Home</a>
+            <a id="nav-notes" class="btn" href="/public/notes.html">Notes</a>
+            <a id="nav-flash" class="btn" href="/public/flashcards.html">Flashcards</a>
+            <a id="nav-tests" class="btn" href="/public/index.html#tests">Tests</a>
+          </nav>
+          <div class="nav-right">
+            <a class="btn primary" href="/public/import.html" title="Paste JSON to add questions">+ Import JSON</a>
+          </div>
+        </div>
+      </header>
+      <main class="main">
+        <section id="fc-nav" class="fade"></section>
+        <section id="fc-view" class="panel fade hidden"></section>
+      </main>
+    </div>
+    <script type="module" src="/public/flashcards.js"></script>
+    <script>
+      (function setActive(){
+        const el = document.getElementById('nav-flash');
+        if (el) el.classList.add('active');
+      })();
+    </script>
+  </body>
+  </html>
+
+

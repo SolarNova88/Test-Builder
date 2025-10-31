@@ -8,19 +8,127 @@
   </head>
   <body>
     <div class="app">
-      <header class="header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <h1 style="margin:0">Test Builder</h1>
-        <nav style="display:flex; gap:8px; align-items:center;">
-          <a class="btn" href="/public/notes.html" title="Browse notes">Notes</a>
-          <a class="btn primary" href="/public/import.html" title="Paste JSON to add questions">➕ Import JSON</a>
-        </nav>
+      <header class="header">
+        <div class="nav-bar">
+          <div class="nav-left">
+            <a href="/public/index.html" class="brand" title="Home">
+              <span class="logo-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 7l9-4 9 4-9 4-9-4z" fill="currentColor" style="color: var(--accent);"/>
+                  <path d="M5 10v6c0 .6.4 1 1 1l6 3 6-3c.6 0 1-.4 1-1v-6" stroke="#4B5563" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="brand-text"><span class="accent">Study</span> Buddy</span>
+            </a>
+          </div>
+          <nav class="nav-center">
+            <a id="nav-home" class="btn" href="/public/index.html">Home</a>
+            <a id="nav-notes" class="btn" href="/public/notes.html">Notes</a>
+            <a id="nav-flash" class="btn" href="/public/flashcards.html">Flashcards</a>
+            <a id="nav-tests" class="btn" href="/public/index.html#tests">Tests</a>
+          </nav>
+          <div class="nav-right">
+            <a class="btn primary" href="/public/import.html" title="Paste JSON to add questions">+ Import JSON</a>
+          </div>
+        </div>
       </header>
       <main class="main">
+        <section id="home-hero" class="panel fade">
+          <div class="hero">
+            <div style="display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;">
+              <div style="flex:1 1 460px; min-width:300px;">
+                <h2>How it works</h2>
+                <p class="hero-sub">Add content quickly, then study it the way you learn best.</p>
+                <div class="steps">
+                  <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                      <p class="step-title">Bring your material</p>
+                      <p class="step-text">Write notes in markdown or paste JSON (questions or flashcards). Use the prompt helper to generate clean JSON from raw text.</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                      <p class="step-title">Organize by topic</p>
+                      <p class="step-text">Keep content grouped by categories and subtopics so studying stays focused and navigable.</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                      <p class="step-title">Study with flashcards or tests</p>
+                      <p class="step-text">Flip terms/definitions, shuffle, and combine decks — or build quizzes with instant feedback and explanations.</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                      <p class="step-title">Iterate fast</p>
+                      <p class="step-text">Tighten definitions, add examples, and import more questions as you learn. Everything updates instantly.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </section>
+        <section id="home-start" class="panel fade">
+          <h2 style="margin-top:0">Get Started</h2>
+          <div class="grid">
+            <a class="card" href="/public/notes.html">
+              <div style="font-weight:600; text-transform:capitalize;">Notes</div>
+              <div class="muted">Create, organize, and read structured markdown notes. Scan your notes into the app for an auto-generated table of contents, code syntax highlighting, and fast in-page navigation. Use these notes as the source to build flashcards and assemble targeted practice tests.</div>
+            </a>
+            <a class="card" href="/public/flashcards.html">
+              <div style="font-weight:600; text-transform:capitalize;">Flashcards</div>
+              <div class="muted">Study curated decks or import your own via JSON. Choose Term → Definition or Definition → Term modes, flip with keyboard, shuffle, and combine multiple decks into a single session. Use the built‑in prompt helper to turn your source material into clean flashcard JSON in seconds.</div>
+            </a>
+            <a class="card" href="/public/index.html#tests">
+              <div style="font-weight:600; text-transform:capitalize;">Tests</div>
+              <div class="muted">Build practice tests from one or more categories or import full question banks via JSON. Answer with instant feedback, view explanations and difficulty, and track your score across a custom mix of subtopics to focus your study time where it matters most.</div>
+            </a>
+          </div>
+        </section>
         <section id="nav" class="panel fade"></section>
         <section id="quiz" class="panel fade hidden"></section>
       </main>
     </div>
-    <script type="module" src="/public/app.js"></script>
+    <script>
+      (function(){
+        function clearActive(){
+          ['nav-home','nav-tests','nav-notes','nav-flash'].forEach(id=>{
+            const el = document.getElementById(id); if (el) el.classList.remove('active');
+          });
+        }
+        function hideHomePanels(){
+          const home = document.getElementById('home-start'); if (home) home.parentNode.removeChild(home);
+          const hero = document.getElementById('home-hero'); if (hero) hero.parentNode.removeChild(hero);
+        }
+        function ensureTestsLoaded(){
+          if (window.__tests_loaded) return;
+          const s = document.createElement('script');
+          s.type = 'module';
+          s.src = '/public/app.js';
+          s.onload = function(){ window.__tests_loaded = true; };
+          document.body.appendChild(s);
+        }
+        function route(){
+          clearActive();
+          const h = location.hash;
+          if (h === '#tests') {
+            const el = document.getElementById('nav-tests'); if (el) el.classList.add('active');
+            hideHomePanels();
+            ensureTestsLoaded();
+          } else {
+            const el = document.getElementById('nav-home'); if (el) el.classList.add('active');
+          }
+        }
+        window.addEventListener('hashchange', route);
+        route();
+      })();
+    </script>
   </body>
   </html>
 

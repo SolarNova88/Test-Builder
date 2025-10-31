@@ -1,0 +1,28 @@
+[
+  {"id":"kubernetes","term":"Kubernetes (K8s)","definition":"Open-source container orchestrator (2014) that automates deployment, scaling, and management of containers.","tags":["k8s","intro"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"cncf","term":"CNCF","definition":"Cloud Native Computing Foundation; neutral home for Kubernetes since 2015.","tags":["org"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"borg","term":"Borg","definition":"Google’s internal cluster manager that inspired Kubernetes’ design.","tags":["history"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"control-plane","term":"Control Plane","definition":"Cluster brain: API server, etcd, scheduler, controller manager (and often cloud controller manager).","tags":["architecture"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"api-server","term":"API Server","definition":"Front door for all Kubernetes operations; validates requests and exposes cluster state via API.","tags":["control-plane"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"etcd","term":"etcd","definition":"Distributed key-value store holding the cluster’s source of truth (state and config).","tags":["control-plane","storage"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"scheduler","term":"Scheduler","definition":"Assigns new Pods to nodes based on resource needs and constraints (affinity, taints, scores).","tags":["control-plane"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"controller-manager","term":"Controller Manager","definition":"Runs control loops (Deployment, ReplicaSet, etc.) to reconcile desired and actual state.","tags":["control-plane"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"cloud-controller","term":"Cloud Controller Manager","definition":"Integrates cluster with cloud provider resources (nodes, routes, load balancers).","tags":["control-plane","cloud"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"node","term":"Worker Node","definition":"Machine that runs workloads; hosts kubelet, kube-proxy, and a container runtime.","tags":["node"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"kubelet","term":"kubelet","definition":"Per-node agent that ensures containers in assigned Pods are running and healthy.","tags":["node"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"kube-proxy","term":"kube-proxy","definition":"Maintains node-level network rules (iptables/IPVS) to implement Services and load balance to Pod endpoints.","tags":["network"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"cri","term":"Container Runtime (CRI)","definition":"Pluggable interface for running containers (containerd, CRI-O).","tags":["runtime"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"pod","term":"Pod","definition":"Smallest deployable unit; one or more containers sharing network and storage.","tags":["core"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"service","term":"Service","definition":"Stable virtual IP/DNS that routes to a set of Pods (endpoints).","tags":["core","network"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"clusterip","term":"ClusterIP","definition":"Default Service type; exposes a service on an internal cluster IP only.","tags":["service"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"nodeport","term":"NodePort","definition":"Service type that exposes a port on each node’s IP, accessible from outside the cluster.","tags":["service"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"loadbalancer","term":"LoadBalancer","definition":"Service type that provisions a cloud load balancer and external IP.","tags":["service","cloud"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"ingress","term":"Ingress","definition":"HTTP/HTTPS routing to Services using an Ingress controller (TLS, path/host rules).","tags":["network"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"cni","term":"CNI","definition":"Container Network Interface; plugin model for Pod networking (Calico, Flannel, Cilium, Weave).","tags":["network"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"pvc","term":"PVC (PersistentVolumeClaim)","definition":"A user’s request for storage that binds to a PV based on size and class.","tags":["storage"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"pv","term":"PV (PersistentVolume)","definition":"Cluster storage resource provisioned statically or dynamically via StorageClass.","tags":["storage"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"storageclass","term":"StorageClass","definition":"Defines storage classes and enables dynamic PV provisioning.","tags":["storage"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"},
+  {"id":"namespace","term":"Namespace","definition":"Logical partition in a cluster for isolating resources, policies, and quotas.","tags":["multi-tenancy"],"source":"/notes/DevOps/Kubernetes/00-architecture-and-history.md"}
+]
+
+
