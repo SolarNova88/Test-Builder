@@ -341,6 +341,48 @@ Text content to convert:
 
 Output the JSON array now:`;
 
+      const chatgptPromptTemplateNotes = `Convert the following study material into a JSON array of notes where the markdown strictly follows this app's formatting rules.
+
+Output Format (JSON array):
+- Each note is an object with EXACTLY these fields:
+  * "title": Human-readable title for the note (string)
+  * "slug": Kebab-case identifier (string, e.g., "docker-architecture")
+  * "markdown": The complete note content as Markdown (string)
+
+Markdown Rules (must follow for consistent rendering):
+- Start with a single H1: "# {Title}"
+- Use "##" for major sections and "###" for subsections
+- No manual Table of Contents; the app auto-generates it from H1/H2/H3
+- Code examples MUST use fenced code blocks with language tags supported by the app.
+- Example (YAML):
+  \`\`\`yaml
+  # code here
+  \`\`\`
+- Use triple backticks with the language immediately after (no extra spaces)
+- Prefer small, focused examples; do not include screenshots or images
+- Avoid ASCII art diagrams (language-text) unless absolutely necessary
+- Use lists with "- " for bullets and standard numbered lists for steps
+- Use inline code with single backticks for identifiers (e.g., \`kubectl\`)
+- Keep lines readable; long code lines are okay (the app scrolls horizontally)
+- Tables are allowed in plain Markdown if useful
+
+Content Guidance:
+- Begin with a short overview explaining the “why” in layman’s terms
+- Cover architecture and key components
+- Include common pitfalls and best practices
+- End with a brief “Key Takeaways” section
+
+Instructions:
+1. Extract and structure the content into clear sections using H2/H3
+2. Add concise, runnable examples using proper fenced code blocks with language tags
+3. Do NOT include any text outside of the JSON array output
+
+Text content to convert:
+
+{{USER_CONTENT}}
+
+Output the JSON array now:`;
+
       const chatgptPromptTemplateFlashcards = `Convert the following text content into a JSON array of flashcards in the exact format specified below.
 
 JSON Format Requirements:
@@ -369,7 +411,9 @@ Output the JSON array now:`;
       function buildPromptWithContent() {
         const userContent = document.getElementById('userContent').value.trim();
         const type = document.getElementById('contentType').value;
-        const tmpl = type === 'flashcards' ? chatgptPromptTemplateFlashcards : chatgptPromptTemplateQuestions;
+        const tmpl = type === 'flashcards'
+          ? chatgptPromptTemplateFlashcards
+          : (type === 'notes' ? chatgptPromptTemplateNotes : chatgptPromptTemplateQuestions);
         if (!userContent) {
           return tmpl.replace('{{USER_CONTENT}}', '[PASTE YOUR STUDY MATERIAL HERE]');
         }
