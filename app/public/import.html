@@ -271,9 +271,9 @@
           <textarea id="json" placeholder='[
   {"id":"...","question":"...","choices":["A","B"],"answerIndex":0,"explanation":"...","difficulty":"easy"}
 ]' disabled style="background:#f3f4f6; cursor:not-allowed;"></textarea>
-          <div id="loadOverlay" style="position:absolute; inset:0; display:grid; place-items:center; gap:10px; background:rgba(243,244,246,0.85); border:1px dashed #c7c9cf; border-radius:8px;">
-            <div style="font-size:13px; color:#374151; margin-bottom:6px;">Choose how you want to provide content</div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div id="loadOverlay" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; background:rgba(243,244,246,0.85); border:1px dashed #c7c9cf; border-radius:8px;">
+            <div style="font-size:13px; color:#374151; margin:0;">Choose how you want to provide content</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <button type="button" class="btn primary" id="btnLoadJson">Paste Formatted JSON</button>
               <button type="button" class="btn" id="btnLoadRaw">Paste Raw Study Material</button>
             </div>
@@ -515,7 +515,7 @@ Output the JSON array now:`;
           if (!raw) {
             // Reset to initial state when cleared
             const overlay = document.getElementById('loadOverlay');
-            if (overlay) overlay.style.display = 'grid';
+            if (overlay) overlay.style.display = 'flex';
             jsonArea.disabled = true;
             jsonArea.style.background = '#f3f4f6';
             jsonArea.style.cursor = 'not-allowed';
