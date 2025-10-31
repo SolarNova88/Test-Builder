@@ -512,7 +512,17 @@ Output the JSON array now:`;
         const run = () => {
           importBtn.disabled = true;
           const raw = jsonArea.value.trim();
-          if (!raw) return;
+          if (!raw) {
+            // Reset to initial state when cleared
+            const overlay = document.getElementById('loadOverlay');
+            if (overlay) overlay.style.display = '';
+            jsonArea.disabled = true;
+            jsonArea.style.background = '#f3f4f6';
+            jsonArea.style.cursor = 'not-allowed';
+            notice.textContent = '';
+            notice.className = 'notice';
+            return;
+          }
           try {
             const data = JSON.parse(raw);
             const { valid, errors } = validateArrayForType(contentType.value, data);
